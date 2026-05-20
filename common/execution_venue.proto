@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package oets.v1;
+
+enum VenueType {
+  UNKNOWN_VENUE_TYPE = 0;
+  VENUE_TYPE_DEX = 1;
+  VENUE_TYPE_CEX = 2;
+  VENUE_TYPE_DEX_CLOB = 3;
+  VENUE_TYPE_OTC = 4;
+  VENUE_TYPE_RFQ = 5;
+  VENUE_TYPE_PROTOCOL = 6;
+  VENUE_TYPE_DARK_POOL = 7;
+  VENUE_TYPE_INTERNAL = 8;
+}
+
+message ExecutionVenue {
+  string venue_id = 1;
+  VenueType venue_type = 2;
+  string venue_name = 3;
+}

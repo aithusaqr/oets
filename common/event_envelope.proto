@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "common/source.proto";
+import "common/timestamps.proto";
+import "common/relationships.proto";
+
+package oets.v1;
+
+enum EventType{
+  UNKNOWN_EVENT_TYPE = 0;
+  EVENT_TYPE_FILL = 1;
+  EVENT_TYPE_ORDER = 2;
+  EVENT_TYPE_POSITION = 3;
+  EVENT_TYPE_BALANCE = 5;
+  EVENT_TYPE_CASH_FLOW_EVENT = 6;
+}
+
+message OetsEventEnvelope {
+  string event_id = 1;
+  string oets_version = 2;
+  EventType event_type = 3;
+
+  SourceObservation source = 4;
+  TimestampSet timestamps = 5;
+  repeated EventRelationship relationships = 6;
+
+  map<string, string> extensions = 100;
+}

@@ -1,0 +1,19 @@
+
+syntax = "proto3";
+
+package oets.v1;
+
+enum FeeType{
+  UNKNOWN_FEE_TYPE = 0;
+  TRADING_FEE = 1;
+  FUNDING_FEE = 2;
+  ACCOUNT_FEE = 3;
+  BORROW_FEE = 4;
+}
+
+message FillFee {
+  string asset = 1;
+  string amount = 2;
+  string fee_type = 3; // execution_fee, protocol_fee, priority_fee, rebate, other
+  string related_fill_id = 4;
+}

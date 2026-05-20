@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package oets.v1;
+
+enum AccountType{
+  UNKNOWN_ACCOUNT_TYPE = 0;
+  ACCOUNT_TYPE_WALLET = 1;
+  ACCOUNT_TYPE_MAIN_ACCOUNT = 2;
+  ACCOUNT_TYPE_SUBACCOUNT = 3;
+  ACCOUNT_TYPE_STRATEGY_ACCOUNT = 4;
+  ACCOUNT_TYPE_VENUE_ACCOUNT = 5;
+  ACCOUNT_TYPE_SMA = 6;
+  ACCOUNT_TYPE_BROKER = 7;
+
+}
+
+message AccountRef {
+  string account_id = 1;
+  AccountType account_type = 2;
+}

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package oets.v1;
+
+import "common/execution_venue.proto";
+import "common/account.proto";
+import "common/event_envelope.proto";
+import "common/instrument.proto";
+import "common/timestamps.proto";
+import "common/source.proto";
+import "common/execution/order_event.proto";
+import "common/reconciliation/position_event.proto";
+
+message FillEvent {
+  OetsEventEnvelope envelope = 1;
+
+  AccountRef account = 2;
+  InstrumentRef instrument = 3;
+  ExecutionVenue venue = 4;
+
+  string order_id = 5;
+  string client_order_id = 6;
+  string execution_id = 7;
+
+  OrderSide order_side = 8;
+  int64 quantity = 9;
+  int64 price = 10;
+  int64 notional_value = 11;
+  int64 fee = 12;
+  string fee_asset = 13;
+  int64 notional_fee =14;
+  SourceObservation source = 15;
+  int64 realized_pnl = 16;
+  string realized_pnl_asset =17;
+  PositionSide position_side = 18;
+  TimestampSet timestamps = 19;
+
+}

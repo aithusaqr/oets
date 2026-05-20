@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package oets.v1;
+
+enum SourceType {
+  UNKNOWN_SOURCE_TYPE = 0;
+  BOT = 1;
+  SOURCE_WALLET = 2;
+  PROTOCOL = 3;
+  INDEXER = 4;
+  ROUTER = 5;
+  VENUE = 6;
+  RISK_SYSTEM = 7;
+  INTERNAL = 8;
+  VENUE_REST = 9;
+  VENUE_WS = 10;
+  VENUE_OTHER = 11;
+}
+
+message SourceObservation {
+  string source_id = 1;
+  SourceType source_type = 2;
+  string source_name = 3;
+}

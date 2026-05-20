@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package oets.v1;
+
+message TimestampSet {
+  string decision_timestamp = 1;
+  string submitted_timestamp = 2;
+  string event_timestamp = 3;
+  string ledger_timestamp = 4;
+  string observed_timestamp = 5;
+  string valuation_timestamp = 6;
+}

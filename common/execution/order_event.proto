@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package oets.v1;
+
+import "common/execution_venue.proto";
+import "common/account.proto";
+import "common/event_envelope.proto";
+import "common/instrument.proto";
+import "common/timestamps.proto";
+import "common/source.proto";
+
+enum OrderSide {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum OrderType{
+   UNKNOWN_ORDER_TYPE = 0;
+    LIMIT = 1;
+    MARKET = 2;
+    LIMIT_POST_ONLY = 3;
+    ORDER_TYPE_IMMEDIATE_OR_CANCEL = 4;
+    ORDER_TYPE_FILL_OR_KILL = 5;
+    TWAP = 6;
+    ICEBERG = 7;
+    OTHER = 8;
+    STOP = 9;
+    STOP_LIMIT = 10;
+    BRACKET = 11;
+}
+
+enum OrderState {
+  UNKNOWN_ORDER_STATE = 0;
+    CREATED = 1;
+    SENT = 2;
+    PENDING = 3;
+    ACKED = 4;
+    ACCEPTED = 5;
+    REJECTED = 6;
+    PENDING_CANCEL = 7;
+    EXPIRED = 8;
+    PARTIALLY_FILLED = 9;
+    FILLED = 10;
+    CANCELLED = 11;
+    FAILED = 12;
+    DONE = 13;
+    CLOSED = 14;
+}
+
+enum OrderTimeInForce{
+  GOOD_TIL_CANCEL = 0;
+  ORDER_TIF_IMMEDIATE_OR_CANCEL = 1;
+  ORDER_TIF_FILL_OR_KILL = 2;
+}
+
+enum OrderIntentionType {
+  RESTING = 0;
+  CROSSING = 1;
+  CANCEL = 2;
+  ONE_CANCELS_OTHER = 3;
+}
+
+message OrderEvent {
+  OetsEventEnvelope envelope = 1;
+
+  AccountRef account = 2;
+  InstrumentRef instrument = 3;
+  ExecutionVenue venue = 4;
+
+  string order_id = 5;
+  string client_order_id = 6;
+
+  OrderSide side = 7;
+  OrderType order_type = 8;
+  OrderState order_state = 9;
+  OrderTimeInForce order_tif = 10;
+
+  int64 price =11;
+  int64 quantity = 12;
+
+  SourceObservation source =13;
+  TimestampSet timestamps = 14;
+  OrderIntentionType order_intention_type = 15;
+}

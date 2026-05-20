@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package oets.v1;
+
+enum PositionSide {
+  NET = 0;
+  LONG = 1;
+  SHORT = 2;
+}

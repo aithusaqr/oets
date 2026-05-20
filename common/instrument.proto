@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package oets.v1;
+
+enum InstrumentType{
+  UNKNOWN_INSTRUMENT_TYPE = 0;
+  PERPETUAL = 1;
+  SPOT =2;
+  FUTURE = 3;
+  OPTION = 4;
+  SWAP = 5;
+  FX = 6;
+}
+
+enum ContractType {
+  UNKNOWN_CONTRACT_TYPE = 0;
+  LINEAR = 1;
+  INVERSE = 2;
+}
+
+message InstrumentRef {
+  string instrument_id = 1;
+  string base_asset = 2;
+  string quote_asset = 3;
+  string venue_instrument_id = 4;
+  int32 price_precision = 5;
+  int32 price_precision_rounding = 6;
+  int32 size_precision = 7;
+  int32 size_precision_rounding = 8;
+  int32 minimum_size = 9;
+  int64 minimum_notional_size = 10;
+  int32 lot_size = 11;
+  int64 notional_lot_size = 12;
+  ContractType contract_type =13;
+  string alias = 14;
+  int32 expiry_date = 15;
+  int32 days_to_expiry = 16;
+  string currency = 17;
+  string position_currency = 18;
+
+}

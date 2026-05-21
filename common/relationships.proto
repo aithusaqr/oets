@@ -11,6 +11,6 @@ enum RelationshipType{
 }
 
 message EventRelationship {
-  string relationship_type = 1;
-  RelationshipType related_event_id = 2;
+  RelationshipType relationship_type = 1;
+  string related_event_id = 2;
 }

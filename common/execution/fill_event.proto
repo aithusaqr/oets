@@ -7,11 +7,21 @@ import "common/account.proto";
 import "common/event_envelope.proto";
 import "common/instrument.proto";
 import "common/timestamps.proto";
-import "common/source.proto";
 import "common/execution/order_event.proto";
 import "common/reconciliation/position_event.proto";
 
+// FillEvent records the execution of a fill against an order.
+//
+// Source attribution lives in OetsEventEnvelope.source — do NOT add a
+// top-level source field here (field 15 was removed in #19).
+// Timestamps similarly live in the envelope; the top-level timestamps field
+// (19) will be removed in M2 (#9).
 message FillEvent {
+  // Field 15 ("source") was removed — it duplicated OetsEventEnvelope.source.
+  // See: https://github.com/aithusaqr/oets/issues/19
+  reserved 15;
+  reserved "source";
+
   OetsEventEnvelope envelope = 1;
 
   AccountRef account = 2;
@@ -29,7 +39,6 @@ message FillEvent {
   int64 fee = 12;
   string fee_asset = 13;
   int64 notional_fee =14;
-  SourceReference source = 15;
   int64 realized_pnl = 16;
   string realized_pnl_asset =17;
   PositionSide position_side = 18;

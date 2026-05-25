@@ -5,9 +5,18 @@ package oets.v1;
 
 
 
+// Fee represents a fee charged in association with a trade or account event.
+//
+// Monetary fields follow the int64 scale convention established by H3 (#7):
+// values are integers scaled by the instrument's price_precision exponent
+// (e.g. price_precision=6 means 1.5 USDC is represented as 1500000).
+// Fee.amount is in the same scaled units as the related fill's price/quantity;
+// the denomination asset is carried separately in the `asset` field.
+//
+// Changing amount from string to int64 is tracked in #13.
 message Fee {
   string asset = 1;
-  string amount = 2;
+  int64 amount = 2;
   string fee_type = 3;
 
 }

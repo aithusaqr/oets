@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package oets.v1;
+
+// Placeholder stub — message types will be added by H1 (#5).
+// Existing as a non-empty proto3 file so buf lint stays consistent
+// with the rest of common/reconciliation/.

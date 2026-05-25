@@ -106,6 +106,96 @@ def test_buf_yaml_breaking_uses_file(buf_yaml: dict):
     )
 
 
+def test_buf_yaml_lint_except_is_list(buf_yaml: dict):
+    """buf.yaml lint.except must be a list (may be empty)."""
+    lint_except = buf_yaml.get("lint", {}).get("except", [])
+    assert isinstance(lint_except, list), (
+        f"buf.yaml lint.except must be a list; got {type(lint_except).__name__!r}"
+    )
+
+
+# Closed set of known STANDARD rule names that are valid candidates for
+# temporary suppression.  This catches typos that would silently suppress
+# nothing (e.g. "ENUM_VALUE_PREFX" would never match anything).
+_KNOWN_SUPPRESSIBLE_STANDARD_RULES: frozenset[str] = frozenset(
+    {
+        "ENUM_ZERO_VALUE_SUFFIX",
+        "ENUM_VALUE_PREFIX",
+        "PACKAGE_VERSION_SUFFIX",
+        "FIELD_LOWER_SNAKE_CASE",
+        "MESSAGE_PASCAL_CASE",
+        "ENUM_PASCAL_CASE",
+        "SERVICE_PASCAL_CASE",
+        "RPC_PASCAL_CASE",
+        "PACKAGE_LOWER_SNAKE_CASE",
+        "IMPORT_NO_WEAK",
+        "IMPORT_NO_PUBLIC",
+        "ENUM_NO_ALLOW_ALIAS",
+        "ONEOF_LOWER_SNAKE_CASE",
+        "RPC_REQUEST_STANDARD_NAME",
+        "RPC_RESPONSE_STANDARD_NAME",
+        "RPC_REQUEST_RESPONSE_UNIQUE",
+        "SERVICE_SUFFIX",
+        "COMMENT_ENUM",
+        "COMMENT_ENUM_VALUE",
+        "COMMENT_FIELD",
+        "COMMENT_MESSAGE",
+        "COMMENT_ONEOF",
+        "COMMENT_RPC",
+        "COMMENT_SERVICE",
+        "PROTOVALIDATE",
+        "SYNTAX_SPECIFIED",
+        "FIELD_NOT_REQUIRED",
+        "PACKAGE_DIRECTORY_MATCH",
+        "PACKAGE_SAME_DIRECTORY",
+    }
+)
+
+
+def test_buf_yaml_lint_except_rules_are_recognised(buf_yaml: dict):
+    """Every rule in lint.except must be a recognised STANDARD rule name.
+
+    This prevents silent no-ops caused by typos (a misspelled rule name would
+    suppress nothing while giving false confidence that a violation is covered).
+    """
+    lint_except = buf_yaml.get("lint", {}).get("except", [])
+    if not lint_except:
+        pytest.skip("lint.except is empty — nothing to validate")
+    unrecognised = [r for r in lint_except if r not in _KNOWN_SUPPRESSIBLE_STANDARD_RULES]
+    assert not unrecognised, (
+        f"Unrecognised rule(s) in buf.yaml lint.except: {unrecognised!r}. "
+        f"Either the rule name is misspelled or it should be added to the "
+        f"known-suppressible set in this test."
+    )
+
+
+def test_buf_lint_ignore_includes_settlement_event_stub(buf_yaml: dict):
+    """lint.ignore must contain the empty settlement_event.proto stub."""
+    lint_ignore = buf_yaml.get("lint", {}).get("ignore", [])
+    assert isinstance(lint_ignore, list), (
+        f"buf.yaml lint.ignore must be a list; got {type(lint_ignore).__name__!r}"
+    )
+    assert "common/reconciliation/settlement_event.proto" in lint_ignore, (
+        "buf.yaml lint.ignore must include 'common/reconciliation/settlement_event.proto' "
+        "(empty stub, tracked in #5) — remove once H1 fills the stub."
+    )
+
+
+def test_buf_lint_ignore_is_valid_paths(buf_yaml: dict, repo_root: Path):
+    """Every entry in lint.ignore must resolve to an actual file in the repo.
+
+    Guards against typos that would silently un-ignore the intended path.
+    """
+    lint_ignore = buf_yaml.get("lint", {}).get("ignore", [])
+    if not lint_ignore:
+        pytest.skip("lint.ignore is empty or absent — nothing to validate")
+    bad = [p for p in lint_ignore if not isinstance(p, str) or not (repo_root / p).is_file()]
+    assert not bad, (
+        f"lint.ignore entries that are not valid repo-relative file paths: {bad!r}. "
+        "Fix the path(s) or remove the stale entry."
+    )
+
+
 # ---------------------------------------------------------------------------
 # buf.gen.yaml tests
 # ---------------------------------------------------------------------------

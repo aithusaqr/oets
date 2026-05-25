@@ -5,6 +5,29 @@ modules:
 lint:
   use:
     - STANDARD
+  except:
+    # Re-enable after #10 (M3): many enums use UNKNOWN_* as the zero value name
+    # instead of *_UNSPECIFIED (e.g. UNKNOWN_ORDER_TYPE, UNKNOWN_ORDER_STATE,
+    # UNKNOWN_SOURCE_TYPE, etc.).  Also catches OrderSide (BUY=0, SELL=1)
+    # and OrderTimeInForce/OrderIntentionType which lack any unspecified entry.
+    - ENUM_ZERO_VALUE_SUFFIX
+    # Re-enable after #10 (M3): many enum values are not prefixed with the
+    # UPPER_SNAKE name of their enclosing enum (e.g. OrderSide.BUY should be
+    # ORDER_SIDE_BUY, OrderType.LIMIT should be ORDER_TYPE_LIMIT, etc.).
+    - ENUM_VALUE_PREFIX
+    # Re-enable once protos are relocated: buf expects package oets.v1 files
+    # to live under oets/v1/ but the repo uses common/ — restructuring every
+    # .proto and updating every import is a separate ticket.
+    - PACKAGE_DIRECTORY_MATCH
+    # Paired root cause with PACKAGE_DIRECTORY_MATCH: oets.v1 files are spread
+    # across common/, common/execution/, common/reconciliation/ rather than a
+    # single directory.
+    - PACKAGE_SAME_DIRECTORY
+  ignore:
+    # Settlement event stub holds only `syntax` + `package` until H1 (#5)
+    # adds real messages. Lint would otherwise flag "no service / no message
+    # type" classes on the placeholder. Drop this ignore once H1 lands.
+    - common/reconciliation/settlement_event.proto
 breaking:
   use:
     - FILE

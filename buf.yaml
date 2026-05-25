@@ -5,6 +5,16 @@ modules:
 lint:
   use:
     - STANDARD
+  except:
+    # Re-enable after #10 (M3): many enums use UNKNOWN_* as the zero value name
+    # instead of *_UNSPECIFIED (e.g. UNKNOWN_ORDER_TYPE, UNKNOWN_ORDER_STATE,
+    # UNKNOWN_SOURCE_TYPE, etc.).  Also catches OrderSide (BUY=0, SELL=1)
+    # and OrderTimeInForce/OrderIntentionType which lack any unspecified entry.
+    - ENUM_ZERO_VALUE_SUFFIX
+    # Re-enable after #10 (M3): many enum values are not prefixed with the
+    # UPPER_SNAKE name of their enclosing enum (e.g. OrderSide.BUY should be
+    # ORDER_SIDE_BUY, OrderType.LIMIT should be ORDER_TYPE_LIMIT, etc.).
+    - ENUM_VALUE_PREFIX
 breaking:
   use:
     - FILE

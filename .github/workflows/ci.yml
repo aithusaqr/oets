@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "epic/**"
+      - main
+  pull_request:
+    branches:
+      - "epic/**"
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt -r requirements-test.txt
+
+      - name: Install buf
+        uses: bufbuild/buf-setup-action@v1
+
+      - name: Run buf lint
+        run: buf lint
+
+      - name: Run buf breaking check
+        # continue-on-error: first push has no useful baseline to diff against
+        continue-on-error: true
+        run: buf breaking --against '.git#branch=main'
+
+      - name: Run pytest
+        run: pytest tests/ -v

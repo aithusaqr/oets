@@ -106,6 +106,67 @@ def test_buf_yaml_breaking_uses_file(buf_yaml: dict):
     )
 
 
+def test_buf_yaml_lint_except_is_list(buf_yaml: dict):
+    """buf.yaml lint.except must be a list (may be empty)."""
+    lint_except = buf_yaml.get("lint", {}).get("except", [])
+    assert isinstance(lint_except, list), (
+        f"buf.yaml lint.except must be a list; got {type(lint_except).__name__!r}"
+    )
+
+
+# Closed set of known STANDARD rule names that are valid candidates for
+# temporary suppression.  This catches typos that would silently suppress
+# nothing (e.g. "ENUM_VALUE_PREFX" would never match anything).
+_KNOWN_SUPPRESSIBLE_STANDARD_RULES: frozenset[str] = frozenset(
+    {
+        "ENUM_ZERO_VALUE_SUFFIX",
+        "ENUM_VALUE_PREFIX",
+        "PACKAGE_VERSION_SUFFIX",
+        "FIELD_LOWER_SNAKE_CASE",
+        "MESSAGE_PASCAL_CASE",
+        "ENUM_PASCAL_CASE",
+        "SERVICE_PASCAL_CASE",
+        "RPC_PASCAL_CASE",
+        "PACKAGE_LOWER_SNAKE_CASE",
+        "IMPORT_NO_WEAK",
+        "IMPORT_NO_PUBLIC",
+        "ENUM_NO_ALLOW_ALIAS",
+        "ONEOF_LOWER_SNAKE_CASE",
+        "RPC_REQUEST_STANDARD_NAME",
+        "RPC_RESPONSE_STANDARD_NAME",
+        "RPC_REQUEST_RESPONSE_UNIQUE",
+        "SERVICE_SUFFIX",
+        "COMMENT_ENUM",
+        "COMMENT_ENUM_VALUE",
+        "COMMENT_FIELD",
+        "COMMENT_MESSAGE",
+        "COMMENT_ONEOF",
+        "COMMENT_RPC",
+        "COMMENT_SERVICE",
+        "PROTOVALIDATE",
+        "SYNTAX_SPECIFIED",
+        "FIELD_NOT_REQUIRED",
+    }
+)
+
+
+def test_buf_yaml_lint_except_rules_are_recognised(buf_yaml: dict):
+    """Every rule in lint.except must be a recognised STANDARD rule name.
+
+    This prevents silent no-ops caused by typos (a misspelled rule name would
+    suppress nothing while giving false confidence that a violation is covered).
+    """
+    lint_except = buf_yaml.get("lint", {}).get("except", [])
+    if not lint_except:
+        pytest.skip("lint.except is empty — nothing to validate")
+    unrecognised = [r for r in lint_except if r not in _KNOWN_SUPPRESSIBLE_STANDARD_RULES]
+    assert not unrecognised, (
+        f"Unrecognised rule(s) in buf.yaml lint.except: {unrecognised!r}. "
+        f"Either the rule name is misspelled or it should be added to the "
+        f"known-suppressible set in this test."
+    )
+
+
 # ---------------------------------------------------------------------------
 # buf.gen.yaml tests
 # ---------------------------------------------------------------------------

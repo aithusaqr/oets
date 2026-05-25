@@ -16,6 +16,19 @@ enum EventType{
 
 message OetsEventEnvelope {
   string event_id = 1;
+
+  // SemVer 2.0.0 version string identifying the OETS schema revision
+  // this envelope conforms to.
+  //
+  // Format: MAJOR.MINOR.PATCH[-prerelease][+build]
+  //   regex: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$
+  //
+  // Migration: MAJOR bumps may be wire-incompatible. Consumers SHOULD
+  // reject envelopes whose declared MAJOR exceeds the highest version
+  // they implement. MINOR bumps add optional fields. PATCH is editorial.
+  //
+  // See: https://github.com/aithusaqr/oets/issues/20
+  // See: https://semver.org/spec/v2.0.0.html
   string oets_version = 2;
   EventType event_type = 3;
 

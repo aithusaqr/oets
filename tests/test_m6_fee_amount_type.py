@@ -35,9 +35,10 @@ def _proto_text():
 def test_fee_amount_is_int64():
     """Fee.amount field declaration must use int64, not string."""
     text = _proto_text()
+    current_decl = re.search(r"\w+ amount = \d+;", text)
     assert "int64 amount = 2;" in text, (
         "Expected 'int64 amount = 2;' in fee_event.proto but it was not found. "
-        f"Current amount declaration: {re.search(r'\\w+ amount = \\d+;', text)}"
+        "Current amount declaration: " + str(current_decl)
     )
 
 

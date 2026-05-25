@@ -1,0 +1,3 @@
+# Runtime dependencies for the OETS generated Python bindings.
+# Pinned to the protobuf major version that produced the committed _pb2.py files (protoc 5.28.1).
+protobuf>=5.28,<6

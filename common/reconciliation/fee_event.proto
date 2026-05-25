@@ -14,10 +14,11 @@ package oets.v1;
 // the denomination asset is carried separately in the `asset` field.
 //
 // Changing amount from string to int64 is tracked in #13.
+// fee_type uses the FeeType enum (field 3), replacing the raw string; closes #6.
 message Fee {
   string asset = 1;
   int64 amount = 2;
-  string fee_type = 3;
+  FeeType fee_type = 3;
 
 }
 

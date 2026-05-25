@@ -18,24 +18,33 @@ enum ContractType {
   INVERSE = 2;
 }
 
+// InstrumentRef carries only stable identifier and structural fields for an
+// instrument. Mutable or computed metadata — lot sizes, precision-rounding
+// policy, and time-derived values such as days_to_expiry — does NOT belong
+// here; it belongs in a separate instrument catalog that consumers can refresh
+// independently.
+//
+// Design principle: every field in InstrumentRef must be stable enough to be
+// embedded in a long-lived telemetry record without becoming stale.
+//
+// See: https://github.com/aithusaqr/oets/issues/18
 message InstrumentRef {
+  // Field numbers 6, 8, 11, 12, 16 are reserved — they held mutable or
+  // computed fields that were removed in #18 and must not be reused.
+  reserved 6, 8, 11, 12, 16;
+  reserved "price_precision_rounding", "size_precision_rounding", "lot_size", "notional_lot_size", "days_to_expiry";
+
   string instrument_id = 1;
   string base_asset = 2;
   string quote_asset = 3;
   string venue_instrument_id = 4;
   int32 price_precision = 5;
-  int32 price_precision_rounding = 6;
   int32 size_precision = 7;
-  int32 size_precision_rounding = 8;
-  int32 minimum_size = 9;
-  int64 minimum_notional_size = 10;
-  int32 lot_size = 11;
-  int64 notional_lot_size = 12;
-  ContractType contract_type =13;
+  int32 minimum_size = 9;       // venue-snapshot; used for parse-time event validation
+  int64 minimum_notional_size = 10; // venue-snapshot; used for parse-time event validation
+  ContractType contract_type = 13;
   string alias = 14;
   int32 expiry_date = 15;
-  int32 days_to_expiry = 16;
   string currency = 17;
   string position_currency = 18;
-
 }

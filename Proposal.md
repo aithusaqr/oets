@@ -29,6 +29,13 @@ Markets have always depended on more than price and quantity. Exchange also depe
 ---
 
 ## 2. Why This Matters Now
+> “Uncertainty is not just an important feature of the monetary policy landscape; it is the defining characteristic of that landscape.”
+>
+> — Alan Greenspan, *Monetary Policy under Uncertainty*, 2003
+
+OET starts from the same premise: uncertainty is not an edge case in execution systems. It is the operating environment.
+
+Execution data is often fragmented across wallets, bots, venues, protocols, RPC providers, indexers, internal services, and reporting systems. OET does not claim to eliminate uncertainty. It provides a shared structure for recording observable execution facts so orders, fills, balances, positions, cash flows, and account health can be replayed, compared, and inspected when systems disagree.
 
 Modern markets are increasingly electronic, fragmented, and difficult to reconstruct.
 
@@ -68,6 +75,13 @@ This is the difference between a raw trade log and an execution record.
 ---
 
 ## 4. Fragmentation in Modern Electronic Markets
+> “A choice architect has the responsibility for organizing the context in which people make decisions.”
+>
+> — Richard H. Thaler and Cass R. Sunstein, *Nudge*
+
+OET applies this idea to execution infrastructure. The shape of telemetry determines what future developers can see, compare, replay, and debug.
+
+A missing timestamp, an ambiguous fill, or an unlabeled balance change is not just a logging detail. It changes the context in which operators make decisions.
 
 Traditional financial markets already show the consequences of fragmented execution infrastructure.
 
@@ -94,8 +108,13 @@ OETS addresses execution fragmentation as an interoperability problem.
 ---
 
 ## 5. Fragility, Hidden Assumptions, and Model Risk
+> “Compensate complexity with simplicity.”
+>
+> — Nassim Nicholas Taleb, *The Black Swan*
 
-Complex markets often fail in ways that are difficult to reconstruct.
+Complex execution systems often fail in ways that are difficult to reconstruct. The answer is not to hide that complexity behind another opaque model.
+
+OET keeps the telemetry layer simple: observable events, explicit timestamps, linked identifiers, and replayable state changes.
 
 The problem is not always missing data. More often, it is partial data treated as complete. One system records the order state. Another records the fill. Another records the balance update. Another records the valuation. Another records the risk calculation. Each record may be locally correct, but incomplete.
 
@@ -118,6 +137,11 @@ OETS gives those truths a common format.
 ---
 
 ## 6. Crypto Inherits the Old Problems and Adds New Ones
+> “Data is of course important, but I place the greatest emphasis on facts.”
+>
+> — Taiichi Ohno
+
+Execution systems produce a lot of data. That does not mean they preserve the facts needed to understand what happened.
 
 Crypto and DeFi inherit fragmentation from traditional markets, then add:
 
@@ -136,27 +160,33 @@ Crypto and DeFi inherit fragmentation from traditional markets, then add:
 
 Just as electronic equities created routing and venue complexity, decentralized markets create protocol and observation complexity.
 
-The difference is that crypto still has a chance to build open standards earlier in the market structure lifecycle.
-
+The difference is that crypto still has a chance to build open standards earlier in the market structure lifecycle. OET focuses on observable execution facts: what was decided, submitted, acknowledged, filled, cancelled, settled, observed, and linked to downstream balance, position, cash-flow, and account-health changes.
 OETS is an attempt to make execution transparency part of the public infrastructure layer, not an afterthought.
 
 ---
 
 ## 7. Proposed Solution
+> “Information is a public good.”
+>
+> — Joseph E. Stiglitz, *The Revolution of Information Economics*
+
+Execution telemetry becomes more valuable when it is shared, standardized, and reusable.
+
+OETS treats execution information as infrastructure: schemas, examples, and reference stubs that help developers emit comparable events instead of trapping critical execution context inside private logs and venue-specific payloads.
 
 OETS defines a shared telemetry model for observable execution facts.
 
-Initial event categories include:
-
-- order events
-- fill events
-- balance events
-- fee events
-- funding events
-- settlement events
-- source observation events
-- reported state difference events
-- optional risk and exposure observation events
+Initial events categories include:
+- order 
+- fill 
+- balance 
+- position 
+- fee 
+- funding 
+- settlement 
+- source observation 
+- reported state difference 
+- optional risk and exposure observation 
 
 The standard includes:
 

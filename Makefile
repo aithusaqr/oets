@@ -1,12 +1,22 @@
-generate_protos:
-	mkdir -p src/generated \
+ROOT := $(CURDIR)/common
+OUT := $(CURDIR)/generated/python
+
+PROTO_FILES := \
+	$(ROOT)/*.proto \
+	$(ROOT)/execution/*.proto \
+	$(ROOT)/reconciliation/*.proto
+
+generate_python_protos:
+	rm -rf $(OUT) \
+	PYTHONPATH=$(PYTHONPATH):$(ROOT):$(OUT) &&\
+	mkdir -p $(OUT)
 	protoc \
-	  -I=../../proto \
-	  --plugin=./node_modules/.bin/protoc-gen-ts_proto \
-	  --ts_proto_out=src/generated \
-	  --ts_proto_opt=esModuleInterop=true,forceLong=long,useOptionals=messages \
-	  ../../proto/oets/common/*.proto \
-	  ../../proto/oets/execution/*.proto
+		-I $(CURDIR) \
+		--python_out=$(OUT) \
+		$(PROTO_FILES)
+	touch $(OUT)/common/__init__.py
+	touch $(OUT)/common/execution/__init__.py
+	touch $(OUT)/common/reconciliation/__init__.py
 
-
-PHONY: generate_protos
+clean_python_protos:
+	rm -rf $(OUT)/common

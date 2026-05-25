@@ -16,7 +16,7 @@ OETS starts from a modest premise: if markets are still not fully understood, th
 
 History has shown that failures in markets are often hard to understand after the fact. Knight Capital’s 2012 trading incident showed how quickly software and execution-system failures can become financially material. The 2010 Flash Crash showed how difficult it can be to reconstruct market behavior across fragmented venues, participants, and time horizons.
 
-OETS is not a claim that markets can be made perfectly predictable. It is a narrower claim: execution facts should be represented in a way that makes disagreement inspectable. Orders, fills, balances, positions, fees, funding, and timestamps should be structured enough that systems can replay what happened instead of relying on partial narratives after the fact.
+OETS is not a claim that markets can be made perfectly predictable or even that execution can be assumed to be deterministic. It is a narrower claim: execution facts should be represented in a way that makes disagreement inspectable. Orders, fills, balances, positions, fees, funding, and timestamps should be structured enough that systems can replay what happened instead of relying on partial narratives after the fact.
 
 ## Core Motivation
 

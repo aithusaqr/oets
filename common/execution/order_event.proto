@@ -16,9 +16,13 @@ import "common/instrument.proto";
 import "common/timestamps.proto";
 import "common/source.proto";
 
+// M3 (#10): UNKNOWN_ORDER_SIDE=0 sentinel added so unset fields do not silently
+// decode as BUY. Existing values shifted up by 1 (BUY: 0→1, SELL: 1→2).
+// Wire-incompatible by design — old data with side=0 now decodes as UNKNOWN.
 enum OrderSide {
-  BUY = 0;
-  SELL = 1;
+  UNKNOWN_ORDER_SIDE = 0;
+  BUY = 1;
+  SELL = 2;
 }
 
 enum OrderType{
@@ -54,17 +58,25 @@ enum OrderState {
     CLOSED = 14;
 }
 
-enum OrderTimeInForce{
-  GOOD_TIL_CANCEL = 0;
-  ORDER_TIF_IMMEDIATE_OR_CANCEL = 1;
-  ORDER_TIF_FILL_OR_KILL = 2;
+// M3 (#10): UNKNOWN_ORDER_TIME_IN_FORCE=0 sentinel added so unset fields do not
+// silently decode as GOOD_TIL_CANCEL. Existing values shifted up by 1.
+// Wire-incompatible by design.
+enum OrderTimeInForce {
+  UNKNOWN_ORDER_TIME_IN_FORCE = 0;
+  GOOD_TIL_CANCEL = 1;
+  ORDER_TIF_IMMEDIATE_OR_CANCEL = 2;
+  ORDER_TIF_FILL_OR_KILL = 3;
 }
 
+// M3 (#10): UNKNOWN_ORDER_INTENTION_TYPE=0 sentinel added so unset fields do
+// not silently decode as RESTING. Existing values shifted up by 1.
+// Wire-incompatible by design.
 enum OrderIntentionType {
-  RESTING = 0;
-  CROSSING = 1;
-  CANCEL = 2;
-  ONE_CANCELS_OTHER = 3;
+  UNKNOWN_ORDER_INTENTION_TYPE = 0;
+  RESTING = 1;
+  CROSSING = 2;
+  CANCEL = 3;
+  ONE_CANCELS_OTHER = 4;
 }
 
 message OrderEvent {

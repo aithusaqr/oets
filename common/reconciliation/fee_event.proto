@@ -1,4 +1,11 @@
 
+// Numeric fields in this file follow the OETS int64 scaling convention.
+// See docs/SCALING.md for the canonical rules. Briefly:
+//   - price fields: int64 scaled by 10^price_precision from InstrumentRef
+//   - quantity / size fields: int64 scaled by 10^size_precision from InstrumentRef
+//   - notional / amount / fee / pnl: int64 scaled by 10^price_precision
+//   (or 8 decimals for non-instrument amounts)
+
 syntax = "proto3";
 
 package oets.v1;

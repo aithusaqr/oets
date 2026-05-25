@@ -6,6 +6,8 @@ PROTO_FILES := \
 	$(ROOT)/execution/*.proto \
 	$(ROOT)/reconciliation/*.proto
 
+.PHONY: generate_python_protos clean_python_protos
+
 generate_python_protos:
 	rm -rf $(OUT) \
 	PYTHONPATH=$(PYTHONPATH):$(ROOT):$(OUT) &&\

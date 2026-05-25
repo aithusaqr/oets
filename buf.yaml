@@ -24,7 +24,9 @@ lint:
     # single directory.
     - PACKAGE_SAME_DIRECTORY
   ignore:
-    # Empty stub — will be filled by H1 (#5); remove this ignore once that lands.
+    # Settlement event stub holds only `syntax` + `package` until H1 (#5)
+    # adds real messages. Lint would otherwise flag "no service / no message
+    # type" classes on the placeholder. Drop this ignore once H1 lands.
     - common/reconciliation/settlement_event.proto
 breaking:
   use:

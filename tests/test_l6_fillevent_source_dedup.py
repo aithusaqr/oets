@@ -5,7 +5,7 @@ Asserts that:
 - The top-level `source` field is removed from FillEvent.
 - Field number 15 and the name "source" are both reserved.
 - The `envelope` field is untouched (regression guard).
-- The `timestamps` field (19) is untouched (M2 / #9's territory).
+- The `timestamps` field (19) has been removed by M2 (#9); field 19 is reserved.
 - The now-unused `import "common/source.proto"` is absent.
 - The regenerated pb2 descriptor matches the proto changes.
 """
@@ -77,12 +77,19 @@ def test_envelope_field_still_present():
     )
 
 
-def test_timestamps_field_still_present():
-    """EventTimestamp timestamps = 19 must remain (M2 / #9 handles its removal)."""
+def test_timestamps_field_removed_by_m2():
+    """EventTimestamp timestamps = 19 was removed by M2 (#9); field 19 must be reserved."""
     body = _fillevent_body(_proto_text())
-    assert re.search(r"\btimestamps\s*=\s*19\b", body), (
-        "timestamps field (number 19) appears to have been removed from FillEvent — "
-        "that is M2 (#9)'s territory and must NOT be touched in this PR.\n"
+    # The field declaration should be gone
+    assert not re.search(r"\btimestamps\s*=\s*19\b", body), (
+        "timestamps field declaration (= 19) is still present in FillEvent — "
+        "it should have been removed by M2 (#9).\n"
+        f"FillEvent body:\n{body}"
+    )
+    # Field 19 must be reserved instead
+    assert re.search(r"\breserved\b[^;]*\b19\b", body), (
+        "Field number 19 is not reserved after M2 (#9) removed timestamps. "
+        "A reserved declaration including 19 is required for wire safety.\n"
         f"FillEvent body:\n{body}"
     )
 
@@ -136,10 +143,12 @@ def test_generated_pb2_in_sync():
         f"'envelope' field number changed: {descriptor.fields_by_name['envelope'].number}"
     )
 
-    # `timestamps` must be at number 19 (M2 must not have been touched)
-    assert "timestamps" in field_names, (
-        f"'timestamps' field is missing from FillEvent descriptor: {field_names}"
+    # `timestamps` must be absent (removed by M2 / #9) and 19 not in use
+    assert "timestamps" not in field_names, (
+        f"'timestamps' field is still present in FillEvent descriptor — "
+        f"M2 (#9) should have removed it. Fields: {field_names}"
     )
-    assert descriptor.fields_by_name["timestamps"].number == 19, (
-        f"'timestamps' field number changed: {descriptor.fields_by_name['timestamps'].number}"
+    assert 19 not in field_numbers, (
+        f"Field number 19 is still in use in FillEvent descriptor — "
+        f"M2 (#9) should have reserved it. Fields by number: {sorted(field_numbers)}"
     )

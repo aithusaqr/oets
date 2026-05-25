@@ -6,7 +6,6 @@ import "common/execution_venue.proto";
 import "common/account.proto";
 import "common/event_envelope.proto";
 import "common/instrument.proto";
-import "common/timestamps.proto";
 import "common/execution/order_event.proto";
 import "common/reconciliation/position_event.proto";
 
@@ -14,13 +13,15 @@ import "common/reconciliation/position_event.proto";
 //
 // Source attribution lives in OetsEventEnvelope.source — do NOT add a
 // top-level source field here (field 15 was removed in #19).
-// Timestamps similarly live in the envelope; the top-level timestamps field
-// (19) will be removed in M2 (#9).
+// Timestamps live in the envelope; the top-level timestamps field
+// (19) was removed in M2 (#9).
 message FillEvent {
   // Field 15 ("source") was removed — it duplicated OetsEventEnvelope.source.
   // See: https://github.com/aithusaqr/oets/issues/19
-  reserved 15;
-  reserved "source";
+  // Field 19 ("timestamps") was removed — it duplicated OetsEventEnvelope.timestamps.
+  // See: https://github.com/zachisit/oets/issues/9
+  reserved 15, 19;
+  reserved "source", "timestamps";
 
   OetsEventEnvelope envelope = 1;
 
@@ -42,6 +43,5 @@ message FillEvent {
   int64 realized_pnl = 16;
   string realized_pnl_asset =17;
   PositionSide position_side = 18;
-  EventTimestamp timestamps = 19;
 
 }

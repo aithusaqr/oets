@@ -2,6 +2,9 @@ version: v2
 modules:
   - path: .
     name: buf.build/aithusaqr/oets
+    excludes:
+      # Empty stub — will be filled by H1 (#5); remove this exclude once that lands.
+      - common/reconciliation/settlement_event.proto
 lint:
   use:
     - STANDARD

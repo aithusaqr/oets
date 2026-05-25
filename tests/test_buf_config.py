@@ -169,15 +169,13 @@ def test_buf_yaml_lint_except_rules_are_recognised(buf_yaml: dict):
     )
 
 
-def test_buf_lint_ignore_includes_settlement_event_stub(buf_yaml: dict):
-    """lint.ignore must contain the empty settlement_event.proto stub."""
+def test_buf_lint_no_longer_ignores_settlement_event(buf_yaml: dict):
+    """H1 (#5): settlement_event.proto now has real messages; buf.yaml must NOT ignore it."""
     lint_ignore = buf_yaml.get("lint", {}).get("ignore", [])
-    assert isinstance(lint_ignore, list), (
-        f"buf.yaml lint.ignore must be a list; got {type(lint_ignore).__name__!r}"
-    )
-    assert "common/reconciliation/settlement_event.proto" in lint_ignore, (
-        "buf.yaml lint.ignore must include 'common/reconciliation/settlement_event.proto' "
-        "(empty stub, tracked in #5) — remove once H1 fills the stub."
+    settlement_path = "common/reconciliation/settlement_event.proto"
+    assert settlement_path not in lint_ignore, (
+        "buf.yaml still ignores settlement_event.proto — "
+        "the ignore entry must be removed now that H1 has filled the stub."
     )
 
 

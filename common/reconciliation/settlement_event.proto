@@ -1,7 +1,62 @@
+// settlement_event.proto — H1 (#5) v0.1.1 deliverable.
+// Defines SettlementEvent covering futures/option expiry, perp mark-settlement,
+// cash, physical, and liquidation settlement paths.
+//
+// Monetary scaling: all int64 monetary fields use the instrument's
+// price_precision scale (per H3 convention, #7).
+
 syntax = "proto3";
 
 package oets.v1;
 
-// Placeholder stub — message types will be added by H1 (#5).
-// Existing as a non-empty proto3 file so buf lint stays consistent
-// with the rest of common/reconciliation/.
+import "common/timestamps.proto";
+import "common/source.proto";
+import "common/relationships.proto";
+
+// How the settlement was carried out.
+enum SettlementType {
+  SETTLEMENT_TYPE_UNSPECIFIED = 0;
+  SETTLEMENT_TYPE_FUTURE_EXPIRY = 1;
+  SETTLEMENT_TYPE_OPTION_EXPIRY = 2;
+  // Daily mark-to-market settlement on perpetual contracts.
+  SETTLEMENT_TYPE_PERP_MARK_SETTLEMENT = 3;
+  SETTLEMENT_TYPE_CASH = 4;
+  SETTLEMENT_TYPE_PHYSICAL = 5;
+  SETTLEMENT_TYPE_LIQUIDATION = 6;
+}
+
+// A settlement event for a specific account and instrument.
+message SettlementEvent {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string instrument_id = 4;
+
+  SettlementType settlement_type = 5;
+
+  // Settlement price; int64 scaled per instrument price_precision (H3).
+  int64 settlement_price = 6;
+
+  // Quantity settled; int64 scaled per instrument quantity_precision (H3).
+  int64 quantity_settled = 7;
+
+  // Net settlement cash amount; signed (positive = inflow, negative = outflow).
+  int64 settlement_amount = 8;
+
+  // Asset in which the settlement_amount is denominated.
+  string settlement_asset_id = 9;
+
+  // Realized P&L from the settlement; signed int64 scaled per pnl_precision.
+  int64 realized_pnl = 10;
+
+  // Asset in which realized_pnl is denominated.
+  string realized_pnl_asset_id = 11;
+
+  EventTimestamp timestamps = 12;
+  SourceReference source = 13;
+
+  repeated EventRelationship related_events = 14;
+
+  map<string, string> metadata = 15;
+}

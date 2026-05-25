@@ -1,0 +1,79 @@
+// funding_event.proto — H1 (#5) v0.1.1 deliverable.
+// Defines FundingRate (what a venue quotes for a funding interval) and
+// FundingPayment (what was actually paid to/from a specific account).
+//
+// Monetary / rate scaling convention:
+//   All int64 rate fields (rate, rate_applied) use fixed-point with
+//   9 decimal places (i.e. 1_000_000_000 = 1.0).  This gives sub-basis-point
+//   precision while keeping all arithmetic in integer land.
+//   All int64 amount/position_size fields use the instrument's or asset's
+//   native scale (documented per H3, #7).
+
+syntax = "proto3";
+
+package oets.v1;
+
+import "common/timestamps.proto";
+import "common/source.proto";
+import "common/relationships.proto";
+
+// Direction of a funding payment: which side of the book pays the other.
+enum FundingPaymentDirection {
+  FUNDING_PAYMENT_DIRECTION_UNSPECIFIED = 0;
+  FUNDING_PAYMENT_DIRECTION_LONG_PAYS_SHORT = 1;
+  FUNDING_PAYMENT_DIRECTION_SHORT_PAYS_LONG = 2;
+}
+
+// What the venue/protocol quoted for a single funding interval.
+message FundingRate {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string instrument_id = 3;
+
+  // Funding rate for this interval; fixed-point, 9 decimal places.
+  // 1_000_000_000 = 1.0 (100 %).  Typical 8-hour perp rate ≈ ±100_000 (0.01 %).
+  int64 rate = 4;
+
+  // Length of the funding interval in seconds.  Typical value: 28800 (8 h).
+  int64 funding_interval_seconds = 5;
+
+  FundingPaymentDirection direction = 6;
+
+  EventTimestamp timestamps = 7;
+  SourceReference source = 8;
+
+  repeated EventRelationship related_events = 9;
+
+  map<string, string> metadata = 10;
+}
+
+// What was actually paid to (or from) a specific account for one funding interval.
+message FundingPayment {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string instrument_id = 4;
+  string asset_id = 5;
+
+  // Signed amount in asset_id units (scaled per H3 / asset precision).
+  // Positive = account received funds; negative = account paid funds.
+  int64 amount = 6;
+
+  // Position size that drove this payment, int64 scaled per instrument precision.
+  int64 position_size = 7;
+
+  // The funding rate applied; same fixed-point (9 dp) scaling as FundingRate.rate.
+  int64 rate_applied = 8;
+
+  // event_id of the corresponding FundingRate event.
+  string related_funding_rate_event_id = 9;
+
+  EventTimestamp timestamps = 10;
+  SourceReference source = 11;
+
+  repeated EventRelationship related_events = 12;
+
+  map<string, string> metadata = 13;
+}

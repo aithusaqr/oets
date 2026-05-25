@@ -9,9 +9,9 @@ PROTO_FILES := \
 .PHONY: generate_python_protos clean_python_protos
 
 generate_python_protos:
-	rm -rf $(OUT) \
-	PYTHONPATH=$(PYTHONPATH):$(ROOT):$(OUT) &&\
+	rm -rf $(OUT)
 	mkdir -p $(OUT)
+	touch $(OUT)/__init__.py
 	protoc \
 		-I $(CURDIR) \
 		--python_out=$(OUT) \

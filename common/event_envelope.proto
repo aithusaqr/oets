@@ -5,11 +5,17 @@ import "common/relationships.proto";
 
 package oets.v1;
 
+// EventType enumerates every first-class event kind carried by an
+// OetsEventEnvelope.  Values MUST form a contiguous sequence starting at 0
+// with no gaps — a missing value would cause any serialised message carrying
+// that wire number to silently decode as UNKNOWN_EVENT_TYPE = 0.
+// See: https://github.com/aithusaqr/oets/issues/8 (#8 — no-gaps invariant)
 enum EventType{
   UNKNOWN_EVENT_TYPE = 0;
   EVENT_TYPE_FILL = 1;
   EVENT_TYPE_ORDER = 2;
   EVENT_TYPE_POSITION = 3;
+  EVENT_TYPE_SETTLEMENT = 4;  // closes gap; matches common/reconciliation/settlement_event.proto
   EVENT_TYPE_BALANCE = 5;
   EVENT_TYPE_CASH_FLOW_EVENT = 6;
 }

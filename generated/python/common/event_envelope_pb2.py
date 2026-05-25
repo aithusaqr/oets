@@ -27,7 +27,7 @@ from common import timestamps_pb2 as common_dot_timestamps__pb2
 from common import relationships_pb2 as common_dot_relationships__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1b\x63ommon/event_envelope.proto\x12\x07oets.v1\x1a\x13\x63ommon/source.proto\x1a\x17\x63ommon/timestamps.proto\x1a\x1a\x63ommon/relationships.proto\"\xe0\x02\n\x11OetsEventEnvelope\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x14\n\x0coets_version\x18\x02 \x01(\t\x12&\n\nevent_type\x18\x03 \x01(\x0e\x32\x12.oets.v1.EventType\x12(\n\x06source\x18\x04 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12+\n\ntimestamps\x18\x05 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12\x31\n\rrelationships\x18\x06 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12>\n\nextensions\x18\x64 \x03(\x0b\x32*.oets.v1.OetsEventEnvelope.ExtensionsEntry\x1a\x31\n\x0f\x45xtensionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\x9f\x01\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x13\n\x0f\x45VENT_TYPE_FILL\x10\x01\x12\x14\n\x10\x45VENT_TYPE_ORDER\x10\x02\x12\x17\n\x13\x45VENT_TYPE_POSITION\x10\x03\x12\x16\n\x12\x45VENT_TYPE_BALANCE\x10\x05\x12\x1e\n\x1a\x45VENT_TYPE_CASH_FLOW_EVENT\x10\x06\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1b\x63ommon/event_envelope.proto\x12\x07oets.v1\x1a\x13\x63ommon/source.proto\x1a\x17\x63ommon/timestamps.proto\x1a\x1a\x63ommon/relationships.proto\"\xe0\x02\n\x11OetsEventEnvelope\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x14\n\x0coets_version\x18\x02 \x01(\t\x12&\n\nevent_type\x18\x03 \x01(\x0e\x32\x12.oets.v1.EventType\x12(\n\x06source\x18\x04 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12+\n\ntimestamps\x18\x05 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12\x31\n\rrelationships\x18\x06 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12>\n\nextensions\x18\x64 \x03(\x0b\x32*.oets.v1.OetsEventEnvelope.ExtensionsEntry\x1a\x31\n\x0f\x45xtensionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\xba\x01\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x13\n\x0f\x45VENT_TYPE_FILL\x10\x01\x12\x14\n\x10\x45VENT_TYPE_ORDER\x10\x02\x12\x17\n\x13\x45VENT_TYPE_POSITION\x10\x03\x12\x19\n\x15\x45VENT_TYPE_SETTLEMENT\x10\x04\x12\x16\n\x12\x45VENT_TYPE_BALANCE\x10\x05\x12\x1e\n\x1a\x45VENT_TYPE_CASH_FLOW_EVENT\x10\x06\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,7 +37,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_OETSEVENTENVELOPE_EXTENSIONSENTRY']._loaded_options = None
   _globals['_OETSEVENTENVELOPE_EXTENSIONSENTRY']._serialized_options = b'8\001'
   _globals['_EVENTTYPE']._serialized_start=470
-  _globals['_EVENTTYPE']._serialized_end=629
+  _globals['_EVENTTYPE']._serialized_end=656
   _globals['_OETSEVENTENVELOPE']._serialized_start=115
   _globals['_OETSEVENTENVELOPE']._serialized_end=467
   _globals['_OETSEVENTENVELOPE_EXTENSIONSENTRY']._serialized_start=418

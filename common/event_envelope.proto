@@ -19,8 +19,8 @@ message OetsEventEnvelope {
   string oets_version = 2;
   EventType event_type = 3;
 
-  SourceObservation source = 4;
-  TimestampSet timestamps = 5;
+  SourceReference source = 4;
+  EventTimestamp timestamps = 5;
   repeated EventRelationship relationships = 6;
 
   map<string, string> extensions = 100;

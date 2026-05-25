@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package oets.v1;
 
-message TimestampSet {
+message EventTimestamp {
   string decision_timestamp = 1;
   string submitted_timestamp = 2;
   string event_timestamp = 3;

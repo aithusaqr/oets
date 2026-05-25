@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package oets.v1;
+
+
+import "common/timestamps.proto";
+import "common/source.proto";
+import "common/relationships.proto";
+
+enum BalanceType {
+  BALANCE_TYPE_UNSPECIFIED = 0;
+  BALANCE_TYPE_SPOT = 1;
+  BALANCE_TYPE_MARGIN = 2;
+  BALANCE_TYPE_PERP_MARGIN = 3;
+  BALANCE_TYPE_COLLATERAL = 4;
+  BALANCE_TYPE_VAULT = 5;
+  BALANCE_TYPE_STAKED = 6;
+  BALANCE_TYPE_LOCKED = 7;
+}
+
+enum BalanceChangeReason {
+  BALANCE_CHANGE_REASON_UNSPECIFIED = 0;
+  BALANCE_CHANGE_REASON_TRADE = 1;
+  BALANCE_CHANGE_REASON_FEE = 2;
+  BALANCE_CHANGE_REASON_FUNDING = 3;
+  BALANCE_CHANGE_REASON_DEPOSIT = 4;
+  BALANCE_CHANGE_REASON_WITHDRAWAL = 5;
+  BALANCE_CHANGE_REASON_TRANSFER = 6;
+  BALANCE_CHANGE_REASON_COLLATERAL_LOCK = 7;
+  BALANCE_CHANGE_REASON_COLLATERAL_RELEASE = 8;
+  BALANCE_CHANGE_REASON_SETTLEMENT = 9;
+  BALANCE_CHANGE_REASON_RECONCILIATION = 10;
+  BALANCE_CHANGE_REASON_REWARD = 11;
+  BALANCE_CHANGE_REASON_RENT = 12;
+  BALANCE_CHANGE_REASON_NETWORK_FEE = 13;
+}
+
+// Point-in-time reported or reconstructed balance.
+message BalanceSnapshot {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string asset_id = 4;          // e.g. "SOL", "USDC", mint address, collateral asset id.
+  string exchange_asset = 5;    // Optional venue-specific asset label.
+
+  BalanceType balance_type = 6;
+
+  int64 total_balance = 7;
+  int64 available_balance = 8;
+  int64 locked_balance = 9;
+  int64 margin_balance = 10;
+  int64 unrealized_pnl = 11;
+
+  EventTimestamp timestamps = 12;
+  SourceReference source = 13;
+
+  repeated EventRelationship related_events = 14;
+
+  map<string, string> metadata = 15;
+}
+
+// Event-level balance movement.
+message BalanceDelta {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string asset_id = 4;
+  string exchange_asset = 5;
+
+  BalanceChangeReason reason = 6;
+
+  int64 total_delta = 7;
+  int64 available_delta = 8;
+  int64 locked_delta = 9;
+  int64 margin_delta = 10;
+
+  string related_order_id = 11;
+  string related_fill_id = 12;
+  string related_position_id = 13;
+  string related_cash_flow_id = 14;
+  string related_transaction_id = 15;
+
+  EventTimestamp timestamps = 16;
+  SourceReference source = 17;
+
+  repeated EventRelationship related_events = 18;
+
+  map<string, string> metadata = 19;
+}

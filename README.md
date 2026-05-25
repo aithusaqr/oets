@@ -89,4 +89,3 @@ v0.1.1
 oets/reconciliation/balance_event.proto
 oets/reconciliation/position_event.proto
 oets/reconciliation/cash_flow_event.proto
-oets/reconciliation/settlement_event.proto

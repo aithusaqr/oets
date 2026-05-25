@@ -24,13 +24,13 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x63ommon/timestamps.proto\x12\x07oets.v1\"\xb3\x01\n\x0cTimestampSet\x12\x1a\n\x12\x64\x65\x63ision_timestamp\x18\x01 \x01(\t\x12\x1b\n\x13submitted_timestamp\x18\x02 \x01(\t\x12\x17\n\x0f\x65vent_timestamp\x18\x03 \x01(\t\x12\x18\n\x10ledger_timestamp\x18\x04 \x01(\t\x12\x1a\n\x12observed_timestamp\x18\x05 \x01(\t\x12\x1b\n\x13valuation_timestamp\x18\x06 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x63ommon/timestamps.proto\x12\x07oets.v1\"\xb5\x01\n\x0e\x45ventTimestamp\x12\x1a\n\x12\x64\x65\x63ision_timestamp\x18\x01 \x01(\t\x12\x1b\n\x13submitted_timestamp\x18\x02 \x01(\t\x12\x17\n\x0f\x65vent_timestamp\x18\x03 \x01(\t\x12\x18\n\x10ledger_timestamp\x18\x04 \x01(\t\x12\x1a\n\x12observed_timestamp\x18\x05 \x01(\t\x12\x1b\n\x13valuation_timestamp\x18\x06 \x01(\tb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.timestamps_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_TIMESTAMPSET']._serialized_start=37
-  _globals['_TIMESTAMPSET']._serialized_end=216
+  _globals['_EVENTTIMESTAMP']._serialized_start=37
+  _globals['_EVENTTIMESTAMP']._serialized_end=218
 # @@protoc_insertion_point(module_scope)

@@ -17,8 +17,9 @@ enum SourceType {
   VENUE_OTHER = 11;
 }
 
-message SourceObservation {
+message SourceReference {
   string source_id = 1;
   SourceType source_type = 2;
   string source_name = 3;
 }
+

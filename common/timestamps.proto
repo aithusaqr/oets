@@ -2,11 +2,23 @@ syntax = "proto3";
 
 package oets.v1;
 
+import "google/protobuf/timestamp.proto";
+
+// EventTimestamp carries all lifecycle timestamps for an event.
+//
+// Each field is a google.protobuf.Timestamp: RFC 3339-ish nanosecond precision,
+// represented as seconds since the Unix epoch (int64) plus a nanos adjustment
+// (int32, 0–999999999). This replaces the previous untyped string fields which
+// had no documented format.
+//
+// WIRE-BREAKING CHANGE (v0.1): string → google.protobuf.Timestamp. Field numbers
+// 1-6 are preserved. Buf breaking will flag this; it is expected and accepted for
+// v0.1. See issue #11.
 message EventTimestamp {
-  string decision_timestamp = 1;
-  string submitted_timestamp = 2;
-  string event_timestamp = 3;
-  string ledger_timestamp = 4;
-  string observed_timestamp = 5;
-  string valuation_timestamp = 6;
+  google.protobuf.Timestamp decision_timestamp = 1;
+  google.protobuf.Timestamp submitted_timestamp = 2;
+  google.protobuf.Timestamp event_timestamp = 3;
+  google.protobuf.Timestamp ledger_timestamp = 4;
+  google.protobuf.Timestamp observed_timestamp = 5;
+  google.protobuf.Timestamp valuation_timestamp = 6;
 }

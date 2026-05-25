@@ -68,13 +68,22 @@ def test_proto_package_is_oets_v1(proto_path: Path):
 
 
 def test_proto_imports_resolve(proto_path: Path):
-    """Every import path in a .proto file must resolve to an existing file relative to repo root."""
+    """Every import path in a .proto file must resolve to an existing file.
+
+    Imports under google/protobuf/ are Google well-known types — they are
+    not checked in to this repository but are always available at compile
+    time via the protoc / grpc_tools include path. We skip resolution checks
+    for those prefixes and only verify project-local imports.
+    """
     repo_root = Path(__file__).parent.parent
     text = proto_path.read_text(encoding="utf-8")
     if not text.strip():
         pytest.skip(f"{proto_path.name} is empty (stub)")
     imports = _imports_from_text(text)
-    missing = [imp for imp in imports if not (repo_root / imp).is_file()]
+    # Google well-known types (google/protobuf/...) are resolved by protoc
+    # from its built-in include path, not from the repo root — skip them.
+    project_imports = [imp for imp in imports if not imp.startswith("google/protobuf/")]
+    missing = [imp for imp in project_imports if not (repo_root / imp).is_file()]
     assert not missing, (
         f"{proto_path.relative_to(repo_root)}: unresolvable imports: {missing}"
     )

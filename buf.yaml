@@ -15,6 +15,17 @@ lint:
     # UPPER_SNAKE name of their enclosing enum (e.g. OrderSide.BUY should be
     # ORDER_SIDE_BUY, OrderType.LIMIT should be ORDER_TYPE_LIMIT, etc.).
     - ENUM_VALUE_PREFIX
+    # Re-enable once protos are relocated: buf expects package oets.v1 files
+    # to live under oets/v1/ but the repo uses common/ — restructuring every
+    # .proto and updating every import is a separate ticket.
+    - PACKAGE_DIRECTORY_MATCH
+    # Paired root cause with PACKAGE_DIRECTORY_MATCH: oets.v1 files are spread
+    # across common/, common/execution/, common/reconciliation/ rather than a
+    # single directory.
+    - PACKAGE_SAME_DIRECTORY
+  ignore:
+    # Empty stub — will be filled by H1 (#5); remove this ignore once that lands.
+    - common/reconciliation/settlement_event.proto
 breaking:
   use:
     - FILE

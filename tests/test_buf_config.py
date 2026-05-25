@@ -146,6 +146,8 @@ _KNOWN_SUPPRESSIBLE_STANDARD_RULES: frozenset[str] = frozenset(
         "PROTOVALIDATE",
         "SYNTAX_SPECIFIED",
         "FIELD_NOT_REQUIRED",
+        "PACKAGE_DIRECTORY_MATCH",
+        "PACKAGE_SAME_DIRECTORY",
     }
 )
 
@@ -164,6 +166,33 @@ def test_buf_yaml_lint_except_rules_are_recognised(buf_yaml: dict):
         f"Unrecognised rule(s) in buf.yaml lint.except: {unrecognised!r}. "
         f"Either the rule name is misspelled or it should be added to the "
         f"known-suppressible set in this test."
+    )
+
+
+def test_buf_lint_ignore_includes_settlement_event_stub(buf_yaml: dict):
+    """lint.ignore must contain the empty settlement_event.proto stub."""
+    lint_ignore = buf_yaml.get("lint", {}).get("ignore", [])
+    assert isinstance(lint_ignore, list), (
+        f"buf.yaml lint.ignore must be a list; got {type(lint_ignore).__name__!r}"
+    )
+    assert "common/reconciliation/settlement_event.proto" in lint_ignore, (
+        "buf.yaml lint.ignore must include 'common/reconciliation/settlement_event.proto' "
+        "(empty stub, tracked in #5) — remove once H1 fills the stub."
+    )
+
+
+def test_buf_lint_ignore_is_valid_paths(buf_yaml: dict, repo_root: Path):
+    """Every entry in lint.ignore must resolve to an actual file in the repo.
+
+    Guards against typos that would silently un-ignore the intended path.
+    """
+    lint_ignore = buf_yaml.get("lint", {}).get("ignore", [])
+    if not lint_ignore:
+        pytest.skip("lint.ignore is empty or absent — nothing to validate")
+    bad = [p for p in lint_ignore if not isinstance(p, str) or not (repo_root / p).is_file()]
+    assert not bad, (
+        f"lint.ignore entries that are not valid repo-relative file paths: {bad!r}. "
+        "Fix the path(s) or remove the stale entry."
     )
 
 

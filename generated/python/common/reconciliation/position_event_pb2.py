@@ -22,15 +22,34 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from common import timestamps_pb2 as common_dot_timestamps__pb2
+from common import source_pb2 as common_dot_source__pb2
+from common import relationships_pb2 as common_dot_relationships__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*common/reconciliation/position_event.proto\x12\x07oets.v1*,\n\x0cPositionSide\x12\x07\n\x03NET\x10\x00\x12\x08\n\x04LONG\x10\x01\x12\t\n\x05SHORT\x10\x02\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n*common/reconciliation/position_event.proto\x12\x07oets.v1\x1a\x17\x63ommon/timestamps.proto\x1a\x13\x63ommon/source.proto\x1a\x1a\x63ommon/relationships.proto\"\xf8\x05\n\x10PositionSnapshot\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x0e\n\x06symbol\x18\x05 \x01(\t\x12,\n\rposition_type\x18\x06 \x01(\x0e\x32\x15.oets.v1.PositionType\x12,\n\rposition_side\x18\x07 \x01(\x0e\x32\x15.oets.v1.PositionSide\x12\x10\n\x08quantity\x18\x08 \x01(\x03\x12\x15\n\raverage_price\x18\t \x01(\x03\x12\x12\n\nlast_price\x18\n \x01(\x03\x12\x12\n\nmark_price\x18\x0b \x01(\x03\x12\x10\n\x08open_pnl\x18\x0c \x01(\x03\x12\x12\n\nclosed_pnl\x18\r \x01(\x03\x12\x11\n\ttotal_pnl\x18\x0e \x01(\x03\x12\x14\n\x0c\x66unding_cost\x18\x0f \x01(\x03\x12\x1a\n\x12maintenance_margin\x18\x10 \x01(\x03\x12\x19\n\x11liquidation_price\x18\x11 \x01(\x03\x12\x12\n\nunderlying\x18\x12 \x01(\t\x12\x18\n\x10underlying_price\x18\x13 \x01(\x03\x12\x18\n\x10\x65xpiry_timestamp\x18\x14 \x01(\x03\x12\x13\n\x0b\x61\x64l_ranking\x18\x15 \x01(\x05\x12+\n\ntimestamps\x18\x16 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x17 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x18 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x39\n\x08metadata\x18\x19 \x03(\x0b\x32\'.oets.v1.PositionSnapshot.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xda\x05\n\rPositionDelta\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x0e\n\x06symbol\x18\x05 \x01(\t\x12,\n\rposition_side\x18\x06 \x01(\x0e\x32\x15.oets.v1.PositionSide\x12-\n\x06reason\x18\x07 \x01(\x0e\x32\x1d.oets.v1.PositionChangeReason\x12\x16\n\x0equantity_delta\x18\x08 \x01(\x03\x12\x16\n\x0enotional_delta\x18\t \x01(\x03\x12\x16\n\x0eopen_pnl_delta\x18\n \x01(\x03\x12\x18\n\x10\x63losed_pnl_delta\x18\x0b \x01(\x03\x12\x17\n\x0ftotal_pnl_delta\x18\x0c \x01(\x03\x12\x1a\n\x12\x66unding_cost_delta\x18\r \x01(\x03\x12\x11\n\tfee_delta\x18\x0e \x01(\x03\x12\x18\n\x10related_order_id\x18\x0f \x01(\t\x12\x17\n\x0frelated_fill_id\x18\x10 \x01(\t\x12\x1c\n\x14related_cash_flow_id\x18\x11 \x01(\t\x12\x1e\n\x16related_transaction_id\x18\x12 \x01(\t\x12+\n\ntimestamps\x18\x13 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x14 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x15 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x36\n\x08metadata\x18\x16 \x03(\x0b\x32$.oets.v1.PositionDelta.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*u\n\x0cPositionSide\x12\x1d\n\x19POSITION_SIDE_UNSPECIFIED\x10\x00\x12\x15\n\x11POSITION_SIDE_NET\x10\x01\x12\x16\n\x12POSITION_SIDE_LONG\x10\x02\x12\x17\n\x13POSITION_SIDE_SHORT\x10\x03*\xdf\x01\n\x0cPositionType\x12\x1d\n\x19POSITION_TYPE_UNSPECIFIED\x10\x00\x12\x16\n\x12POSITION_TYPE_SPOT\x10\x01\x12\x18\n\x14POSITION_TYPE_MARGIN\x10\x02\x12\x1b\n\x17POSITION_TYPE_PERPETUAL\x10\x03\x12\x18\n\x14POSITION_TYPE_FUTURE\x10\x04\x12\x18\n\x14POSITION_TYPE_OPTION\x10\x05\x12\x14\n\x10POSITION_TYPE_LP\x10\x06\x12\x17\n\x13POSITION_TYPE_VAULT\x10\x07*\xf6\x02\n\x14PositionChangeReason\x12&\n\"POSITION_CHANGE_REASON_UNSPECIFIED\x10\x00\x12\x1f\n\x1bPOSITION_CHANGE_REASON_FILL\x10\x01\x12\x1e\n\x1aPOSITION_CHANGE_REASON_FEE\x10\x02\x12\"\n\x1ePOSITION_CHANGE_REASON_FUNDING\x10\x03\x12%\n!POSITION_CHANGE_REASON_SETTLEMENT\x10\x04\x12#\n\x1fPOSITION_CHANGE_REASON_TRANSFER\x10\x05\x12,\n(POSITION_CHANGE_REASON_MARK_PRICE_CHANGE\x10\x06\x12)\n%POSITION_CHANGE_REASON_RECONCILIATION\x10\x07\x12,\n(POSITION_CHANGE_REASON_MANUAL_ADJUSTMENT\x10\x08\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.reconciliation.position_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_POSITIONSIDE']._serialized_start=55
-  _globals['_POSITIONSIDE']._serialized_end=99
+  _globals['_POSITIONSNAPSHOT_METADATAENTRY']._loaded_options = None
+  _globals['_POSITIONSNAPSHOT_METADATAENTRY']._serialized_options = b'8\001'
+  _globals['_POSITIONDELTA_METADATAENTRY']._loaded_options = None
+  _globals['_POSITIONDELTA_METADATAENTRY']._serialized_options = b'8\001'
+  _globals['_POSITIONSIDE']._serialized_start=1625
+  _globals['_POSITIONSIDE']._serialized_end=1742
+  _globals['_POSITIONTYPE']._serialized_start=1745
+  _globals['_POSITIONTYPE']._serialized_end=1968
+  _globals['_POSITIONCHANGEREASON']._serialized_start=1971
+  _globals['_POSITIONCHANGEREASON']._serialized_end=2345
+  _globals['_POSITIONSNAPSHOT']._serialized_start=130
+  _globals['_POSITIONSNAPSHOT']._serialized_end=890
+  _globals['_POSITIONSNAPSHOT_METADATAENTRY']._serialized_start=843
+  _globals['_POSITIONSNAPSHOT_METADATAENTRY']._serialized_end=890
+  _globals['_POSITIONDELTA']._serialized_start=893
+  _globals['_POSITIONDELTA']._serialized_end=1623
+  _globals['_POSITIONDELTA_METADATAENTRY']._serialized_start=843
+  _globals['_POSITIONDELTA_METADATAENTRY']._serialized_end=890
 # @@protoc_insertion_point(module_scope)

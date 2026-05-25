@@ -22,13 +22,32 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from common import timestamps_pb2 as common_dot_timestamps__pb2
+from common import source_pb2 as common_dot_source__pb2
+from common import relationships_pb2 as common_dot_relationships__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)common/reconciliation/balance_event.proto')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)common/reconciliation/balance_event.proto\x12\x07oets.v1\x1a\x17\x63ommon/timestamps.proto\x1a\x13\x63ommon/source.proto\x1a\x1a\x63ommon/relationships.proto\"\x8f\x04\n\x0f\x42\x61lanceSnapshot\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x04 \x01(\t\x12\x16\n\x0e\x65xchange_asset\x18\x05 \x01(\t\x12*\n\x0c\x62\x61lance_type\x18\x06 \x01(\x0e\x32\x14.oets.v1.BalanceType\x12\x15\n\rtotal_balance\x18\x07 \x01(\x03\x12\x19\n\x11\x61vailable_balance\x18\x08 \x01(\x03\x12\x16\n\x0elocked_balance\x18\t \x01(\x03\x12\x16\n\x0emargin_balance\x18\n \x01(\x03\x12\x16\n\x0eunrealized_pnl\x18\x0b \x01(\x03\x12+\n\ntimestamps\x18\x0c \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\r \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x0e \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x38\n\x08metadata\x18\x0f \x03(\x0b\x32&.oets.v1.BalanceSnapshot.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf9\x04\n\x0c\x42\x61lanceDelta\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x04 \x01(\t\x12\x16\n\x0e\x65xchange_asset\x18\x05 \x01(\t\x12,\n\x06reason\x18\x06 \x01(\x0e\x32\x1c.oets.v1.BalanceChangeReason\x12\x13\n\x0btotal_delta\x18\x07 \x01(\x03\x12\x17\n\x0f\x61vailable_delta\x18\x08 \x01(\x03\x12\x14\n\x0clocked_delta\x18\t \x01(\x03\x12\x14\n\x0cmargin_delta\x18\n \x01(\x03\x12\x18\n\x10related_order_id\x18\x0b \x01(\t\x12\x17\n\x0frelated_fill_id\x18\x0c \x01(\t\x12\x1b\n\x13related_position_id\x18\r \x01(\t\x12\x1c\n\x14related_cash_flow_id\x18\x0e \x01(\t\x12\x1e\n\x16related_transaction_id\x18\x0f \x01(\t\x12+\n\ntimestamps\x18\x10 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x11 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x12 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x35\n\x08metadata\x18\x13 \x03(\x0b\x32#.oets.v1.BalanceDelta.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\xe0\x01\n\x0b\x42\x61lanceType\x12\x1c\n\x18\x42\x41LANCE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11\x42\x41LANCE_TYPE_SPOT\x10\x01\x12\x17\n\x13\x42\x41LANCE_TYPE_MARGIN\x10\x02\x12\x1c\n\x18\x42\x41LANCE_TYPE_PERP_MARGIN\x10\x03\x12\x1b\n\x17\x42\x41LANCE_TYPE_COLLATERAL\x10\x04\x12\x16\n\x12\x42\x41LANCE_TYPE_VAULT\x10\x05\x12\x17\n\x13\x42\x41LANCE_TYPE_STAKED\x10\x06\x12\x17\n\x13\x42\x41LANCE_TYPE_LOCKED\x10\x07*\x9e\x04\n\x13\x42\x61lanceChangeReason\x12%\n!BALANCE_CHANGE_REASON_UNSPECIFIED\x10\x00\x12\x1f\n\x1b\x42\x41LANCE_CHANGE_REASON_TRADE\x10\x01\x12\x1d\n\x19\x42\x41LANCE_CHANGE_REASON_FEE\x10\x02\x12!\n\x1d\x42\x41LANCE_CHANGE_REASON_FUNDING\x10\x03\x12!\n\x1d\x42\x41LANCE_CHANGE_REASON_DEPOSIT\x10\x04\x12$\n BALANCE_CHANGE_REASON_WITHDRAWAL\x10\x05\x12\"\n\x1e\x42\x41LANCE_CHANGE_REASON_TRANSFER\x10\x06\x12)\n%BALANCE_CHANGE_REASON_COLLATERAL_LOCK\x10\x07\x12,\n(BALANCE_CHANGE_REASON_COLLATERAL_RELEASE\x10\x08\x12$\n BALANCE_CHANGE_REASON_SETTLEMENT\x10\t\x12(\n$BALANCE_CHANGE_REASON_RECONCILIATION\x10\n\x12 \n\x1c\x42\x41LANCE_CHANGE_REASON_REWARD\x10\x0b\x12\x1e\n\x1a\x42\x41LANCE_CHANGE_REASON_RENT\x10\x0c\x12%\n!BALANCE_CHANGE_REASON_NETWORK_FEE\x10\rb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.reconciliation.balance_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
+  _globals['_BALANCESNAPSHOT_METADATAENTRY']._loaded_options = None
+  _globals['_BALANCESNAPSHOT_METADATAENTRY']._serialized_options = b'8\001'
+  _globals['_BALANCEDELTA_METADATAENTRY']._loaded_options = None
+  _globals['_BALANCEDELTA_METADATAENTRY']._serialized_options = b'8\001'
+  _globals['_BALANCETYPE']._serialized_start=1295
+  _globals['_BALANCETYPE']._serialized_end=1519
+  _globals['_BALANCECHANGEREASON']._serialized_start=1522
+  _globals['_BALANCECHANGEREASON']._serialized_end=2064
+  _globals['_BALANCESNAPSHOT']._serialized_start=129
+  _globals['_BALANCESNAPSHOT']._serialized_end=656
+  _globals['_BALANCESNAPSHOT_METADATAENTRY']._serialized_start=609
+  _globals['_BALANCESNAPSHOT_METADATAENTRY']._serialized_end=656
+  _globals['_BALANCEDELTA']._serialized_start=659
+  _globals['_BALANCEDELTA']._serialized_end=1292
+  _globals['_BALANCEDELTA_METADATAENTRY']._serialized_start=609
+  _globals['_BALANCEDELTA_METADATAENTRY']._serialized_end=656
 # @@protoc_insertion_point(module_scope)

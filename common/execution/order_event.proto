@@ -78,7 +78,7 @@ message OrderEvent {
   int64 price =11;
   int64 quantity = 12;
 
-  SourceObservation source =13;
-  TimestampSet timestamps = 14;
+  SourceReference source =13;
+  EventTimestamp timestamps = 14;
   OrderIntentionType order_intention_type = 15;
 }

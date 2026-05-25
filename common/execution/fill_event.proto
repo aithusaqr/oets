@@ -29,10 +29,10 @@ message FillEvent {
   int64 fee = 12;
   string fee_asset = 13;
   int64 notional_fee =14;
-  SourceObservation source = 15;
+  SourceReference source = 15;
   int64 realized_pnl = 16;
   string realized_pnl_asset =17;
   PositionSide position_side = 18;
-  TimestampSet timestamps = 19;
+  EventTimestamp timestamps = 19;
 
 }

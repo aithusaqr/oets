@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package oets.v1;
+
+import "common/timestamps.proto";
+import "common/relationships.proto";
+import "common/source.proto";
+
+enum CashFlowType {
+  CASH_FLOW_TYPE_UNSPECIFIED = 0;
+
+  // Trading-related flows.
+  CASH_FLOW_TYPE_TRADE_PROCEEDS = 1;
+  CASH_FLOW_TYPE_TRADING_FEE = 2;
+  CASH_FLOW_TYPE_REBATE = 3;
+
+  // Margin / derivatives flows.
+  CASH_FLOW_TYPE_FUNDING_FEE = 4;
+  CASH_FLOW_TYPE_BORROW_FEE = 5;
+  CASH_FLOW_TYPE_LIQUIDATION_FEE = 6;
+  CASH_FLOW_TYPE_SETTLEMENT = 7;
+
+  // Account movement flows.
+  CASH_FLOW_TYPE_DEPOSIT = 8;
+  CASH_FLOW_TYPE_WITHDRAWAL = 9;
+  CASH_FLOW_TYPE_INTERNAL_TRANSFER = 10;
+  CASH_FLOW_TYPE_EXTERNAL_TRANSFER = 11;
+
+  // Onchain / Solana-specific flows.
+  CASH_FLOW_TYPE_NETWORK_FEE = 12;
+  CASH_FLOW_TYPE_RENT = 13;
+  CASH_FLOW_TYPE_REWARD = 14;
+  CASH_FLOW_TYPE_AIRDROP = 15;
+  CASH_FLOW_TYPE_STAKING_REWARD = 16;
+  CASH_FLOW_TYPE_PROTOCOL_FEE = 17;
+
+  // Corrections.
+  CASH_FLOW_TYPE_RECONCILIATION_ADJUSTMENT = 18;
+  CASH_FLOW_TYPE_MANUAL_ADJUSTMENT = 19;
+}
+
+enum CashFlowDirection {
+  CASH_FLOW_DIRECTION_UNSPECIFIED = 0;
+  CASH_FLOW_DIRECTION_INFLOW = 1;
+  CASH_FLOW_DIRECTION_OUTFLOW = 2;
+  CASH_FLOW_DIRECTION_NEUTRAL = 3;
+}
+
+// Economic movement affecting an account.
+message CashFlowEvent {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string asset_id = 4;
+  string exchange_asset = 5;
+
+  CashFlowType cash_flow_type = 6;
+  CashFlowDirection direction = 7;
+
+  // Signed amount is preferred for replay.
+  // Positive = value enters the account.
+  // Negative = value leaves the account.
+  int64 amount = 8;
+
+  // Optional fee field when the cash flow includes an explicit fee component.
+  int64 fee_amount = 9;
+  string fee_asset_id = 10;
+
+  string related_order_id = 11;
+  string related_fill_id = 12;
+  string related_position_id = 13;
+  string related_balance_event_id = 14;
+  string related_transaction_id = 15;
+  string related_signature = 16;
+
+  EventTimestamp timestamp = 17;
+  SourceReference source = 18;
+
+  repeated EventRelationship related_events = 19;
+
+  map<string, string> metadata = 20;
+}

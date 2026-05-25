@@ -2,8 +2,108 @@ syntax = "proto3";
 
 package oets.v1;
 
+import "common/timestamps.proto";
+import "common/source.proto";
+import "common/relationships.proto";
+
 enum PositionSide {
-  NET = 0;
-  LONG = 1;
-  SHORT = 2;
+  POSITION_SIDE_UNSPECIFIED = 0;
+  POSITION_SIDE_NET = 1;
+  POSITION_SIDE_LONG = 2;
+  POSITION_SIDE_SHORT = 3;
+}
+
+enum PositionType {
+  POSITION_TYPE_UNSPECIFIED = 0;
+  POSITION_TYPE_SPOT = 1;
+  POSITION_TYPE_MARGIN = 2;
+  POSITION_TYPE_PERPETUAL = 3;
+  POSITION_TYPE_FUTURE = 4;
+  POSITION_TYPE_OPTION = 5;
+  POSITION_TYPE_LP = 6;
+  POSITION_TYPE_VAULT = 7;
+}
+
+enum PositionChangeReason {
+  POSITION_CHANGE_REASON_UNSPECIFIED = 0;
+  POSITION_CHANGE_REASON_FILL = 1;
+  POSITION_CHANGE_REASON_FEE = 2;
+  POSITION_CHANGE_REASON_FUNDING = 3;
+  POSITION_CHANGE_REASON_SETTLEMENT = 4;
+  POSITION_CHANGE_REASON_TRANSFER = 5;
+  POSITION_CHANGE_REASON_MARK_PRICE_CHANGE = 6;
+  POSITION_CHANGE_REASON_RECONCILIATION = 7;
+  POSITION_CHANGE_REASON_MANUAL_ADJUSTMENT = 8;
+}
+
+// Point-in-time reported or reconstructed position.
+message PositionSnapshot {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string instrument_id = 4;
+  string symbol = 5;
+
+  PositionType position_type = 6;
+  PositionSide position_side = 7;
+
+  int64 quantity = 8;
+  int64 average_price = 9;
+  int64 last_price = 10;
+  int64 mark_price = 11;
+
+  int64 open_pnl = 12;
+  int64 closed_pnl = 13;
+  int64 total_pnl = 14;
+  int64 funding_cost = 15;
+
+  int64 maintenance_margin = 16;
+  int64 liquidation_price = 17;
+
+  string underlying = 18;
+  int64 underlying_price = 19;
+  int64 expiry_timestamp = 20;
+
+  int32 adl_ranking = 21;
+
+  EventTimestamp timestamps = 22;
+  SourceReference source = 23;
+
+  repeated EventRelationship related_events = 24;
+
+  map<string, string> metadata = 25;
+}
+
+// Event-level change to a position.
+message PositionDelta {
+  string event_id = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string instrument_id = 4;
+  string symbol = 5;
+
+  PositionSide position_side = 6;
+  PositionChangeReason reason = 7;
+
+  int64 quantity_delta = 8;
+  int64 notional_delta = 9;
+  int64 open_pnl_delta = 10;
+  int64 closed_pnl_delta = 11;
+  int64 total_pnl_delta = 12;
+  int64 funding_cost_delta = 13;
+  int64 fee_delta = 14;
+
+  string related_order_id = 15;
+  string related_fill_id = 16;
+  string related_cash_flow_id = 17;
+  string related_transaction_id = 18;
+
+  EventTimestamp timestamps = 19;
+  SourceReference source = 20;
+
+  repeated EventRelationship related_events = 21;
+
+  map<string, string> metadata = 22;
 }

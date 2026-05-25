@@ -24,15 +24,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n%common/reconciliation/fee_event.proto\x12\x07oets.v1\"6\n\x03\x46\x65\x65\x12\r\n\x05\x61sset\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x03\x12\x10\n\x08\x66\x65\x65_type\x18\x03 \x01(\t*\xa4\x01\n\x07\x46\x65\x65Type\x12\x14\n\x10\x46\x45\x45_TYPE_UNKNOWN\x10\x00\x12\x14\n\x10\x46\x45\x45_TYPE_TRADING\x10\x01\x12\x14\n\x10\x46\x45\x45_TYPE_FUNDING\x10\x02\x12\x14\n\x10\x46\x45\x45_TYPE_ACCOUNT\x10\x03\x12\x13\n\x0f\x46\x45\x45_TYPE_BORROW\x10\x04\x12\x15\n\x11\x46\x45\x45_TYPE_PROTOCOL\x10\x05\x12\x15\n\x11\x46\x45\x45_TYPE_PRIORITY\x10\x06\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n%common/reconciliation/fee_event.proto\x12\x07oets.v1\"H\n\x03\x46\x65\x65\x12\r\n\x05\x61sset\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x03\x12\"\n\x08\x66\x65\x65_type\x18\x03 \x01(\x0e\x32\x10.oets.v1.FeeType*\xa4\x01\n\x07\x46\x65\x65Type\x12\x14\n\x10\x46\x45\x45_TYPE_UNKNOWN\x10\x00\x12\x14\n\x10\x46\x45\x45_TYPE_TRADING\x10\x01\x12\x14\n\x10\x46\x45\x45_TYPE_FUNDING\x10\x02\x12\x14\n\x10\x46\x45\x45_TYPE_ACCOUNT\x10\x03\x12\x13\n\x0f\x46\x45\x45_TYPE_BORROW\x10\x04\x12\x15\n\x11\x46\x45\x45_TYPE_PROTOCOL\x10\x05\x12\x15\n\x11\x46\x45\x45_TYPE_PRIORITY\x10\x06\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.reconciliation.fee_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_FEETYPE']._serialized_start=107
-  _globals['_FEETYPE']._serialized_end=271
+  _globals['_FEETYPE']._serialized_start=125
+  _globals['_FEETYPE']._serialized_end=289
   _globals['_FEE']._serialized_start=50
-  _globals['_FEE']._serialized_end=104
+  _globals['_FEE']._serialized_end=122
 # @@protoc_insertion_point(module_scope)

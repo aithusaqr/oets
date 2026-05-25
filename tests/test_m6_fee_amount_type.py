@@ -5,7 +5,7 @@ Covers:
   1. Proto source declares `int64 amount = 2;`
   2. Field number 2 is unchanged (regression)
   3. `string asset = 1;` is unchanged (regression)
-  4. `string fee_type = 3;` is unchanged (H2 will handle it — M6 must not touch it)
+  4. `fee_type = 3;` field number is unchanged (H2 #6 converted type to FeeType enum)
   5. FeeType enum is intact (all 7 entries, original numbers)
   6. pb2 descriptor reports TYPE_INT64 for amount, field number 2
   7. Round-trip serialisation with an int64 value works correctly
@@ -60,12 +60,13 @@ def test_fee_asset_unchanged():
     )
 
 
-def test_fee_type_still_string():
-    """Fee.fee_type must remain 'string fee_type = 3;' — H2 (#6) handles the enum conversion."""
+def test_fee_type_field_number_unchanged():
+    """Fee.fee_type must still be field number 3 — H2 (#6) converted the type to FeeType enum."""
     text = _proto_text()
-    assert "string fee_type = 3;" in text, (
-        "Expected 'string fee_type = 3;' to remain unchanged in fee_event.proto. "
-        "M6 must not convert fee_type — that is H2's responsibility."
+    match = re.search(r"\bfee_type\s*=\s*(\d+)\s*;", text)
+    assert match is not None, "Could not find 'fee_type = <number>;' in fee_event.proto"
+    assert match.group(1) == "3", (
+        f"Fee.fee_type field number changed: expected 3, got {match.group(1)}"
     )
 
 

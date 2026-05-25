@@ -7,7 +7,10 @@ PROTO_FILES := \
 	$(ROOT)/reconciliation/*.proto
 
 .PHONY: generate_python_protos clean_python_protos
+# buf-based generation (preferred if `buf` is installed).
+.PHONY: buf_generate buf_lint buf_breaking
 
+# Requires: protoc 5.28.x (matches the committed _pb2.py files in generated/).
 generate_python_protos:
 	rm -rf $(OUT)
 	mkdir -p $(OUT)
@@ -22,3 +25,12 @@ generate_python_protos:
 
 clean_python_protos:
 	rm -rf $(OUT)/common
+
+buf_generate:
+	buf generate
+
+buf_lint:
+	buf lint
+
+buf_breaking:
+	buf breaking --against ".git#branch=main"

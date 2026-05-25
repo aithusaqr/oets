@@ -1,0 +1,268 @@
+"""Tests for L3: dependency manifest and buf configuration files.
+
+Verifies that buf.yaml, buf.gen.yaml, requirements.txt, and pyproject.toml
+contain the expected content so consumers can regenerate the protos reproducibly.
+buf itself is NOT invoked — tests are structural only.
+"""
+
+import re
+import tomllib
+from pathlib import Path
+
+import pytest
+import yaml
+
+
+# ---------------------------------------------------------------------------
+# Shared fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def buf_yaml(repo_root: Path) -> dict:
+    """Parsed contents of buf.yaml."""
+    path = repo_root / "buf.yaml"
+    assert path.is_file(), "buf.yaml does not exist at repo root"
+    with path.open(encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+@pytest.fixture(scope="module")
+def buf_gen_yaml(repo_root: Path) -> dict:
+    """Parsed contents of buf.gen.yaml."""
+    path = repo_root / "buf.gen.yaml"
+    assert path.is_file(), "buf.gen.yaml does not exist at repo root"
+    with path.open(encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+@pytest.fixture(scope="module")
+def requirements_txt(repo_root: Path) -> str:
+    """Raw text of requirements.txt."""
+    path = repo_root / "requirements.txt"
+    assert path.is_file(), "requirements.txt does not exist at repo root"
+    return path.read_text(encoding="utf-8")
+
+
+@pytest.fixture(scope="module")
+def pyproject(repo_root: Path) -> dict:
+    """Parsed contents of pyproject.toml."""
+    path = repo_root / "pyproject.toml"
+    assert path.is_file(), "pyproject.toml does not exist at repo root"
+    with path.open("rb") as fh:
+        return tomllib.load(fh)
+
+
+@pytest.fixture(scope="module")
+def makefile_text(repo_root: Path) -> str:
+    path = repo_root / "Makefile"
+    assert path.is_file(), "Makefile does not exist at repo root"
+    return path.read_text(encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
+# buf.yaml tests
+# ---------------------------------------------------------------------------
+
+
+def test_buf_yaml_version(buf_yaml: dict):
+    """buf.yaml must declare version: v2."""
+    assert buf_yaml.get("version") == "v2", (
+        f"Expected buf.yaml version 'v2', got {buf_yaml.get('version')!r}"
+    )
+
+
+def test_buf_yaml_has_modules_list(buf_yaml: dict):
+    """buf.yaml must have a non-empty 'modules' list."""
+    modules = buf_yaml.get("modules")
+    assert isinstance(modules, list) and len(modules) > 0, (
+        "buf.yaml 'modules' must be a non-empty list"
+    )
+
+
+def test_buf_yaml_module_name(buf_yaml: dict):
+    """buf.yaml modules entry must include the expected buf.build name."""
+    modules = buf_yaml.get("modules", [])
+    names = [m.get("name") for m in modules if isinstance(m, dict)]
+    assert "buf.build/aithusaqr/oets" in names, (
+        f"Expected module name 'buf.build/aithusaqr/oets' in buf.yaml modules; "
+        f"found names: {names!r}"
+    )
+
+
+def test_buf_yaml_lint_uses_standard(buf_yaml: dict):
+    """buf.yaml lint.use must contain 'STANDARD'."""
+    lint_use = buf_yaml.get("lint", {}).get("use", [])
+    assert "STANDARD" in lint_use, (
+        f"Expected 'STANDARD' in buf.yaml lint.use; got {lint_use!r}"
+    )
+
+
+def test_buf_yaml_breaking_uses_file(buf_yaml: dict):
+    """buf.yaml breaking.use must contain 'FILE'."""
+    breaking_use = buf_yaml.get("breaking", {}).get("use", [])
+    assert "FILE" in breaking_use, (
+        f"Expected 'FILE' in buf.yaml breaking.use; got {breaking_use!r}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# buf.gen.yaml tests
+# ---------------------------------------------------------------------------
+
+
+def test_buf_gen_yaml_version(buf_gen_yaml: dict):
+    """buf.gen.yaml must declare version: v2."""
+    assert buf_gen_yaml.get("version") == "v2", (
+        f"Expected buf.gen.yaml version 'v2', got {buf_gen_yaml.get('version')!r}"
+    )
+
+
+def test_buf_gen_yaml_has_plugins_list(buf_gen_yaml: dict):
+    """buf.gen.yaml must have a non-empty 'plugins' list."""
+    plugins = buf_gen_yaml.get("plugins")
+    assert isinstance(plugins, list) and len(plugins) > 0, (
+        "buf.gen.yaml 'plugins' must be a non-empty list"
+    )
+
+
+def test_buf_gen_yaml_python_plugin_out(buf_gen_yaml: dict):
+    """At least one plugin must output to generated/python."""
+    plugins = buf_gen_yaml.get("plugins", [])
+    out_dirs = [p.get("out") for p in plugins if isinstance(p, dict)]
+    assert "generated/python" in out_dirs, (
+        f"Expected a plugin with out='generated/python' in buf.gen.yaml; "
+        f"found out values: {out_dirs!r}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# requirements.txt tests
+# ---------------------------------------------------------------------------
+
+
+def test_requirements_txt_pins_protobuf(requirements_txt: str):
+    """requirements.txt must pin protobuf>=5.28,<6."""
+    lines = [ln.strip() for ln in requirements_txt.splitlines() if ln.strip() and not ln.startswith("#")]
+    protobuf_lines = [ln for ln in lines if ln.startswith("protobuf")]
+    assert protobuf_lines, (
+        "requirements.txt does not contain a 'protobuf' dependency"
+    )
+    # Accept either combined or split specifier forms, but must cover >=5.28 and <6.
+    spec = protobuf_lines[0]
+    assert "5.28" in spec, (
+        f"requirements.txt protobuf pin must reference 5.28; got {spec!r}"
+    )
+    assert "<6" in spec, (
+        f"requirements.txt protobuf pin must have upper bound <6; got {spec!r}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# pyproject.toml tests
+# ---------------------------------------------------------------------------
+
+
+def test_pyproject_has_project_table(pyproject: dict):
+    """pyproject.toml must have a [project] table."""
+    assert "project" in pyproject, (
+        "pyproject.toml is missing the [project] table"
+    )
+
+
+def test_pyproject_project_name(pyproject: dict):
+    """pyproject.toml [project].name must be 'oets'."""
+    name = pyproject.get("project", {}).get("name")
+    assert name == "oets", (
+        f"Expected pyproject.toml project.name='oets', got {name!r}"
+    )
+
+
+def test_pyproject_project_lists_protobuf_dependency(pyproject: dict):
+    """pyproject.toml [project].dependencies must include a protobuf entry."""
+    deps = pyproject.get("project", {}).get("dependencies", [])
+    protobuf_deps = [d for d in deps if d.startswith("protobuf")]
+    assert protobuf_deps, (
+        f"pyproject.toml project.dependencies does not list 'protobuf'; "
+        f"found: {deps!r}"
+    )
+
+
+def test_pyproject_pytest_table_intact(pyproject: dict):
+    """pyproject.toml must still have the [tool.pytest.ini_options] table."""
+    pytest_cfg = pyproject.get("tool", {}).get("pytest", {}).get("ini_options")
+    assert pytest_cfg is not None, (
+        "pyproject.toml is missing [tool.pytest.ini_options] — was it accidentally removed?"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Makefile buf target tests
+# ---------------------------------------------------------------------------
+
+
+def _collect_phony_targets(makefile_text: str) -> list[str]:
+    """Return all targets declared across all .PHONY lines."""
+    targets: list[str] = []
+    for line in makefile_text.splitlines():
+        m = re.match(r"^\.PHONY\s*:\s*(.+)", line)
+        if m:
+            targets.extend(m.group(1).split())
+    return targets
+
+
+def test_makefile_phony_buf_generate(makefile_text: str):
+    """buf_generate must appear in a .PHONY declaration."""
+    targets = _collect_phony_targets(makefile_text)
+    assert "buf_generate" in targets, (
+        f"buf_generate not found in any .PHONY declaration; found: {targets!r}"
+    )
+
+
+def test_makefile_phony_buf_lint(makefile_text: str):
+    """buf_lint must appear in a .PHONY declaration."""
+    targets = _collect_phony_targets(makefile_text)
+    assert "buf_lint" in targets, (
+        f"buf_lint not found in any .PHONY declaration; found: {targets!r}"
+    )
+
+
+def test_makefile_phony_buf_breaking(makefile_text: str):
+    """buf_breaking must appear in a .PHONY declaration."""
+    targets = _collect_phony_targets(makefile_text)
+    assert "buf_breaking" in targets, (
+        f"buf_breaking not found in any .PHONY declaration; found: {targets!r}"
+    )
+
+
+def test_makefile_buf_generate_recipe(makefile_text: str):
+    """buf_generate must be defined as a recipe block."""
+    pattern = re.compile(
+        r"^buf_generate\s*:.*\n(?:[ \t]+\S.*\n?)+",
+        re.MULTILINE,
+    )
+    assert pattern.search(makefile_text), (
+        "buf_generate is declared .PHONY but has no recipe block in Makefile"
+    )
+
+
+def test_makefile_buf_lint_recipe(makefile_text: str):
+    """buf_lint must be defined as a recipe block."""
+    pattern = re.compile(
+        r"^buf_lint\s*:.*\n(?:[ \t]+\S.*\n?)+",
+        re.MULTILINE,
+    )
+    assert pattern.search(makefile_text), (
+        "buf_lint is declared .PHONY but has no recipe block in Makefile"
+    )
+
+
+def test_makefile_buf_breaking_recipe(makefile_text: str):
+    """buf_breaking must be defined as a recipe block."""
+    pattern = re.compile(
+        r"^buf_breaking\s*:.*\n(?:[ \t]+\S.*\n?)+",
+        re.MULTILINE,
+    )
+    assert pattern.search(makefile_text), (
+        "buf_breaking is declared .PHONY but has no recipe block in Makefile"
+    )

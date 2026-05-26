@@ -10,6 +10,8 @@ package oets.v1;
 // with no gaps — a missing value would cause any serialised message carrying
 // that wire number to silently decode as UNKNOWN_EVENT_TYPE = 0.
 // See: https://github.com/aithusaqr/oets/issues/8 (#8 — no-gaps invariant)
+// R2-3 (#22): cash-flow entry renamed to drop redundant _EVENT suffix (value 6
+// unchanged, wire-compat); EVENT_TYPE_FUNDING = 7 added for funding_event.proto.
 enum EventType{
   UNKNOWN_EVENT_TYPE = 0;
   EVENT_TYPE_FILL = 1;
@@ -17,7 +19,8 @@ enum EventType{
   EVENT_TYPE_POSITION = 3;
   EVENT_TYPE_SETTLEMENT = 4;  // closes gap; matches common/reconciliation/settlement_event.proto
   EVENT_TYPE_BALANCE = 5;
-  EVENT_TYPE_CASH_FLOW_EVENT = 6;
+  EVENT_TYPE_CASH_FLOW = 6;
+  EVENT_TYPE_FUNDING = 7;
 }
 
 message OetsEventEnvelope {

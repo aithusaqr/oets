@@ -15,6 +15,7 @@ import "common/event_envelope.proto";
 import "common/instrument.proto";
 import "common/execution/order_event.proto";
 import "common/reconciliation/position_event.proto";
+import "common/reconciliation/fee_event.proto";
 
 // FillEvent records the execution of a fill against an order.
 //
@@ -27,8 +28,12 @@ message FillEvent {
   // See: https://github.com/aithusaqr/oets/issues/19
   // Field 19 ("timestamps") was removed — it duplicated OetsEventEnvelope.timestamps.
   // See: https://github.com/zachisit/oets/issues/9
-  reserved 15, 19;
-  reserved "source", "timestamps";
+  // Fields 12 ("fee") and 13 ("fee_asset") removed in R3-1 (#43): replaced by
+  // repeated Fee fees = 12. Field 13 reserved. Old name "fee" reserved; field
+  // 14 renamed from notional_fee to total_notional_fee (same type/number).
+  // See: https://github.com/zachisit/oets/issues/43
+  reserved 13, 15, 19;
+  reserved "source", "timestamps", "fee", "fee_asset", "notional_fee";
 
   OetsEventEnvelope envelope = 1;
 
@@ -44,10 +49,18 @@ message FillEvent {
   int64 quantity = 9;
   int64 price = 10;
   int64 notional_value = 11;
-  int64 fee = 12;
-  string fee_asset = 13;
-  int64 notional_fee =14;
+
+  // All fees applied to this fill (trading, protocol, priority, etc.).
+  // Each Fee carries its own asset, amount, and FeeType — supports multi-fee
+  // fills (e.g. a swap with both trading fee and protocol fee).
+  repeated Fee fees = 12;
+
+  // Total of all fees expressed in the instrument's quote-asset notional units.
+  // Computed by summing each Fee's contribution converted to the quote-asset
+  // at the time of fill. Optional — may be 0 if not pre-computed.
+  int64 total_notional_fee = 14;
+
   int64 realized_pnl = 16;
-  string realized_pnl_asset =17;
+  string realized_pnl_asset = 17;
   PositionSide position_side = 18;
 }

@@ -1,3 +1,4 @@
 # Runtime dependencies for the OETS generated Python bindings.
-# Pinned to the protobuf major version that produced the committed _pb2.py files (protoc 5.28.1).
-protobuf>=5.28,<6
+# Lower bound matches the gencode version in committed _pb2.py files (5.29.0); the protobuf
+# runtime rejects runtime.minor < gencode.minor, so >=5.28 would break on 5.28.x installs.
+protobuf>=5.29,<6

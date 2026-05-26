@@ -188,7 +188,7 @@ def test_funding_payment_roundtrip():
     original = FundingPayment(
         envelope=OetsEventEnvelope(
             event_id="fp-001",
-            event_type=EventType.EVENT_TYPE_FUNDING,
+            event_type=EventType.EVENT_TYPE_FUNDING_PAYMENT,  # R3-4 (#46)
         ),
         venue_id="drift",
         account_id="acct-abc",
@@ -206,7 +206,7 @@ def test_funding_payment_roundtrip():
     recovered.ParseFromString(serialized)
 
     assert recovered.envelope.event_id == "fp-001"
-    assert recovered.envelope.event_type == EventType.EVENT_TYPE_FUNDING
+    assert recovered.envelope.event_type == EventType.EVENT_TYPE_FUNDING_PAYMENT  # R3-4 (#46)
     assert recovered.venue_id == "drift"
     assert recovered.account_id == "acct-abc"
     assert recovered.instrument_id == "SOL-PERP"

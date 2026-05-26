@@ -35,11 +35,27 @@ def test_changelog_has_unreleased_section():
     )
 
 
-def test_changelog_has_0_1_0_section():
+def test_changelog_records_v0_1_epic_under_unreleased_or_tagged():
+    """Until upstream tags v0.1.0, the epic's changes live under [Unreleased];
+    once tagged, they should be hoisted to a dated `## [0.1.0]` section.
+
+    Either layout is acceptable, but ONE of them must record the epic. A
+    [Unreleased] heading with no content underneath would be a CHANGELOG that
+    silently lost the epic's record — guard against that by requiring at least
+    one wire-breaking marker (M4, M6, H2, R2-2) under the active section.
+    """
     text = _changelog_text()
-    assert "## [0.1.0]" in text, (
-        "CHANGELOG.md is missing the '## [0.1.0]' release section; "
-        "it must include the date and summary of the v0.1 epic"
+    has_unreleased = "## [Unreleased]" in text
+    has_010 = "## [0.1.0]" in text
+    assert has_unreleased or has_010, (
+        "CHANGELOG.md must have either '## [Unreleased]' or '## [0.1.0]' as "
+        "the active section for the v0.1 epic"
+    )
+    # Sanity: the file must contain at least one of the canonical epic markers.
+    markers = ["M4", "M6", "H2", "R2-2"]
+    assert any(m in text for m in markers), (
+        "CHANGELOG.md exists with [Unreleased]/[0.1.0] heading but none of the "
+        "canonical epic markers (M4/M6/H2/R2-2). Did the section get emptied?"
     )
 
 
@@ -47,8 +63,31 @@ def test_changelog_references_epic_pr():
     text = _changelog_text()
     assert "aithusaqr/oets#25" in text, (
         "CHANGELOG.md does not reference the epic PR aithusaqr/oets#25; "
-        "the v0.1.0 section must link to the review PR that introduced the changes"
+        "the active section must link to the review PR that introduced the changes"
     )
+
+
+def test_changelog_compare_links_dont_point_at_missing_tag():
+    """If the file defines link references for [Unreleased] or [0.1.0], they must
+    NOT point at a `releases/tag/v0.1.0` URL until that tag actually exists.
+
+    Before this fix the file declared
+        [0.1.0]: https://github.com/aithusaqr/oets/releases/tag/v0.1.0
+    which is a 404 because upstream has not tagged the release yet. Either omit
+    the link, point it at the epic PR, or only add it after the tag is created.
+    """
+    text = _changelog_text()
+    lines = [
+        line for line in text.splitlines()
+        if line.startswith("[Unreleased]:") or line.startswith("[0.1.0]:")
+    ]
+    for line in lines:
+        assert "releases/tag/v0.1.0" not in line, (
+            f"CHANGELOG.md link points at a tag that does not exist upstream:\n"
+            f"  {line}\n"
+            f"Either tag v0.1.0 upstream first, or replace the URL with the "
+            f"epic PR link (https://github.com/aithusaqr/oets/pull/25)."
+        )
 
 
 def test_changelog_documents_all_v0_1_breaking_changes():

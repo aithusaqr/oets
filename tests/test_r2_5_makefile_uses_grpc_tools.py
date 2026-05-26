@@ -31,13 +31,13 @@ def recipe_block(makefile_text: str) -> str:
 def test_recipe_uses_grpc_tools_protoc(recipe_block: str):
     """The generate_python_protos recipe must invoke grpc_tools.protoc.
 
-    R2-5 switches from bare `protoc` to `python3 -m grpc_tools.protoc` so that
+    R2-5 switches from bare `protoc` to `python -m grpc_tools.protoc` so that
     the bundled protoc 29.x is used, which produces gencode 5.x compatible with
-    the pinned protobuf>=5.28,<6 runtime.
+    the pinned protobuf>=5.29,<6 runtime.
     """
     assert "grpc_tools" in recipe_block, (
         "Makefile generate_python_protos recipe does not invoke grpc_tools.protoc. "
-        "R2-5 requires `python3 -m grpc_tools.protoc` (not bare `protoc`) so that "
+        "R2-5 requires `python -m grpc_tools.protoc` (not bare `protoc`) so that "
         "bundled protoc 29.x produces gencode 5.x matching our pinned runtime. "
         "Found recipe block:\n" + recipe_block
     )
@@ -47,8 +47,8 @@ def test_recipe_does_not_use_bare_protoc(recipe_block: str):
     """The generate_python_protos recipe must NOT contain a bare `protoc` invocation.
 
     A bare `protoc \\` line (system protoc) silently produces gencode 7.x on
-    modern systems (protoc 35+), which is incompatible with protobuf>=5.28,<6.
-    Only `python3 -m grpc_tools.protoc` (or similar grpc_tools-prefixed call)
+    modern systems (protoc 35+), which is incompatible with protobuf>=5.29,<6.
+    Only `python -m grpc_tools.protoc` (or similar grpc_tools-prefixed call)
     is allowed.
     """
     # Match lines where `protoc` appears NOT immediately preceded by `grpc_tools.`
@@ -61,7 +61,7 @@ def test_recipe_does_not_use_bare_protoc(recipe_block: str):
     assert not matches, (
         "Makefile generate_python_protos recipe contains a bare `protoc` invocation "
         "not routed through grpc_tools. This silently produces gencode 7.x on "
-        "protoc 35+, breaking the pinned protobuf>=5.28,<6 runtime (see #24). "
+        "protoc 35+, breaking the pinned protobuf>=5.29,<6 runtime (see #24). "
         "Offending lines: " + repr(matches)
     )
 

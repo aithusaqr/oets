@@ -11,14 +11,17 @@ PROTO_FILES := \
 .PHONY: buf_generate buf_lint buf_breaking
 
 # Requires: grpcio-tools (bundles a compatible protoc 29.x → gencode 5.x,
-# matching the pinned protobuf>=5.28,<6 runtime). Bare system `protoc`
+# matching the pinned protobuf>=5.29,<6 runtime). Bare system `protoc`
 # is NOT used: protoc 35+ produces gencode 7.x incompatible with the
 # pinned runtime. Install: `pip install grpcio-tools`. See #24.
+#
+# Activate your venv before running this target — `python` must resolve to
+# the interpreter where grpcio-tools is installed. See #64.
 generate_python_protos:
 	rm -rf $(OUT)
 	mkdir -p $(OUT)
 	touch $(OUT)/__init__.py
-	python3 -m grpc_tools.protoc \
+	python -m grpc_tools.protoc \
 		-I $(CURDIR) \
 		--python_out=$(OUT) \
 		$(PROTO_FILES)

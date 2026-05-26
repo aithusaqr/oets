@@ -38,7 +38,10 @@ pytest tests/
 
 ### 3. Regenerate Python bindings if you touched a `.proto`
 
+Activate your venv first — the Makefile invokes bare `python -m grpc_tools.protoc`, so `python` must resolve to the interpreter where `grpcio-tools` is installed.
+
 ```bash
+source .venv/bin/activate   # or your venv's activation command
 make generate_python_protos
 ```
 

@@ -8,6 +8,10 @@ The current version is communicated by `OetsEventEnvelope.oets_version` (see `va
 
 ## [Unreleased]
 
+### Changed (source-breaking, wire-compat)
+- `EVENT_TYPE_FUNDING` renamed to `EVENT_TYPE_FUNDING_RATE` (R3-4, [zachisit/oets#46](https://github.com/zachisit/oets/issues/46)) — wire number 7 unchanged; source-breaking rename only
+- `EVENT_TYPE_FUNDING_PAYMENT = 8` added (R3-4, [zachisit/oets#46](https://github.com/zachisit/oets/issues/46)) — `funding_event.proto` has two envelope-bearing messages (`FundingRate`, `FundingPayment`); the single `EVENT_TYPE_FUNDING` value was ambiguous
+
 ### Added
 - (nothing yet — open follow-ups tracked in zachisit/oets#7, #38, #40)
 

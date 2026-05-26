@@ -114,6 +114,7 @@ The following wire-incompatible changes were introduced during the v0.1 code-rev
 | `OetsEventEnvelope envelope = 1` replaces top-level `event_id` | `CashFlowEvent`, `SettlementEvent`, `FundingRate`, `FundingPayment` now carry an `OetsEventEnvelope` at field 1. Top-level `source` and `timestamps` removed; carried by envelope. Wire-incompatible. | R2-2 / [zachisit/oets#21](https://github.com/zachisit/oets/issues/21) |
 | `EVENT_TYPE_CASH_FLOW_EVENT` renamed to `EVENT_TYPE_CASH_FLOW` | Wire-number unchanged (source-breaking rename). | R2-3 / [zachisit/oets#22](https://github.com/zachisit/oets/issues/22) |
 | `EventType` added `EVENT_TYPE_SETTLEMENT = 4` and `EVENT_TYPE_FUNDING = 7` | New enum values for settlement and funding event routing. | M1, R2-3 / [zachisit/oets#22](https://github.com/zachisit/oets/issues/22) |
+| `EVENT_TYPE_FUNDING = 7` renamed to `EVENT_TYPE_FUNDING_RATE = 7`; `EVENT_TYPE_FUNDING_PAYMENT = 8` added | `funding_event.proto` has two envelope-bearing messages; the single value was ambiguous. Wire-number 7 unchanged (source-breaking rename only); value 8 is new. | R3-4 / [zachisit/oets#46](https://github.com/zachisit/oets/issues/46) |
 | `CashFlowEvent.timestamp` → `timestamps` plural | Field renamed for consistency (wire-number unchanged; source-breaking by name). | R2-4 / [zachisit/oets#23](https://github.com/zachisit/oets/issues/23) |
 
 ---

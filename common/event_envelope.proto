@@ -11,7 +11,10 @@ package oets.v1;
 // that wire number to silently decode as UNKNOWN_EVENT_TYPE = 0.
 // See: https://github.com/aithusaqr/oets/issues/8 (#8 — no-gaps invariant)
 // R2-3 (#22): cash-flow entry renamed to drop redundant _EVENT suffix (value 6
-// unchanged, wire-compat); EVENT_TYPE_FUNDING = 7 added for funding_event.proto.
+// unchanged, wire-compat); value 7 added for funding_event.proto.
+// R3-4 (#46): value 7 renamed to EVENT_TYPE_FUNDING_RATE (wire-compat); value 8
+// EVENT_TYPE_FUNDING_PAYMENT added. funding_event.proto has two envelope-bearing
+// messages (FundingRate, FundingPayment) that each need a distinct event type.
 enum EventType{
   UNKNOWN_EVENT_TYPE = 0;
   EVENT_TYPE_FILL = 1;
@@ -20,7 +23,8 @@ enum EventType{
   EVENT_TYPE_SETTLEMENT = 4;  // closes gap; matches common/reconciliation/settlement_event.proto
   EVENT_TYPE_BALANCE = 5;
   EVENT_TYPE_CASH_FLOW = 6;
-  EVENT_TYPE_FUNDING = 7;
+  EVENT_TYPE_FUNDING_RATE = 7;     // wire-compat rename from old value 7 — R3-4 (#46)
+  EVENT_TYPE_FUNDING_PAYMENT = 8;  // new — R3-4 (#46)
 }
 
 message OetsEventEnvelope {

@@ -88,10 +88,12 @@ class TestEventTypeNoGap:
         )
 
     def test_known_entries_preserved(self, event_type_values: dict[str, int]):
-        """All 8 entries (post R2-3) must exist with their correct wire values (regression guard).
+        """All 9 entries (post R3-4) must exist with their correct wire values (regression guard).
 
         R2-3 (#22): EVENT_TYPE_CASH_FLOW_EVENT renamed to EVENT_TYPE_CASH_FLOW (value 6
         unchanged); EVENT_TYPE_FUNDING added at 7.
+        R3-4 (#46): EVENT_TYPE_FUNDING renamed to EVENT_TYPE_FUNDING_RATE (wire-compat,
+        value 7 unchanged); EVENT_TYPE_FUNDING_PAYMENT added at 8.
         """
         expected_originals = {
             "UNKNOWN_EVENT_TYPE": 0,
@@ -101,17 +103,20 @@ class TestEventTypeNoGap:
             "EVENT_TYPE_SETTLEMENT": 4,
             "EVENT_TYPE_BALANCE": 5,
             "EVENT_TYPE_CASH_FLOW": 6,
-            "EVENT_TYPE_FUNDING": 7,
+            "EVENT_TYPE_FUNDING_RATE": 7,
+            "EVENT_TYPE_FUNDING_PAYMENT": 8,
         }
         for entry, wire_value in expected_originals.items():
-            assert entry in event_type_values, f"{entry} is missing from EventType"
+            assert entry in event_type_values, entry + " is missing from EventType"
             assert event_type_values[entry] == wire_value, (
-                f"{entry} has wrong wire value: "
-                f"expected {wire_value}, got {event_type_values[entry]}"
+                entry + " has wrong wire value: expected "
+                + str(wire_value)
+                + ", got "
+                + str(event_type_values[entry])
             )
 
     def test_pb2_descriptor_in_sync(self):
-        """The regenerated _pb2.py must reflect all 8 EventType values (post R2-3) including SETTLEMENT=4."""
+        """The regenerated _pb2.py must reflect all 9 EventType values (post R3-4) including SETTLEMENT=4."""
         generated = str(_REPO_ROOT / "generated" / "python")
         if generated not in sys.path:
             sys.path.insert(0, generated)
@@ -126,15 +131,20 @@ class TestEventTypeNoGap:
             "EVENT_TYPE_SETTLEMENT missing from pb2 descriptor — regenerate the file"
         )
         assert values_by_name["EVENT_TYPE_SETTLEMENT"] == 4, (
-            f"pb2 descriptor: EVENT_TYPE_SETTLEMENT = {values_by_name['EVENT_TYPE_SETTLEMENT']}, expected 4"
+            "pb2 descriptor: EVENT_TYPE_SETTLEMENT = "
+            + str(values_by_name["EVENT_TYPE_SETTLEMENT"])
+            + ", expected 4"
         )
 
         nums = sorted(values_by_name.values())
         assert nums == list(range(0, nums[-1] + 1)), (
-            f"pb2 EventType values are not contiguous: {nums}"
+            "pb2 EventType values are not contiguous: " + str(nums)
         )
-        assert len(values_by_name) == 8, (
-            f"Expected 8 EventType entries in pb2 descriptor, got {len(values_by_name)}: {list(values_by_name)}"
+        assert len(values_by_name) == 9, (
+            "Expected 9 EventType entries in pb2 descriptor (post R3-4), got "
+            + str(len(values_by_name))
+            + ": "
+            + str(list(values_by_name))
         )
 
 

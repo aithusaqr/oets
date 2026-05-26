@@ -361,8 +361,10 @@ _EVENT_TYPE_TO_MESSAGE: dict[int, tuple[str, str]] = {
     4: ("common.reconciliation.settlement_event_pb2", "SettlementEvent"),
     # EventType.EVENT_TYPE_CASH_FLOW
     6: ("common.reconciliation.cash_flow_event_pb2", "CashFlowEvent"),
-    # EventType.EVENT_TYPE_FUNDING  — FundingPayment is the account-level event
-    7: ("common.reconciliation.funding_event_pb2", "FundingPayment"),
+    # EventType.EVENT_TYPE_FUNDING_RATE  — R3-4 (#46): was EVENT_TYPE_FUNDING; wire-compat rename
+    7: ("common.reconciliation.funding_event_pb2", "FundingRate"),
+    # EventType.EVENT_TYPE_FUNDING_PAYMENT  — R3-4 (#46): new value for the account-level payment event
+    8: ("common.reconciliation.funding_event_pb2", "FundingPayment"),
 }
 
 # Non-zero EventType values that deliberately have NO envelope-bearing message.

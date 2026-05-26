@@ -81,7 +81,7 @@ message CashFlowEvent {
   string related_transaction_id = 15;
   string related_signature = 16;
 
-  EventTimestamp timestamp = 17;
+  EventTimestamp timestamps = 17;
   SourceReference source = 18;
 
   repeated EventRelationship related_events = 19;

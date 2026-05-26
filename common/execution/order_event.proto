@@ -13,8 +13,6 @@ import "common/execution_venue.proto";
 import "common/account.proto";
 import "common/event_envelope.proto";
 import "common/instrument.proto";
-import "common/timestamps.proto";
-import "common/source.proto";
 
 // M3 (#10): UNKNOWN_ORDER_SIDE=0 sentinel added so unset fields do not silently
 // decode as BUY. Existing values shifted up by 1 (BUY: 0→1, SELL: 1→2).
@@ -79,7 +77,20 @@ enum OrderIntentionType {
   ONE_CANCELS_OTHER = 4;
 }
 
+// OrderEvent records a lifecycle state change for an order.
+//
+// Source attribution lives in OetsEventEnvelope.source — do NOT add a
+// top-level source field here (field 13 was removed in #20).
+// Timestamps live in the envelope; the top-level timestamps field
+// (14) was removed in #20, mirroring the L6 (#19) and M2 (#9) fix on FillEvent.
 message OrderEvent {
+  // Field 13 ("source") was removed — it duplicated OetsEventEnvelope.source.
+  // See: https://github.com/zachisit/oets/issues/20
+  // Field 14 ("timestamps") was removed — it duplicated OetsEventEnvelope.timestamps.
+  // See: https://github.com/zachisit/oets/issues/20 (mirrors L6 #19 and M2 #9 on FillEvent)
+  reserved 13, 14;
+  reserved "source", "timestamps";
+
   OetsEventEnvelope envelope = 1;
 
   AccountRef account = 2;
@@ -94,10 +105,8 @@ message OrderEvent {
   OrderState order_state = 9;
   OrderTimeInForce order_tif = 10;
 
-  int64 price =11;
+  int64 price = 11;
   int64 quantity = 12;
 
-  SourceReference source =13;
-  EventTimestamp timestamps = 14;
   OrderIntentionType order_intention_type = 15;
 }

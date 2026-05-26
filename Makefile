@@ -6,10 +6,14 @@ PROTO_FILES := \
 	$(ROOT)/execution/*.proto \
 	$(ROOT)/reconciliation/*.proto
 
+.PHONY: generate_python_protos clean_python_protos
+# buf-based generation (preferred if `buf` is installed).
+.PHONY: buf_generate buf_lint buf_breaking
+
 generate_python_protos:
-	rm -rf $(OUT) \
-	PYTHONPATH=$(PYTHONPATH):$(ROOT):$(OUT) &&\
+	rm -rf $(OUT)
 	mkdir -p $(OUT)
+	touch $(OUT)/__init__.py
 	protoc \
 		-I $(CURDIR) \
 		--python_out=$(OUT) \
@@ -20,3 +24,12 @@ generate_python_protos:
 
 clean_python_protos:
 	rm -rf $(OUT)/common
+
+buf_generate:
+	buf generate
+
+buf_lint:
+	buf lint
+
+buf_breaking:
+	buf breaking --against ".git#branch=main"

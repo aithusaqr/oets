@@ -1,0 +1,5 @@
+pytest>=8.0
+protobuf>=5.28,<6
+pyyaml>=6.0
+grpcio-tools>=1.60
+build>=1.0

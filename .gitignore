@@ -1,1 +1,12 @@
 /packages/
+
+# Python build / packaging artifacts
+build/
+dist/
+*.egg-info/
+
+# Python bytecode / venv
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/

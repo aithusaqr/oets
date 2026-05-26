@@ -4,7 +4,12 @@ CashFlowEvent was the only message using the singular `timestamp`; every
 other event/snapshot/delta uses plural `timestamps`. Field number 17 is
 unchanged (rename is wire-compatible in proto3).
 
+R2-2 (#21) update: CashFlowEvent.timestamps (field 17) was subsequently
+removed in R2-2 and replaced by OetsEventEnvelope (field 1). Field 17 is
+now reserved. Tests below have been updated to reflect the R2-2 state.
+
 See: https://github.com/zachisit/oets/issues/23
+See: https://github.com/zachisit/oets/issues/21
 """
 
 import re
@@ -43,53 +48,73 @@ def _import_cash_flow_pb2():
 # Tests
 # ---------------------------------------------------------------------------
 
-def test_cashflow_field_is_timestamps_plural():
-    """cash_flow_event.proto must declare EventTimestamp timestamps = 17 (plural)."""
+def test_cashflow_has_envelope_at_field_1():
+    """R2-2 (#21): CashFlowEvent field 1 must be OetsEventEnvelope envelope (not event_id string).
+
+    R2-4 established that timestamps must be plural. R2-2 subsequently moved
+    timestamps into the envelope, reserving field 17. This test verifies the
+    R2-2 state: envelope is at field 1.
+    """
     text = _CASH_FLOW_PROTO.read_text(encoding="utf-8")
     body = _proto_message_body(text, "CashFlowEvent")
 
-    plural_pattern = r"EventTimestamp\s+timestamps\s*=\s*17\s*;"
-    assert re.search(plural_pattern, body), (
-        "CashFlowEvent must contain 'EventTimestamp timestamps = 17;' "
-        "(plural) but the pattern was not found in:\n" + body
+    envelope_pattern = r"OetsEventEnvelope\s+envelope\s*=\s*1\s*;"
+    assert re.search(envelope_pattern, body), (
+        "CashFlowEvent must contain 'OetsEventEnvelope envelope = 1;' "
+        "(R2-2 architectural fix) but the pattern was not found in:\n" + body
     )
 
-    singular_pattern = r"EventTimestamp\s+timestamp\s*=\s*17\s*;"
-    assert not re.search(singular_pattern, body), (
-        "CashFlowEvent still contains the old singular 'EventTimestamp timestamp = 17;' "
-        "— the rename was not applied"
+    # Old string event_id must be gone (reserved, not a live field).
+    event_id_field_pattern = r"string\s+event_id\s*=\s*1\s*;"
+    assert not re.search(event_id_field_pattern, body), (
+        "CashFlowEvent still contains the old 'string event_id = 1;' field — "
+        "R2-2 was not applied"
     )
 
 
-def test_cashflow_field_number_unchanged():
-    """The renamed timestamps field must still carry field number 17."""
+def test_cashflow_field_17_is_reserved():
+    """R2-2 (#21): CashFlowEvent field 17 (formerly EventTimestamp timestamps) must be reserved."""
     text = _CASH_FLOW_PROTO.read_text(encoding="utf-8")
     body = _proto_message_body(text, "CashFlowEvent")
 
-    match = re.search(r"EventTimestamp\s+timestamps\s*=\s*(\d+)\s*;", body)
-    assert match is not None, (
-        "EventTimestamp timestamps field not found in CashFlowEvent body"
+    # reserved 17 should be present (may also include 18, 19 in same statement).
+    reserved_pattern = r"reserved\s+[0-9, ]*\b17\b"
+    assert re.search(reserved_pattern, body), (
+        "CashFlowEvent field 17 must be listed in a 'reserved' declaration "
+        "(R2-2 removed EventTimestamp timestamps from the top-level message). "
+        "Body:\n" + body
     )
-    field_number = int(match.group(1))
-    assert field_number == 17, (
-        "CashFlowEvent.timestamps must be field number 17 (wire-compatible); "
-        "got " + str(field_number)
+
+    # The old live timestamps declaration must not appear.
+    timestamps_field_pattern = r"EventTimestamp\s+timestamps\s*=\s*17\s*;"
+    assert not re.search(timestamps_field_pattern, body), (
+        "CashFlowEvent still contains the live 'EventTimestamp timestamps = 17;' field — "
+        "R2-2 was not fully applied"
     )
 
 
-def test_pb2_descriptor_has_timestamps_plural():
-    """The generated pb2 descriptor must expose 'timestamps', not 'timestamp'."""
+def test_pb2_descriptor_has_envelope_at_field_1():
+    """The generated pb2 descriptor must expose 'envelope' at field 1, not 'timestamps'."""
     mod = _import_cash_flow_pb2()
     descriptor = mod.CashFlowEvent.DESCRIPTOR
-    fields_by_name = descriptor.fields_by_name
 
-    assert "timestamps" in fields_by_name, (
-        "CashFlowEvent pb2 descriptor is missing 'timestamps' field — "
+    assert 1 in descriptor.fields_by_number, (
+        "CashFlowEvent pb2 descriptor has no field at number 1 — "
         "regenerate cash_flow_event_pb2.py from the updated proto"
     )
-    assert "timestamp" not in fields_by_name, (
-        "CashFlowEvent pb2 descriptor still contains old singular 'timestamp' field — "
-        "pb2 was not regenerated from the updated proto"
+    field_1 = descriptor.fields_by_number[1]
+    assert field_1.name == "envelope", (
+        "CashFlowEvent pb2 descriptor field 1 should be 'envelope', "
+        "got '" + field_1.name + "' — pb2 may not have been regenerated"
+    )
+
+    assert "timestamps" not in descriptor.fields_by_name, (
+        "CashFlowEvent pb2 descriptor still exposes top-level 'timestamps' field — "
+        "R2-2 was not applied or pb2 was not regenerated"
+    )
+    assert "event_id" not in descriptor.fields_by_name, (
+        "CashFlowEvent pb2 descriptor still exposes top-level 'event_id' field — "
+        "R2-2 was not applied or pb2 was not regenerated"
     )
 
 

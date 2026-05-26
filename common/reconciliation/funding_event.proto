@@ -16,9 +16,7 @@ syntax = "proto3";
 
 package oets.v1;
 
-import "common/timestamps.proto";
-import "common/source.proto";
-import "common/relationships.proto";
+import "common/event_envelope.proto";
 
 // Direction of a funding payment: which side of the book pays the other.
 enum FundingPaymentDirection {
@@ -29,7 +27,15 @@ enum FundingPaymentDirection {
 
 // What the venue/protocol quoted for a single funding interval.
 message FundingRate {
-  string event_id = 1;
+  // R2-2 (#21): OetsEventEnvelope replaces the top-level event_id/timestamps/
+  // source/related_events fields.  event_id is now carried by envelope.event_id.
+  OetsEventEnvelope envelope = 1;
+
+  // Removed in R2-2 (#21): top-level timestamps/source/related_events.
+  reserved 7, 8, 9;
+  reserved "timestamps", "source", "related_events";
+  // Note: "event_id" name is reserved because the old type at field 1 was string.
+  reserved "event_id";
 
   string venue_id = 2;
   string instrument_id = 3;
@@ -43,17 +49,22 @@ message FundingRate {
 
   FundingPaymentDirection direction = 6;
 
-  EventTimestamp timestamps = 7;
-  SourceReference source = 8;
-
-  repeated EventRelationship related_events = 9;
-
+  // Kept distinct from envelope.extensions (different semantic: message-level
+  // vs envelope-level metadata).
   map<string, string> metadata = 10;
 }
 
 // What was actually paid to (or from) a specific account for one funding interval.
 message FundingPayment {
-  string event_id = 1;
+  // R2-2 (#21): OetsEventEnvelope replaces the top-level event_id/timestamps/
+  // source/related_events fields.  event_id is now carried by envelope.event_id.
+  OetsEventEnvelope envelope = 1;
+
+  // Removed in R2-2 (#21): top-level timestamps/source/related_events.
+  reserved 10, 11, 12;
+  reserved "timestamps", "source", "related_events";
+  // Note: "event_id" name is reserved because the old type at field 1 was string.
+  reserved "event_id";
 
   string venue_id = 2;
   string account_id = 3;
@@ -73,10 +84,7 @@ message FundingPayment {
   // event_id of the corresponding FundingRate event.
   string related_funding_rate_event_id = 9;
 
-  EventTimestamp timestamps = 10;
-  SourceReference source = 11;
-
-  repeated EventRelationship related_events = 12;
-
+  // Kept distinct from envelope.extensions (different semantic: message-level
+  // vs envelope-level metadata).
   map<string, string> metadata = 13;
 }

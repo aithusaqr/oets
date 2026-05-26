@@ -183,9 +183,13 @@ def test_funding_payment_roundtrip():
         sys.path.insert(0, generated)
 
     from common.reconciliation.funding_event_pb2 import FundingPayment
+    from common.event_envelope_pb2 import OetsEventEnvelope, EventType
 
     original = FundingPayment(
-        event_id="fp-001",
+        envelope=OetsEventEnvelope(
+            event_id="fp-001",
+            event_type=EventType.EVENT_TYPE_FUNDING,
+        ),
         venue_id="drift",
         account_id="acct-abc",
         instrument_id="SOL-PERP",
@@ -201,7 +205,8 @@ def test_funding_payment_roundtrip():
     recovered = FundingPayment()
     recovered.ParseFromString(serialized)
 
-    assert recovered.event_id == "fp-001"
+    assert recovered.envelope.event_id == "fp-001"
+    assert recovered.envelope.event_type == EventType.EVENT_TYPE_FUNDING
     assert recovered.venue_id == "drift"
     assert recovered.account_id == "acct-abc"
     assert recovered.instrument_id == "SOL-PERP"
@@ -223,9 +228,13 @@ def test_settlement_event_roundtrip():
         sys.path.insert(0, generated)
 
     from common.reconciliation.settlement_event_pb2 import SettlementEvent, SettlementType
+    from common.event_envelope_pb2 import OetsEventEnvelope, EventType
 
     original = SettlementEvent(
-        event_id="se-001",
+        envelope=OetsEventEnvelope(
+            event_id="se-001",
+            event_type=EventType.EVENT_TYPE_SETTLEMENT,
+        ),
         venue_id="drift",
         account_id="acct-abc",
         instrument_id="SOL-PERP",
@@ -243,7 +252,8 @@ def test_settlement_event_roundtrip():
     recovered = SettlementEvent()
     recovered.ParseFromString(serialized)
 
-    assert recovered.event_id == "se-001"
+    assert recovered.envelope.event_id == "se-001"
+    assert recovered.envelope.event_type == EventType.EVENT_TYPE_SETTLEMENT
     assert recovered.settlement_type == SettlementType.SETTLEMENT_TYPE_PERP_MARK_SETTLEMENT
     assert recovered.settlement_price == 24_500_000_000
     assert recovered.quantity_settled == 10_000_000_000

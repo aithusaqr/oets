@@ -13,9 +13,7 @@ syntax = "proto3";
 
 package oets.v1;
 
-import "common/timestamps.proto";
-import "common/source.proto";
-import "common/relationships.proto";
+import "common/event_envelope.proto";
 
 // How the settlement was carried out.
 enum SettlementType {
@@ -31,7 +29,15 @@ enum SettlementType {
 
 // A settlement event for a specific account and instrument.
 message SettlementEvent {
-  string event_id = 1;
+  // R2-2 (#21): OetsEventEnvelope replaces the top-level event_id/timestamps/
+  // source/related_events fields.  event_id is now carried by envelope.event_id.
+  OetsEventEnvelope envelope = 1;
+
+  // Removed in R2-2 (#21): top-level timestamps/source/related_events.
+  reserved 12, 13, 14;
+  reserved "timestamps", "source", "related_events";
+  // Note: "event_id" name is reserved because the old type at field 1 was string.
+  reserved "event_id";
 
   string venue_id = 2;
   string account_id = 3;
@@ -57,10 +63,7 @@ message SettlementEvent {
   // Asset in which realized_pnl is denominated.
   string realized_pnl_asset_id = 11;
 
-  EventTimestamp timestamps = 12;
-  SourceReference source = 13;
-
-  repeated EventRelationship related_events = 14;
-
+  // Kept distinct from envelope.extensions (different semantic: message-level
+  // vs envelope-level metadata).
   map<string, string> metadata = 15;
 }

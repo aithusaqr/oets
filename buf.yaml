@@ -6,14 +6,16 @@ lint:
   use:
     - STANDARD
   except:
-    # Re-enable after #10 (M3): many enums use UNKNOWN_* as the zero value name
-    # instead of *_UNSPECIFIED (e.g. UNKNOWN_ORDER_TYPE, UNKNOWN_ORDER_STATE,
+    # Re-enable after #40 (Phase 2): many enums use UNKNOWN_* as the zero value
+    # name instead of *_UNSPECIFIED (e.g. UNKNOWN_ORDER_TYPE, UNKNOWN_ORDER_STATE,
     # UNKNOWN_SOURCE_TYPE, etc.).  Also catches OrderSide (BUY=0, SELL=1)
     # and OrderTimeInForce/OrderIntentionType which lack any unspecified entry.
+    # M3 (#10) deliberately scoped this rename out; tracked in #40.
     - ENUM_ZERO_VALUE_SUFFIX
-    # Re-enable after #10 (M3): many enum values are not prefixed with the
+    # Re-enable after #40 (Phase 2): many enum values are not prefixed with the
     # UPPER_SNAKE name of their enclosing enum (e.g. OrderSide.BUY should be
     # ORDER_SIDE_BUY, OrderType.LIMIT should be ORDER_TYPE_LIMIT, etc.).
+    # M3 (#10) deliberately scoped this work out; tracked in #40.
     - ENUM_VALUE_PREFIX
     # Re-enable once protos are relocated: buf expects package oets.v1 files
     # to live under oets/v1/ but the repo uses common/ — restructuring every

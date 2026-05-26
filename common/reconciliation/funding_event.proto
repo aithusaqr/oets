@@ -2,20 +2,15 @@
 // Defines FundingRate (what a venue quotes for a funding interval) and
 // FundingPayment (what was actually paid to/from a specific account).
 //
-// Monetary / rate scaling convention:
-//   All int64 rate fields (rate, rate_applied) use fixed-point with
-//   9 decimal places (i.e. 1_000_000_000 = 1.0).  This gives sub-basis-point
-//   precision while keeping all arithmetic in integer land.
-//   All int64 amount/position_size fields use the instrument's or asset's
-//   native scale (documented per H3, #7).
-
 // Numeric fields in this file follow the OETS int64 scaling convention.
 // See docs/SCALING.md for the canonical rules. Briefly:
 //   - price fields: int64 scaled by 10^price_precision from InstrumentRef
 //   - quantity / size fields: int64 scaled by 10^size_precision from InstrumentRef
 //   - notional / amount / fee / pnl: int64 scaled by 10^price_precision
 //   (or 8 decimals for non-instrument amounts)
-// Note: funding rate fields use a separate fixed 9 decimal-place convention (see above).
+// Exception: int64 rate fields (rate, rate_applied) use a separate fixed 9
+//   decimal-place convention (1_000_000_000 = 1.0), giving sub-basis-point
+//   precision while keeping all arithmetic in integer land.
 
 syntax = "proto3";
 

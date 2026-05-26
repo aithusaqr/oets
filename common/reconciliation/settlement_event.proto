@@ -2,9 +2,6 @@
 // Defines SettlementEvent covering futures/option expiry, perp mark-settlement,
 // cash, physical, and liquidation settlement paths.
 //
-// Monetary scaling: all int64 monetary fields use the instrument's
-// price_precision scale (per H3 convention, #7).
-//
 // Numeric fields in this file follow the OETS int64 scaling convention.
 // See docs/SCALING.md for the canonical rules. Briefly:
 //   - price fields: int64 scaled by 10^price_precision from InstrumentRef

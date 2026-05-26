@@ -53,12 +53,16 @@ def test_pyproject_requires_python_311_or_higher():
 
 
 def test_ci_python_version_matches_requires_python():
-    """CI's setup-python python-version must satisfy requires-python."""
+    """The minimum Python version in the CI matrix must satisfy requires-python.
+
+    After R3-6 CI uses a strategy matrix; we collect all version entries and
+    assert the lowest one matches (or exceeds) the requires-python floor.
+    """
     data = _load_pyproject()
     spec = data.get("project", {}).get("requires-python", "")
     assert spec, "pyproject.toml [project].requires-python is missing"
 
-    # Extract the floor from requires-python (e.g. ">=3.11" -> (3, 11)).
+    # Extract the floor from requires-python (e.g. ">=3.11" -> 11).
     floor_match = re.search(r">=\s*3\.(\d+)", spec)
     assert floor_match, (
         f"Cannot parse a >= lower bound from requires-python = '{spec}'"
@@ -66,17 +70,21 @@ def test_ci_python_version_matches_requires_python():
     floor_minor = int(floor_match.group(1))
 
     ci_text = _load_ci_yaml_text()
-    # Find: python-version: "3.x" or python-version: '3.x'
-    ci_match = re.search(r'python-version:\s*["\']3\.(\d+)["\']', ci_text)
-    assert ci_match, (
-        "Could not find an actions/setup-python python-version field in "
-        ".github/workflows/ci.yml"
+    # Collect all 3.x version entries from the YAML text.  This covers both the
+    # old single-version form ("3.11") and new matrix list entries ('3.11').
+    ci_versions = re.findall(r'["\']3\.(\d+)["\']', ci_text)
+    assert ci_versions, (
+        "Could not find any python-version entries in "
+        ".github/workflows/ci.yml — expected at least one '3.x' value"
     )
-    ci_minor = int(ci_match.group(1))
 
-    assert ci_minor >= floor_minor, (
-        f"CI uses Python 3.{ci_minor} but requires-python = '{spec}' "
-        f"demands >=3.{floor_minor}. Update one of them so they agree."
+    ci_minors = [int(m) for m in ci_versions]
+    min_ci_minor = min(ci_minors)
+
+    assert min_ci_minor >= floor_minor, (
+        f"CI matrix minimum is Python 3.{min_ci_minor} but "
+        f"requires-python = '{spec}' demands >=3.{floor_minor}. "
+        "Update pyproject.toml or the CI matrix so they agree."
     )
 
 

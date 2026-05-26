@@ -230,16 +230,16 @@ def test_buf_gen_yaml_python_plugin_out(buf_gen_yaml: dict):
 
 
 def test_requirements_txt_pins_protobuf(requirements_txt: str):
-    """requirements.txt must pin protobuf>=5.28,<6."""
+    """requirements.txt must pin protobuf>=5.29,<6 (gencode 5.29.0 requires runtime >=5.29)."""
     lines = [ln.strip() for ln in requirements_txt.splitlines() if ln.strip() and not ln.startswith("#")]
     protobuf_lines = [ln for ln in lines if ln.startswith("protobuf")]
     assert protobuf_lines, (
         "requirements.txt does not contain a 'protobuf' dependency"
     )
-    # Accept either combined or split specifier forms, but must cover >=5.28 and <6.
+    # Accept either combined or split specifier forms, but must cover >=5.29 and <6.
     spec = protobuf_lines[0]
-    assert "5.28" in spec, (
-        f"requirements.txt protobuf pin must reference 5.28; got {spec!r}"
+    assert "5.29" in spec, (
+        f"requirements.txt protobuf pin must reference 5.29; got {spec!r}"
     )
     assert "<6" in spec, (
         f"requirements.txt protobuf pin must have upper bound <6; got {spec!r}"

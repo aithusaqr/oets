@@ -5,7 +5,7 @@ description = "Open Execution Telemetry Standard — proto schemas"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "protobuf>=5.28,<6",
+    "protobuf>=5.29,<6",
 ]
 
 [build-system]

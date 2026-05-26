@@ -75,6 +75,7 @@ The first proto set focuses on the execution core:
 
 ```text
 v0.1.0
+common/account.proto
 common/event_envelope.proto
 common/execution_venue.proto
 common/instrument.proto
@@ -146,9 +147,13 @@ buf lint
 
 ```
 common/                     # .proto source files
+  ├─ account.proto
   ├─ event_envelope.proto
+  ├─ execution_venue.proto
   ├─ instrument.proto
-  ├─ ...
+  ├─ relationships.proto
+  ├─ source.proto
+  ├─ timestamps.proto
   ├─ execution/
   │   ├─ fill_event.proto
   │   └─ order_event.proto

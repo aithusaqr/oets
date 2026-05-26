@@ -16,7 +16,7 @@ R2-2 ([#21](https://github.com/zachisit/oets/issues/21)) established a deliberat
 | PositionDelta | no | delta |
 | BalanceSnapshot | no | snapshot |
 | BalanceDelta | no | delta |
-| Fee | no | sub-component (embedded in FillEvent.fees and CashFlowEvent.fee) |
+| Fee | no | sub-component (embedded in FillEvent `fees` and CashFlowEvent `fee`) |
 
 ## Why the split
 
@@ -32,7 +32,22 @@ Sub-components like `Fee` exist only as embedded fields within other messages. T
 
 2. **Is it a state snapshot or delta?** If the message represents state at a point in time or a change between two snapshots, do NOT add an envelope. Carry your own `event_id`, `timestamps`, `source`, and `related_events` fields using the same types as existing snapshot/delta messages.
 
-3. **Is it a sub-component?** If the message is only ever embedded inside another message (like `Fee` inside `FillEvent.fees` and `CashFlowEvent.fee`), do NOT add an envelope. Sub-components inherit routing context from their parent.
+3. **Is it a sub-component?** If the message is only ever embedded inside another message (like `Fee` inside `FillEvent.fees` and `CashFlowEvent.fee`), do NOT add an envelope. Sub-components inherit routing context from their parent. Existing sub-components in the schema cover most cases. Before introducing a new one, check whether `AccountRef`, `InstrumentRef`, `ExecutionVenue`, `Fee`, etc. already capture what you need.
+
+## Sub-components currently in the schema
+
+Sub-components are message types that exist only as embedded fields within other messages. They have no independent lifecycle and inherit routing context from their parent.
+
+| Sub-component | Defined in | Embedded by |
+|---|---|---|
+| `OetsEventEnvelope` | `common/event_envelope.proto` | every event-bearing message (FillEvent, OrderEvent, CashFlowEvent, SettlementEvent, FundingRate, FundingPayment) |
+| `AccountRef` | `common/account.proto` | FillEvent, OrderEvent |
+| `InstrumentRef` | `common/instrument.proto` | FillEvent, OrderEvent |
+| `ExecutionVenue` | `common/execution_venue.proto` | FillEvent, OrderEvent |
+| `SourceReference` | `common/source.proto` | OetsEventEnvelope (in `source` field), BalanceSnapshot, BalanceDelta, PositionSnapshot, PositionDelta |
+| `EventTimestamp` | `common/timestamps.proto` | OetsEventEnvelope (in `timestamps` field), BalanceSnapshot, BalanceDelta, PositionSnapshot, PositionDelta |
+| `EventRelationship` | `common/relationships.proto` | OetsEventEnvelope (in `relationships` field), BalanceSnapshot, BalanceDelta, PositionSnapshot, PositionDelta |
+| `Fee` | `common/reconciliation/fee_event.proto` | FillEvent (`repeated Fee fees`), CashFlowEvent (`Fee fee`) |
 
 ## References
 

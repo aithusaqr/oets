@@ -18,11 +18,8 @@ PYPROJECT_PATH = REPO_ROOT / "pyproject.toml"
 # ---------------------------------------------------------------------------
 
 def _load_pyproject() -> dict:
-    """Parse pyproject.toml using tomllib (stdlib in 3.11+) or tomli fallback."""
-    try:
-        import tomllib  # type: ignore[import]
-    except ImportError:
-        import tomli as tomllib  # type: ignore[import]
+    """Parse pyproject.toml using tomllib (stdlib in 3.11+)."""
+    import tomllib
     with open(PYPROJECT_PATH, "rb") as fh:
         return tomllib.load(fh)
 

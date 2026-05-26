@@ -164,6 +164,14 @@ docs/                       # SCALING.md, ARCHITECTURE.md
 
 ---
 
+## License
+
+OETS protos are released under the Apache License 2.0 — see [LICENSE](LICENSE).
+
+The Apache 2.0 license permits use, modification, and distribution with attribution. Patent grants are included, and changes must be marked. Full terms in the LICENSE file.
+
+---
+
 ## See Also
 
 - `docs/SCALING.md` — int64 monetary scaling convention

@@ -7,6 +7,7 @@ import pytest
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 README_PATH = os.path.join(REPO_ROOT, "README.md")
+LICENSE_PATH = os.path.join(REPO_ROOT, "LICENSE")
 
 
 def _readme_text():
@@ -182,4 +183,59 @@ def test_readme_links_resolve_locally():
     assert not missing, (
         "README.md references the following paths that do not exist in the repo: "
         + str(missing)
+    )
+
+
+# ---------------------------------------------------------------------------
+# 7. License section (R3-8)
+# ---------------------------------------------------------------------------
+
+def test_readme_has_license_section():
+    text = _readme_text()
+    assert re.search(r"^## License", text, re.IGNORECASE | re.MULTILINE), (
+        "README.md must contain a '## License' section heading"
+    )
+
+
+def test_readme_links_to_license_file():
+    text = _readme_text()
+    # Accept [LICENSE](LICENSE) or [the LICENSE file](LICENSE) etc.
+    assert re.search(r"\[[^\]]+\]\(LICENSE\)", text), (
+        "README.md must contain a markdown link to the LICENSE file, "
+        "e.g. [LICENSE](LICENSE)"
+    )
+
+
+def test_readme_mentions_apache_2():
+    text = _readme_text()
+    license_section_match = re.search(
+        r"## License\b(.+?)(?:\n## |\Z)", text, re.DOTALL | re.IGNORECASE
+    )
+    assert license_section_match, (
+        "README.md must contain a '## License' section"
+    )
+    section_text = license_section_match.group(1)
+    # Both tokens must appear in the same paragraph (no blank-line gap between them)
+    paragraphs = re.split(r"\n\s*\n", section_text)
+    found = any(
+        "Apache" in para and "2.0" in para
+        for para in paragraphs
+    )
+    assert found, (
+        "README.md License section must mention 'Apache' and '2.0' in the same paragraph"
+    )
+
+
+def test_license_file_exists_and_is_apache_2():
+    assert os.path.isfile(LICENSE_PATH), (
+        "LICENSE file must exist at repo root: " + LICENSE_PATH
+    )
+    with open(LICENSE_PATH, encoding="utf-8") as fh:
+        content = fh.read()
+    first_line = content.splitlines()[0].strip()
+    assert first_line == "Apache License", (
+        "LICENSE first line must be 'Apache License'; got: " + repr(first_line)
+    )
+    assert "Version 2.0" in content, (
+        "LICENSE must contain 'Version 2.0' to confirm it is Apache 2.0"
     )

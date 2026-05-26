@@ -88,14 +88,20 @@ class TestEventTypeNoGap:
         )
 
     def test_known_entries_preserved(self, event_type_values: dict[str, int]):
-        """Original 6 entries must still exist with their original wire values (regression guard)."""
+        """All 8 entries (post R2-3) must exist with their correct wire values (regression guard).
+
+        R2-3 (#22): EVENT_TYPE_CASH_FLOW_EVENT renamed to EVENT_TYPE_CASH_FLOW (value 6
+        unchanged); EVENT_TYPE_FUNDING added at 7.
+        """
         expected_originals = {
             "UNKNOWN_EVENT_TYPE": 0,
             "EVENT_TYPE_FILL": 1,
             "EVENT_TYPE_ORDER": 2,
             "EVENT_TYPE_POSITION": 3,
+            "EVENT_TYPE_SETTLEMENT": 4,
             "EVENT_TYPE_BALANCE": 5,
-            "EVENT_TYPE_CASH_FLOW_EVENT": 6,
+            "EVENT_TYPE_CASH_FLOW": 6,
+            "EVENT_TYPE_FUNDING": 7,
         }
         for entry, wire_value in expected_originals.items():
             assert entry in event_type_values, f"{entry} is missing from EventType"
@@ -105,7 +111,7 @@ class TestEventTypeNoGap:
             )
 
     def test_pb2_descriptor_in_sync(self):
-        """The regenerated _pb2.py must reflect all 7 EventType values including SETTLEMENT=4."""
+        """The regenerated _pb2.py must reflect all 8 EventType values (post R2-3) including SETTLEMENT=4."""
         generated = str(_REPO_ROOT / "generated" / "python")
         if generated not in sys.path:
             sys.path.insert(0, generated)
@@ -127,8 +133,8 @@ class TestEventTypeNoGap:
         assert nums == list(range(0, nums[-1] + 1)), (
             f"pb2 EventType values are not contiguous: {nums}"
         )
-        assert len(values_by_name) == 7, (
-            f"Expected 7 EventType entries in pb2 descriptor, got {len(values_by_name)}: {list(values_by_name)}"
+        assert len(values_by_name) == 8, (
+            f"Expected 8 EventType entries in pb2 descriptor, got {len(values_by_name)}: {list(values_by_name)}"
         )
 
 

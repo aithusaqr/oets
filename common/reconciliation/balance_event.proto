@@ -1,3 +1,15 @@
+// BalanceSnapshot/BalanceDelta (and the corresponding Position messages) are
+// state representations, not events. They carry their own observation-time
+// metadata (event_id, timestamps, source, related_events) rather than an
+// OetsEventEnvelope because:
+//   - A snapshot represents state AT A POINT IN TIME, not a state transition
+//   - A delta represents a CHANGE between snapshots
+//   - Neither maps cleanly to an EventType enum value (BALANCE events are
+//     conceptually distinct from snapshot/delta records)
+// Event-bearing messages (FillEvent, OrderEvent, CashFlowEvent,
+// SettlementEvent, FundingRate, FundingPayment) carry OetsEventEnvelope at
+// field 1. See R2-2 (#21) for the architectural rationale.
+
 // Numeric fields in this file follow the OETS int64 scaling convention.
 // See docs/SCALING.md for the canonical rules. Briefly:
 //   - price fields: int64 scaled by 10^price_precision from InstrumentRef

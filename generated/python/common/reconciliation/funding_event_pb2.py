@@ -22,12 +22,10 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from common import timestamps_pb2 as common_dot_timestamps__pb2
-from common import source_pb2 as common_dot_source__pb2
-from common import relationships_pb2 as common_dot_relationships__pb2
+from common import event_envelope_pb2 as common_dot_event__envelope__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)common/reconciliation/funding_event.proto\x12\x07oets.v1\x1a\x17\x63ommon/timestamps.proto\x1a\x13\x63ommon/source.proto\x1a\x1a\x63ommon/relationships.proto\"\x9f\x03\n\x0b\x46undingRate\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x15\n\rinstrument_id\x18\x03 \x01(\t\x12\x0c\n\x04rate\x18\x04 \x01(\x03\x12 \n\x18\x66unding_interval_seconds\x18\x05 \x01(\x03\x12\x33\n\tdirection\x18\x06 \x01(\x0e\x32 .oets.v1.FundingPaymentDirection\x12+\n\ntimestamps\x18\x07 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x08 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\t \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x34\n\x08metadata\x18\n \x03(\x0b\x32\".oets.v1.FundingRate.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xca\x03\n\x0e\x46undingPayment\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x05 \x01(\t\x12\x0e\n\x06\x61mount\x18\x06 \x01(\x03\x12\x15\n\rposition_size\x18\x07 \x01(\x03\x12\x14\n\x0crate_applied\x18\x08 \x01(\x03\x12%\n\x1drelated_funding_rate_event_id\x18\t \x01(\t\x12+\n\ntimestamps\x18\n \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x0b \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x0c \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x37\n\x08metadata\x18\r \x03(\x0b\x32%.oets.v1.FundingPayment.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\xa2\x01\n\x17\x46undingPaymentDirection\x12)\n%FUNDING_PAYMENT_DIRECTION_UNSPECIFIED\x10\x00\x12-\n)FUNDING_PAYMENT_DIRECTION_LONG_PAYS_SHORT\x10\x01\x12-\n)FUNDING_PAYMENT_DIRECTION_SHORT_PAYS_LONG\x10\x02\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)common/reconciliation/funding_event.proto\x12\x07oets.v1\x1a\x1b\x63ommon/event_envelope.proto\"\xf0\x02\n\x0b\x46undingRate\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x15\n\rinstrument_id\x18\x03 \x01(\t\x12\x0c\n\x04rate\x18\x04 \x01(\x03\x12 \n\x18\x66unding_interval_seconds\x18\x05 \x01(\x03\x12\x33\n\tdirection\x18\x06 \x01(\x0e\x32 .oets.v1.FundingPaymentDirection\x12\x34\n\x08metadata\x18\n \x03(\x0b\x32\".oets.v1.FundingRate.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01J\x04\x08\x07\x10\x08J\x04\x08\x08\x10\tJ\x04\x08\t\x10\nR\ntimestampsR\x06sourceR\x0erelated_eventsR\x08\x65vent_id\"\x9b\x03\n\x0e\x46undingPayment\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x05 \x01(\t\x12\x0e\n\x06\x61mount\x18\x06 \x01(\x03\x12\x15\n\rposition_size\x18\x07 \x01(\x03\x12\x14\n\x0crate_applied\x18\x08 \x01(\x03\x12%\n\x1drelated_funding_rate_event_id\x18\t \x01(\t\x12\x37\n\x08metadata\x18\r \x03(\x0b\x32%.oets.v1.FundingPayment.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01J\x04\x08\n\x10\x0bJ\x04\x08\x0b\x10\x0cJ\x04\x08\x0c\x10\rR\ntimestampsR\x06sourceR\x0erelated_eventsR\x08\x65vent_id*\xa2\x01\n\x17\x46undingPaymentDirection\x12)\n%FUNDING_PAYMENT_DIRECTION_UNSPECIFIED\x10\x00\x12-\n)FUNDING_PAYMENT_DIRECTION_LONG_PAYS_SHORT\x10\x01\x12-\n)FUNDING_PAYMENT_DIRECTION_SHORT_PAYS_LONG\x10\x02\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,14 +36,14 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_FUNDINGRATE_METADATAENTRY']._serialized_options = b'8\001'
   _globals['_FUNDINGPAYMENT_METADATAENTRY']._loaded_options = None
   _globals['_FUNDINGPAYMENT_METADATAENTRY']._serialized_options = b'8\001'
-  _globals['_FUNDINGPAYMENTDIRECTION']._serialized_start=1008
-  _globals['_FUNDINGPAYMENTDIRECTION']._serialized_end=1170
-  _globals['_FUNDINGRATE']._serialized_start=129
-  _globals['_FUNDINGRATE']._serialized_end=544
-  _globals['_FUNDINGRATE_METADATAENTRY']._serialized_start=497
-  _globals['_FUNDINGRATE_METADATAENTRY']._serialized_end=544
-  _globals['_FUNDINGPAYMENT']._serialized_start=547
-  _globals['_FUNDINGPAYMENT']._serialized_end=1005
-  _globals['_FUNDINGPAYMENT_METADATAENTRY']._serialized_start=497
-  _globals['_FUNDINGPAYMENT_METADATAENTRY']._serialized_end=544
+  _globals['_FUNDINGPAYMENTDIRECTION']._serialized_start=869
+  _globals['_FUNDINGPAYMENTDIRECTION']._serialized_end=1031
+  _globals['_FUNDINGRATE']._serialized_start=84
+  _globals['_FUNDINGRATE']._serialized_end=452
+  _globals['_FUNDINGRATE_METADATAENTRY']._serialized_start=341
+  _globals['_FUNDINGRATE_METADATAENTRY']._serialized_end=388
+  _globals['_FUNDINGPAYMENT']._serialized_start=455
+  _globals['_FUNDINGPAYMENT']._serialized_end=866
+  _globals['_FUNDINGPAYMENT_METADATAENTRY']._serialized_start=341
+  _globals['_FUNDINGPAYMENT_METADATAENTRY']._serialized_end=388
 # @@protoc_insertion_point(module_scope)

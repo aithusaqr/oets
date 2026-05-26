@@ -9,9 +9,7 @@ syntax = "proto3";
 
 package oets.v1;
 
-import "common/timestamps.proto";
-import "common/relationships.proto";
-import "common/source.proto";
+import "common/event_envelope.proto";
 
 enum CashFlowType {
   CASH_FLOW_TYPE_UNSPECIFIED = 0;
@@ -55,7 +53,19 @@ enum CashFlowDirection {
 
 // Economic movement affecting an account.
 message CashFlowEvent {
-  string event_id = 1;
+  // R2-2 (#21): OetsEventEnvelope replaces the top-level event_id/timestamps/
+  // source/related_events fields that were duplicating FillEvent/OrderEvent
+  // anti-pattern.  event_id is now carried by envelope.event_id.
+  OetsEventEnvelope envelope = 1;
+
+  // Removed in R2-2 (#21): top-level timestamps/source/related_events.  These
+  // duplicated OetsEventEnvelope.timestamps / .source / .relationships and were
+  // the same anti-pattern L6/M2 removed from FillEvent.
+  reserved 17, 18, 19;
+  reserved "timestamps", "source", "related_events";
+  // Note: "event_id" name is also reserved because the old type at field 1 was
+  // string; we reserve the name to prevent accidental reuse with the wrong type.
+  reserved "event_id";
 
   string venue_id = 2;
   string account_id = 3;
@@ -81,10 +91,7 @@ message CashFlowEvent {
   string related_transaction_id = 15;
   string related_signature = 16;
 
-  EventTimestamp timestamps = 17;
-  SourceReference source = 18;
-
-  repeated EventRelationship related_events = 19;
-
+  // Kept distinct from envelope.extensions (different semantic: message-level
+  // vs envelope-level metadata).
   map<string, string> metadata = 20;
 }

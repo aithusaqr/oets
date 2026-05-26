@@ -22,12 +22,10 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from common import timestamps_pb2 as common_dot_timestamps__pb2
-from common import source_pb2 as common_dot_source__pb2
-from common import relationships_pb2 as common_dot_relationships__pb2
+from common import event_envelope_pb2 as common_dot_event__envelope__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto\x12\x07oets.v1\x1a\x17\x63ommon/timestamps.proto\x1a\x13\x63ommon/source.proto\x1a\x1a\x63ommon/relationships.proto\"\xa9\x04\n\x0fSettlementEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x30\n\x0fsettlement_type\x18\x05 \x01(\x0e\x32\x17.oets.v1.SettlementType\x12\x18\n\x10settlement_price\x18\x06 \x01(\x03\x12\x18\n\x10quantity_settled\x18\x07 \x01(\x03\x12\x19\n\x11settlement_amount\x18\x08 \x01(\x03\x12\x1b\n\x13settlement_asset_id\x18\t \x01(\t\x12\x14\n\x0crealized_pnl\x18\n \x01(\x03\x12\x1d\n\x15realized_pnl_asset_id\x18\x0b \x01(\t\x12+\n\ntimestamps\x18\x0c \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\r \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x0e \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x38\n\x08metadata\x18\x0f \x03(\x0b\x32&.oets.v1.SettlementEvent.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\xfa\x01\n\x0eSettlementType\x12\x1f\n\x1bSETTLEMENT_TYPE_UNSPECIFIED\x10\x00\x12!\n\x1dSETTLEMENT_TYPE_FUTURE_EXPIRY\x10\x01\x12!\n\x1dSETTLEMENT_TYPE_OPTION_EXPIRY\x10\x02\x12(\n$SETTLEMENT_TYPE_PERP_MARK_SETTLEMENT\x10\x03\x12\x18\n\x14SETTLEMENT_TYPE_CASH\x10\x04\x12\x1c\n\x18SETTLEMENT_TYPE_PHYSICAL\x10\x05\x12\x1f\n\x1bSETTLEMENT_TYPE_LIQUIDATION\x10\x06\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto\x12\x07oets.v1\x1a\x1b\x63ommon/event_envelope.proto\"\xfa\x03\n\x0fSettlementEvent\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x30\n\x0fsettlement_type\x18\x05 \x01(\x0e\x32\x17.oets.v1.SettlementType\x12\x18\n\x10settlement_price\x18\x06 \x01(\x03\x12\x18\n\x10quantity_settled\x18\x07 \x01(\x03\x12\x19\n\x11settlement_amount\x18\x08 \x01(\x03\x12\x1b\n\x13settlement_asset_id\x18\t \x01(\t\x12\x14\n\x0crealized_pnl\x18\n \x01(\x03\x12\x1d\n\x15realized_pnl_asset_id\x18\x0b \x01(\t\x12\x38\n\x08metadata\x18\x0f \x03(\x0b\x32&.oets.v1.SettlementEvent.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01J\x04\x08\x0c\x10\rJ\x04\x08\r\x10\x0eJ\x04\x08\x0e\x10\x0fR\ntimestampsR\x06sourceR\x0erelated_eventsR\x08\x65vent_id*\xfa\x01\n\x0eSettlementType\x12\x1f\n\x1bSETTLEMENT_TYPE_UNSPECIFIED\x10\x00\x12!\n\x1dSETTLEMENT_TYPE_FUTURE_EXPIRY\x10\x01\x12!\n\x1dSETTLEMENT_TYPE_OPTION_EXPIRY\x10\x02\x12(\n$SETTLEMENT_TYPE_PERP_MARK_SETTLEMENT\x10\x03\x12\x18\n\x14SETTLEMENT_TYPE_CASH\x10\x04\x12\x1c\n\x18SETTLEMENT_TYPE_PHYSICAL\x10\x05\x12\x1f\n\x1bSETTLEMENT_TYPE_LIQUIDATION\x10\x06\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,10 +34,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_SETTLEMENTEVENT_METADATAENTRY']._loaded_options = None
   _globals['_SETTLEMENTEVENT_METADATAENTRY']._serialized_options = b'8\001'
-  _globals['_SETTLEMENTTYPE']._serialized_start=688
-  _globals['_SETTLEMENTTYPE']._serialized_end=938
-  _globals['_SETTLEMENTEVENT']._serialized_start=132
-  _globals['_SETTLEMENTEVENT']._serialized_end=685
-  _globals['_SETTLEMENTEVENT_METADATAENTRY']._serialized_start=638
-  _globals['_SETTLEMENTEVENT_METADATAENTRY']._serialized_end=685
+  _globals['_SETTLEMENTTYPE']._serialized_start=596
+  _globals['_SETTLEMENTTYPE']._serialized_end=846
+  _globals['_SETTLEMENTEVENT']._serialized_start=87
+  _globals['_SETTLEMENTEVENT']._serialized_end=593
+  _globals['_SETTLEMENTEVENT_METADATAENTRY']._serialized_start=482
+  _globals['_SETTLEMENTEVENT_METADATAENTRY']._serialized_end=529
 # @@protoc_insertion_point(module_scope)

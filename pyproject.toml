@@ -8,6 +8,15 @@ dependencies = [
     "protobuf>=5.28,<6",
 ]
 
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Only ship the validation package for now.
+# generated/python/ shipping is deferred to the layout-restructure ticket (zachisit/oets#7).
+[tool.setuptools]
+packages = ["validation"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q --strict-markers"

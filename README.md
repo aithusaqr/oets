@@ -116,6 +116,8 @@ The following wire-incompatible changes were introduced during the v0.1 code-rev
 | `EventType` added `EVENT_TYPE_SETTLEMENT = 4` and `EVENT_TYPE_FUNDING = 7` | New enum values for settlement and funding event routing. | M1, R2-3 / [zachisit/oets#22](https://github.com/zachisit/oets/issues/22) |
 | `EVENT_TYPE_FUNDING = 7` renamed to `EVENT_TYPE_FUNDING_RATE = 7`; `EVENT_TYPE_FUNDING_PAYMENT = 8` added | `funding_event.proto` has two envelope-bearing messages; the single value was ambiguous. Wire-number 7 unchanged (source-breaking rename only); value 8 is new. | R3-4 / [zachisit/oets#46](https://github.com/zachisit/oets/issues/46) |
 | `CashFlowEvent.timestamp` → `timestamps` plural | Field renamed for consistency (wire-number unchanged; source-breaking by name). | R2-4 / [zachisit/oets#23](https://github.com/zachisit/oets/issues/23) |
+| `FillEvent.fee`/`fee_asset`/`notional_fee` replaced by `repeated Fee fees` + renamed `total_notional_fee` | Wire-incompatible: structured Fee replaces flat fee fields. Field 13 reserved. Field 14 renamed. | R3-1 / [zachisit/oets#43](https://github.com/zachisit/oets/issues/43) |
+| `CashFlowEvent.fee_amount`/`fee_asset_id` replaced by `Fee fee` | Wire-incompatible. Field 10 reserved. | R3-1 / [zachisit/oets#43](https://github.com/zachisit/oets/issues/43) |
 
 ---
 

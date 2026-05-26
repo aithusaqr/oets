@@ -10,6 +10,7 @@ syntax = "proto3";
 package oets.v1;
 
 import "common/event_envelope.proto";
+import "common/reconciliation/fee_event.proto";
 
 enum CashFlowType {
   CASH_FLOW_TYPE_UNSPECIFIED = 0;
@@ -61,11 +62,13 @@ message CashFlowEvent {
   // Removed in R2-2 (#21): top-level timestamps/source/related_events.  These
   // duplicated OetsEventEnvelope.timestamps / .source / .relationships and were
   // the same anti-pattern L6/M2 removed from FillEvent.
-  reserved 17, 18, 19;
+  reserved 10, 17, 18, 19;
   reserved "timestamps", "source", "related_events";
   // Note: "event_id" name is also reserved because the old type at field 1 was
   // string; we reserve the name to prevent accidental reuse with the wrong type.
   reserved "event_id";
+  // R3-1 (#43): fee_amount (9) and fee_asset_id (10) replaced by Fee fee = 9.
+  reserved "fee_amount", "fee_asset_id";
 
   string venue_id = 2;
   string account_id = 3;
@@ -80,9 +83,14 @@ message CashFlowEvent {
   // Negative = value leaves the account.
   int64 amount = 8;
 
-  // Optional fee field when the cash flow includes an explicit fee component.
-  int64 fee_amount = 9;
-  string fee_asset_id = 10;
+  // Optional fee component of this cash flow. Embedded as a Fee message
+  // so the fee_type is captured explicitly (was previously implied by
+  // CashFlowEvent.cash_flow_type, which conflates the flow kind with
+  // the fee kind).
+  // Fields 9 ("fee_amount") and 10 ("fee_asset_id") removed in R3-1 (#43).
+  // Field 10 reserved. Old names reserved.
+  // See: https://github.com/zachisit/oets/issues/43
+  Fee fee = 9;
 
   string related_order_id = 11;
   string related_fill_id = 12;

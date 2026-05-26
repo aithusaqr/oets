@@ -174,6 +174,7 @@ The Apache 2.0 license permits use, modification, and distribution with attribut
 
 ## See Also
 
+- [CHANGELOG.md](CHANGELOG.md) — version history and breaking changes
 - `docs/SCALING.md` — int64 monetary scaling convention
 - `docs/ARCHITECTURE.md` — envelope-bearing vs snapshot/delta messages
 - `validation/oets_version.py` — SemVer 2.0.0 validator for `OetsEventEnvelope.oets_version`

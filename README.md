@@ -174,6 +174,7 @@ The Apache 2.0 license permits use, modification, and distribution with attribut
 
 ## See Also
 
+- [CONTRIBUTING.md](CONTRIBUTING.md) — how to file issues and propose changes
 - [CHANGELOG.md](CHANGELOG.md) — version history and breaking changes
 - `docs/SCALING.md` — int64 monetary scaling convention
 - `docs/ARCHITECTURE.md` — envelope-bearing vs snapshot/delta messages

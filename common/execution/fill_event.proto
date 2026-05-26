@@ -50,5 +50,4 @@ message FillEvent {
   int64 realized_pnl = 16;
   string realized_pnl_asset =17;
   PositionSide position_side = 18;
-
 }

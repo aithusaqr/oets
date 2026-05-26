@@ -9,7 +9,6 @@ syntax = "proto3";
 
 package oets.v1;
 
-
 import "common/timestamps.proto";
 import "common/source.proto";
 import "common/relationships.proto";

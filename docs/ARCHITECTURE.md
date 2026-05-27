@@ -1,5 +1,7 @@
 # OETS Proto Architecture
 
+> **Provisional (v0.1 design note).** This document is a provisional design note for v0.1. It sketches the message-type taxonomy and the envelope rule as guiding principles, but it is **not** a commitment to specific schema semantics in this hygiene PR. The concrete event / snapshot / sub-component inventory — including final field shapes, embedded-by relationships, and any binding normative language — will land in the schema PR (PR 3/3). Treat the categories and rules below as the current working model, subject to change as the schema PR is reviewed.
+
 This document captures the design principles behind the OETS message-type taxonomy. As schema work lands, this file will be filled in with concrete embedded-by inventories; for now it describes the principles those inventories must obey.
 
 ## Three kinds of messages

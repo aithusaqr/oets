@@ -35,7 +35,12 @@ jobs:
         run: buf lint
 
       - name: Run buf breaking check
-        # continue-on-error: first push has no useful baseline to diff against
+        # TEMPORARY: continue-on-error is intentionally set to true only during the
+        # early schema-shaping phase (pre-v0.1), where main has no useful baseline
+        # to diff against and breaking changes are expected as the schema is iterated.
+        # This MUST be flipped to false (i.e. made blocking) once the v0.1 schema
+        # stabilizes, so that subsequent PRs cannot silently introduce wire-breaking
+        # changes.
         continue-on-error: true
         run: buf breaking --against '.git#branch=main'
 

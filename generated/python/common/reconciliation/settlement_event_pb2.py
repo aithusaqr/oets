@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto\x12\x07oets.v1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)

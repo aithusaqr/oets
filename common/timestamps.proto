@@ -3,10 +3,10 @@ syntax = "proto3";
 package oets.v1;
 
 message EventTimestamp {
-  string decision_timestamp = 1;
-  string submitted_timestamp = 2;
-  string event_timestamp = 3;
-  string ledger_timestamp = 4;
-  string observed_timestamp = 5;
-  string valuation_timestamp = 6;
+  int64 decision_timestamp = 1;
+  int64 submitted_timestamp = 2;
+  int64 event_timestamp = 3;
+  int64 ledger_timestamp = 4;
+  int64 observed_timestamp = 5;
+  int64 valuation_timestamp = 6;
 }

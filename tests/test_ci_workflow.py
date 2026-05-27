@@ -164,6 +164,29 @@ def test_workflow_runs_pytest(all_steps: list[dict]):
     )
 
 
+def test_workflow_has_pb2_idempotency_check(all_steps: list[dict]):
+    """A step must run make generate_python_protos and assert generated/python/ is clean.
+
+    This guards against proto/pb2 drift: if a .proto is edited without regenerating,
+    CI fails rather than silently shipping stale gencode.
+    """
+    regen_steps = [
+        s for s in all_steps
+        if "make generate_python_protos" in str(s.get("run", ""))
+    ]
+    assert regen_steps, (
+        "No CI step runs 'make generate_python_protos' — "
+        "add a step to regenerate and then assert generated/python/ is clean."
+    )
+    for step in regen_steps:
+        run_text = str(step.get("run", ""))
+        has_drift_check = "git diff" in run_text or "git status" in run_text
+        assert has_drift_check, (
+            f"CI step '{step.get('name', '(unnamed)')}' runs make generate_python_protos "
+            "but does not follow up with a 'git diff' or 'git status' check to catch drift."
+        )
+
+
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------

@@ -11,8 +11,6 @@ _VALIDATE_CALL_RE = re.compile(
     r"ValidateProtobufRuntimeVersion\s*\(\s*[^,]+,\s*(\d+)\s*,\s*(\d+)",
     re.DOTALL,
 )
-_MIN_PB2_COUNT = 14  # current known count; update when new protos are added
-
 
 def _collect_pb2_files(repo_root: Path) -> list[Path]:
     return sorted((repo_root / "generated" / "python").rglob("*_pb2.py"))
@@ -38,11 +36,14 @@ def _pb2_validate_call_version(path: Path) -> tuple[int, int] | None:
 
 _REPO_ROOT = Path(__file__).parent.parent
 _PB2_FILES = _collect_pb2_files(_REPO_ROOT)
+_PROTO_FILES = sorted((_REPO_ROOT / "common").rglob("*.proto"))
 
-# Guard against silent empty-parametrize on a clean checkout with no generated/ dir.
-assert len(_PB2_FILES) >= _MIN_PB2_COUNT, (
-    f"Expected at least {_MIN_PB2_COUNT} _pb2.py files under generated/python/, "
-    f"found {len(_PB2_FILES)}. Run 'make generate_python_protos' to regenerate."
+# One-to-one guard: every .proto must produce exactly one _pb2.py.
+# Also prevents silent empty-parametrize on a clean checkout.
+assert len(_PB2_FILES) == len(_PROTO_FILES), (
+    f"pb2 count ({len(_PB2_FILES)}) != proto count ({len(_PROTO_FILES)}). "
+    "Either a proto is missing a pb2 (run 'make generate_python_protos') "
+    "or a stale pb2 was left behind after a proto was deleted."
 )
 
 

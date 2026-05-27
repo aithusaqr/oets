@@ -23,7 +23,7 @@ generate_python_protos:
 	touch $(OUT)/common/reconciliation/__init__.py
 
 clean_python_protos:
-	rm -rf $(OUT)/common
+	rm -rf $(OUT)
 
 buf_generate:
 	buf generate

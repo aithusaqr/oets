@@ -92,19 +92,52 @@ def test_protobuf_spec_consistent_across_dep_files(repo_root: Path):
 
 def test_dep_files_upper_bound_consistent(repo_root: Path):
     """All known dependency files must keep the protobuf upper bound at <6."""
-    all_files = _KNOWN_DEP_FILES + ["pyproject.toml"]
-    for rel_path in all_files:
+    _UPPER_BOUND_RE = re.compile(r"<(\d+)")
+
+    def _assert_upper_bound(spec: str, label: str) -> None:
+        m = _UPPER_BOUND_RE.search(spec)
+        assert m and int(m.group(1)) == 6, (
+            f"{label}: protobuf specifier {spec!r} is missing or has wrong '<N' upper bound "
+            "(expected '<6'). All dep files must agree to stay on the protobuf 5.x series."
+        )
+
+    for rel_path in _KNOWN_DEP_FILES:
         path = repo_root / rel_path
         assert path.is_file(), f"{rel_path} not found at repo root"
+        spec = _extract_spec(path.read_text(encoding="utf-8"), _PROTOBUF_LINE_RE)
+        assert spec is not None, f"{rel_path}: no 'protobuf' specifier found"
+        _assert_upper_bound(spec, rel_path)
+
+    toml_path = repo_root / "pyproject.toml"
+    data = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+    deps: list[str] = data.get("project", {}).get("dependencies", [])
+    proto_dep = next((d for d in deps if d.startswith("protobuf")), None)
+    assert proto_dep is not None, "pyproject.toml [project].dependencies has no 'protobuf' entry"
+    _assert_upper_bound(proto_dep[len("protobuf"):], "pyproject.toml")
+
+
+def test_grpcio_tools_not_in_runtime_requirements(repo_root: Path):
+    """grpcio-tools must NOT appear in requirements.txt or pyproject.toml dependencies.
+
+    grpcio-tools is a generation-time tool only. If it leaks into the runtime dep
+    list, consumers pay a heavy grpcio install (>50 MB) for something only needed
+    during proto regeneration.
+    """
+    for rel_path in ["requirements.txt"]:
+        path = repo_root / rel_path
         text = path.read_text(encoding="utf-8")
-        assert "protobuf" in text, (
-            f"{rel_path}: no 'protobuf' entry found — "
-            "all dep files must declare a protobuf pin."
+        assert "grpcio-tools" not in text, (
+            f"{rel_path}: 'grpcio-tools' must not appear in runtime dependencies — "
+            "it is a generation-time tool and belongs only in requirements-test.txt."
         )
-        assert "<6" in text, (
-            f"{rel_path}: protobuf specifier is missing '<6' upper bound. "
-            "All dep files must agree to stay on the protobuf 5.x series."
-        )
+
+    toml_path = repo_root / "pyproject.toml"
+    data = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+    deps: list[str] = data.get("project", {}).get("dependencies", [])
+    assert not any("grpcio-tools" in d for d in deps), (
+        "pyproject.toml [project].dependencies must not include 'grpcio-tools' — "
+        "it is a generation-time tool only."
+    )
 
 
 def test_grpcio_tools_lower_bound(repo_root: Path):

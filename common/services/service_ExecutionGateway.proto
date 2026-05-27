@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+package oets.v1;
+
+import "common/execution/order_event.proto";
+import "common/execution/fill_event.proto";
+import "common/reconciliation/balance_event.proto";
+import "common/reconciliation/position_event.proto";
+import "common/reconciliation/cash_flow_event.proto";
+
+
+service ExecutionGatewayService {
+  // Execution commands
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+
+  // Account / execution history queries
+  rpc GetOpenOrders(GetOpenOrdersRequest) returns (GetOpenOrdersResponse);
+  rpc GetOrderHistory(GetOrderHistoryRequest) returns (GetOrderHistoryResponse);
+  rpc GetFillHistory(GetFillHistoryRequest) returns (GetFillHistoryResponse);
+  rpc GetCashFlowHistory(GetCashFlowHistoryRequest) returns (GetCashFlowHistoryResponse);
+  rpc GetBalances(GetBalancesRequest) returns (GetBalancesResponse);
+  rpc GetPositions(GetPositionsRequest) returns (GetPositionsResponse);
+
+  // Streaming account / execution updates
+  rpc StreamOrders(StreamOrdersRequest) returns (stream OrderEvent);
+  rpc StreamFills(StreamFillsRequest) returns (stream FillEvent);
+  rpc StreamBalances(StreamBalancesRequest) returns (stream BalanceSnapshot);
+  rpc StreamPositions(StreamPositionsRequest) returns (stream PositionSnapshot);
+}
+
+// -----------------------------------------------------------------------------
+// Execution commands
+// -----------------------------------------------------------------------------
+
+message CreateOrderRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+
+  // Draft: this may eventually become OrderIntent / OrderRequest
+  // rather than a full OrderEvent.
+  OrderEvent order = 3;
+}
+
+message CreateOrderResponse {
+  bool accepted = 1;
+  OrderEvent order = 2;
+  repeated string warnings = 3;
+  repeated string errors = 4;
+}
+
+message CancelOrderRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+  string order_id = 3;
+  string client_order_id = 4;
+}
+
+message CancelOrderResponse {
+  bool accepted = 1;
+  OrderEvent order = 2;
+  repeated string warnings = 3;
+  repeated string errors = 4;
+}
+
+// -----------------------------------------------------------------------------
+// Query requests / responses
+// -----------------------------------------------------------------------------
+
+message GetOpenOrdersRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+}
+
+message GetOpenOrdersResponse {
+  repeated OrderEvent orders = 1;
+}
+
+message GetOrderHistoryRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+  int64 start_timestamp_ns = 3;
+  int64 end_timestamp_ns = 4;
+}
+
+message GetOrderHistoryResponse {
+  repeated OrderEvent orders = 1;
+}
+
+message GetFillHistoryRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+  int64 start_timestamp_ns = 3;
+  int64 end_timestamp_ns = 4;
+}
+
+message GetFillHistoryResponse {
+  repeated FillEvent fills = 1;
+}
+
+message GetCashFlowHistoryRequest {
+  string account_id = 1;
+  string asset = 2;
+  int64 start_timestamp_ns = 3;
+  int64 end_timestamp_ns = 4;
+}
+
+message GetCashFlowHistoryResponse {
+  repeated CashFlowEvent cash_flows = 1;
+}
+
+message GetBalancesRequest {
+  string account_id = 1;
+  string asset = 2;
+}
+
+message GetBalancesResponse {
+  repeated BalanceSnapshot balances = 1;
+}
+
+message GetPositionsRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+}
+
+message GetPositionsResponse {
+  repeated PositionSnapshot positions = 1;
+}
+
+// -----------------------------------------------------------------------------
+// Stream requests
+// -----------------------------------------------------------------------------
+
+message StreamOrdersRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+}
+
+message StreamFillsRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+}
+
+message StreamBalancesRequest {
+  string account_id = 1;
+  string asset = 2;
+}
+
+message StreamPositionsRequest {
+  string account_id = 1;
+  string instrument_id = 2;
+}

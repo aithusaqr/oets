@@ -1,26 +1,32 @@
-ROOT := $(CURDIR)/common
+ROOT := $(CURDIR)
 OUT := $(CURDIR)/generated/python
+PYTHON := python3
 
-PROTO_FILES := \
-	$(ROOT)/*.proto \
-	$(ROOT)/execution/*.proto \
-	$(ROOT)/reconciliation/*.proto
-
-.PHONY: generate_python_protos clean_python_protos
+.PHONY: generate_python_protos clean_python_protos generate_python_services
 # buf-based generation (preferred if `buf` is installed).
 .PHONY: buf_generate buf_lint buf_breaking
 
+PROTO_FILES := $(shell find $(ROOT)/common -name "*.proto" -type f)
+
+SERVICE_PROTO_FILES := $(shell find $(ROOT)/common/services -name "*.proto" -type f)
+
 generate_python_protos:
-	rm -rf $(OUT)
+		rm -rf $(OUT)
 	mkdir -p $(OUT)
-	touch $(OUT)/__init__.py
-	protoc \
-		-I $(CURDIR) \
+
+	$(PYTHON) -m grpc_tools.protoc \
+		-I $(ROOT) \
 		--python_out=$(OUT) \
+		--pyi_out=$(OUT) \
 		$(PROTO_FILES)
-	touch $(OUT)/common/__init__.py
-	touch $(OUT)/common/execution/__init__.py
-	touch $(OUT)/common/reconciliation/__init__.py
+
+	$(PYTHON) -m grpc_tools.protoc \
+		-I $(ROOT) \
+		--grpc_python_out=$(OUT) \
+		$(SERVICE_PROTO_FILES)
+
+	find $(OUT) -type d -exec touch {}/__init__.py \;
+
 
 clean_python_protos:
 	rm -rf $(OUT)/common

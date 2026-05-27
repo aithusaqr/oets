@@ -180,10 +180,12 @@ def test_workflow_has_pb2_idempotency_check(all_steps: list[dict]):
     )
     for step in regen_steps:
         run_text = str(step.get("run", ""))
-        has_drift_check = "git diff" in run_text or "git status" in run_text
+        has_drift_check = "git status --porcelain" in run_text or "git diff" in run_text
         assert has_drift_check, (
             f"CI step '{step.get('name', '(unnamed)')}' runs make generate_python_protos "
-            "but does not follow up with a 'git diff' or 'git status' check to catch drift."
+            "but does not follow up with a 'git status --porcelain' or 'git diff' check "
+            "to catch drift. Note: 'git diff --exit-code' alone misses untracked new files "
+            "(e.g. empty __init__.py); prefer 'git status --porcelain'."
         )
 
 

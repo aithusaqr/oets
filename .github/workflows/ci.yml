@@ -49,9 +49,11 @@ jobs:
       - name: Verify pb2 regeneration is idempotent
         run: |
           make generate_python_protos
-          git add -N generated/python/
-          git diff --exit-code generated/python/ || \
-            (echo "generated/python/ is out of sync with protos — re-run 'make generate_python_protos' and commit the result" && exit 1)
+          if git status --porcelain generated/python/ | grep .; then
+            echo "generated/python/ is out of sync with protos — re-run 'make generate_python_protos' and commit the result"
+            git status generated/python/
+            exit 1
+          fi
 
       - name: Run pytest
         run: pytest tests/ -v

@@ -7,39 +7,41 @@ from pathlib import Path
 import pytest
 
 
-_DEP_FILES = ["requirements.txt", "requirements-test.txt"]
+_KNOWN_DEP_FILES = ["requirements.txt", "requirements-test.txt"]
 _PROTOBUF_LINE_RE = re.compile(r"^protobuf([^#\n]*)", re.MULTILINE)
+_GRPCIO_TOOLS_LINE_RE = re.compile(r"^grpcio-tools([^#\n]*)", re.MULTILINE)
 _VERSION_RE = re.compile(r">=(\d+\.\d+)")
 
 
-def _protobuf_lower_bound(text: str) -> tuple[int, int] | None:
-    """Return the (major, minor) lower bound parsed from a protobuf specifier line, or None."""
-    m = _PROTOBUF_LINE_RE.search(text)
+def _lower_bound(spec_text: str) -> tuple[int, int] | None:
+    """Return the (major, minor) lower bound from a PEP 440 specifier string, or None."""
+    m = _VERSION_RE.search(spec_text)
     if not m:
         return None
-    spec = m.group(1)
-    vm = _VERSION_RE.search(spec)
-    if not vm:
-        return None
-    major, minor = vm.group(1).split(".", 1)
+    major, minor = m.group(1).split(".", 1)
     return int(major), int(minor.split(".")[0])
 
 
-@pytest.mark.parametrize("rel_path", _DEP_FILES)
+def _extract_spec(text: str, pkg_re: re.Pattern) -> str | None:
+    """Return the full specifier string (everything after the package name) or None."""
+    m = pkg_re.search(text)
+    return m.group(1).strip() if m else None
+
+
+@pytest.mark.parametrize("rel_path", _KNOWN_DEP_FILES)
 def test_requirements_protobuf_lower_bound(repo_root: Path, rel_path: str):
     """Each requirements file must pin protobuf to >=5.29 after build-cleanup."""
     path = repo_root / rel_path
     assert path.is_file(), f"{rel_path} not found at repo root"
-    text = path.read_text(encoding="utf-8")
-    bound = _protobuf_lower_bound(text)
-    assert bound is not None, (
-        f"{rel_path}: no 'protobuf>=' specifier found — "
-        "the build-cleanup PR tightened the lower bound to >=5.29 to match the "
-        "gencode emitted by grpc_tools 1.69 (bundled protoc 29.0 / 5.29.x)."
+    spec = _extract_spec(path.read_text(encoding="utf-8"), _PROTOBUF_LINE_RE)
+    assert spec is not None, (
+        f"{rel_path}: no 'protobuf' specifier found — "
+        "the build-cleanup PR tightened the lower bound to >=5.29."
     )
+    bound = _lower_bound(spec)
+    assert bound is not None, f"{rel_path}: cannot parse lower bound from protobuf specifier {spec!r}"
     assert bound >= (5, 29), (
-        f"{rel_path}: protobuf lower bound is {bound[0]}.{bound[1]}, expected >=5.29. "
-        "The build-cleanup PR bumped this to match the grpc_tools-regenerated gencode."
+        f"{rel_path}: protobuf lower bound is {bound[0]}.{bound[1]}, expected >=5.29."
     )
 
 
@@ -50,30 +52,75 @@ def test_pyproject_protobuf_lower_bound(repo_root: Path):
     data = tomllib.loads(path.read_text(encoding="utf-8"))
     deps: list[str] = data.get("project", {}).get("dependencies", [])
     proto_dep = next((d for d in deps if d.startswith("protobuf")), None)
-    assert proto_dep is not None, (
-        "pyproject.toml [project].dependencies has no 'protobuf' entry"
-    )
-    bound = _protobuf_lower_bound(proto_dep)
-    assert bound is not None, (
-        f"pyproject.toml: could not parse lower bound from {proto_dep!r}"
-    )
+    assert proto_dep is not None, "pyproject.toml [project].dependencies has no 'protobuf' entry"
+    bound = _lower_bound(proto_dep)
+    assert bound is not None, f"pyproject.toml: cannot parse lower bound from {proto_dep!r}"
     assert bound >= (5, 29), (
-        f"pyproject.toml: protobuf lower bound is {bound[0]}.{bound[1]}, expected >=5.29. "
-        "The build-cleanup PR bumped this to match the grpc_tools-regenerated gencode."
+        f"pyproject.toml: protobuf lower bound is {bound[0]}.{bound[1]}, expected >=5.29."
+    )
+
+
+def test_protobuf_spec_consistent_across_dep_files(repo_root: Path):
+    """protobuf specifier must be identical across pyproject.toml and requirements files.
+
+    A contributor bumping the pin in one file without the others will be caught here.
+    """
+    specs: dict[str, str] = {}
+
+    # pyproject.toml — extract just the version spec portion
+    toml_path = repo_root / "pyproject.toml"
+    data = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+    deps: list[str] = data.get("project", {}).get("dependencies", [])
+    proto_dep = next((d for d in deps if d.startswith("protobuf")), None)
+    if proto_dep:
+        specs["pyproject.toml"] = proto_dep[len("protobuf"):].strip()
+
+    for rel_path in _KNOWN_DEP_FILES:
+        path = repo_root / rel_path
+        if path.is_file():
+            spec = _extract_spec(path.read_text(encoding="utf-8"), _PROTOBUF_LINE_RE)
+            if spec is not None:
+                specs[rel_path] = spec
+
+    assert len(specs) >= 2, "Expected protobuf spec in at least two dep files"
+    unique = set(specs.values())
+    assert len(unique) == 1, (
+        f"protobuf specifiers are not consistent across dep files:\n"
+        + "\n".join(f"  {f}: protobuf{s}" for f, s in sorted(specs.items()))
     )
 
 
 def test_dep_files_upper_bound_consistent(repo_root: Path):
-    """All dependency files must keep the protobuf upper bound at <6."""
-    files = _DEP_FILES + ["pyproject.toml"]
-    for rel_path in files:
+    """All known dependency files must keep the protobuf upper bound at <6."""
+    all_files = _KNOWN_DEP_FILES + ["pyproject.toml"]
+    for rel_path in all_files:
         path = repo_root / rel_path
-        if not path.is_file():
-            continue
+        assert path.is_file(), f"{rel_path} not found at repo root"
         text = path.read_text(encoding="utf-8")
-        if "protobuf" not in text:
-            continue
+        assert "protobuf" in text, (
+            f"{rel_path}: no 'protobuf' entry found — "
+            "all dep files must declare a protobuf pin."
+        )
         assert "<6" in text, (
             f"{rel_path}: protobuf specifier is missing '<6' upper bound. "
             "All dep files must agree to stay on the protobuf 5.x series."
         )
+
+
+def test_grpcio_tools_lower_bound(repo_root: Path):
+    """requirements-test.txt must pin grpcio-tools to >=1.69.
+
+    grpcio-tools 1.69 bundles libprotoc 29.0 (5.29.x) — the version that emits the
+    committed gencode. A lower bound of <1.69 allows regeneration with a stale protoc
+    that produces 5.28.x gencode, breaking test_pb2_gencode_version_at_least_5_29.
+    """
+    path = repo_root / "requirements-test.txt"
+    assert path.is_file(), "requirements-test.txt not found at repo root"
+    spec = _extract_spec(path.read_text(encoding="utf-8"), _GRPCIO_TOOLS_LINE_RE)
+    assert spec is not None, "requirements-test.txt: no 'grpcio-tools' specifier found"
+    bound = _lower_bound(spec)
+    assert bound is not None, f"requirements-test.txt: cannot parse lower bound from grpcio-tools specifier {spec!r}"
+    assert bound >= (1, 69), (
+        f"requirements-test.txt: grpcio-tools lower bound is {bound[0]}.{bound[1]}, "
+        "expected >=1.69 (the version that bundles libprotoc 29.0 / 5.29.x)."
+    )

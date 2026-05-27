@@ -35,11 +35,11 @@ def test_recipe_uses_grpc_tools_protoc(recipe_block: str):
 def test_recipe_does_not_use_bare_protoc(recipe_block: str):
     """generate_python_protos must NOT invoke bare protoc (only python -m grpc_tools.protoc)."""
     for line in recipe_block.splitlines():
-        stripped = line.strip()
-        # Allow lines that reference grpc_tools.protoc — reject any that call bare protoc
-        if re.search(r"\bprotoc\b", stripped) and "grpc_tools.protoc" not in stripped:
+        # Strip the grpc_tools invocation first, then check what's left for bare protoc.
+        remainder = line.replace("python -m grpc_tools.protoc", "")
+        if re.search(r"(?<![.\w])protoc(?![\w.])", remainder):
             pytest.fail(
                 f"Makefile generate_python_protos recipe contains a bare 'protoc' "
-                f"invocation: {stripped!r}\n"
+                f"invocation: {line.strip()!r}\n"
                 "Only 'python -m grpc_tools.protoc' is allowed after the build-cleanup PR."
             )

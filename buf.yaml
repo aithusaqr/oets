@@ -1,0 +1,27 @@
+version: v2
+modules:
+  - path: .
+    name: buf.build/aithusaqr/oets
+lint:
+  use:
+    - STANDARD
+  except:
+    # Many enums currently use UNKNOWN_* as the zero-value name instead of the
+    # buf-canonical *_UNSPECIFIED form. Renaming is a deliberate Phase 2 item;
+    # leaving this rule active would fail every existing enum.
+    - ENUM_ZERO_VALUE_SUFFIX
+    # Many enum values are not prefixed with the UPPER_SNAKE name of their
+    # enclosing enum (e.g. OrderSide.BUY should be ORDER_SIDE_BUY). Paired
+    # with the Phase 2 rename above.
+    - ENUM_VALUE_PREFIX
+    # buf expects package oets.v1 files to live under oets/v1/, but the repo
+    # currently lays them under common/, common/execution/, common/reconciliation/.
+    # Re-enabling this rule requires relocating every .proto and updating
+    # every import — a separate layout-restructure ticket.
+    - PACKAGE_DIRECTORY_MATCH
+    # Paired with PACKAGE_DIRECTORY_MATCH: oets.v1 files are spread across
+    # multiple subdirectories rather than a single directory.
+    - PACKAGE_SAME_DIRECTORY
+breaking:
+  use:
+    - FILE

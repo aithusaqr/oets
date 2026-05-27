@@ -1,0 +1,23 @@
+[project]
+name = "oets"
+version = "0.1.0"
+description = "Open Execution Telemetry Standard — proto schemas"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "protobuf>=5.28,<6",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Only ship the validation package for now.
+# generated/python/ shipping is deferred until protos relocate to oets/v1/
+# (so the package path matches the proto package name).
+[tool.setuptools]
+packages = ["validation"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"

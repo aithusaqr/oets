@@ -14,7 +14,7 @@ generate_python_protos:
 	rm -rf $(OUT)
 	mkdir -p $(OUT)
 	touch $(OUT)/__init__.py
-	protoc \
+	python -m grpc_tools.protoc \
 		-I $(CURDIR) \
 		--python_out=$(OUT) \
 		$(PROTO_FILES)

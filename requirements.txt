@@ -1,5 +1,4 @@
 # Runtime dependencies for the OETS generated Python bindings.
-# Lower bound matches the gencode version in committed _pb2.py files (5.28.1).
-# Will be tightened to >=5.29 in the build-cleanup PR once pb2s are regenerated
-# against the bundled grpc_tools protoc.
-protobuf>=5.28,<6
+# Lower bound matches the gencode version in committed _pb2.py files (5.29.x),
+# regenerated against the bundled grpc_tools protoc.
+protobuf>=5.29,<6

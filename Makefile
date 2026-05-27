@@ -14,7 +14,7 @@ generate_python_protos:
 	rm -rf $(OUT)
 	mkdir -p $(OUT)
 	touch $(OUT)/__init__.py
-	protoc \
+	python -m grpc_tools.protoc \
 		-I $(CURDIR) \
 		--python_out=$(OUT) \
 		$(PROTO_FILES)
@@ -23,7 +23,7 @@ generate_python_protos:
 	touch $(OUT)/common/reconciliation/__init__.py
 
 clean_python_protos:
-	rm -rf $(OUT)/common
+	rm -rf $(OUT)
 
 buf_generate:
 	buf generate

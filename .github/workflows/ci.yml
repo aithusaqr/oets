@@ -46,5 +46,14 @@ jobs:
         continue-on-error: true
         run: buf breaking --against '.git#branch=main'
 
+      - name: Verify pb2 regeneration is idempotent
+        run: |
+          make generate_python_protos
+          if git status --porcelain generated/python/ | grep .; then
+            echo "generated/python/ is out of sync with protos — re-run 'make generate_python_protos' and commit the result"
+            git status generated/python/
+            exit 1
+          fi
+
       - name: Run pytest
         run: pytest tests/ -v

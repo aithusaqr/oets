@@ -26,27 +26,25 @@ from common import execution_venue_pb2 as common_dot_execution__venue__pb2
 from common import account_pb2 as common_dot_account__pb2
 from common import event_envelope_pb2 as common_dot_event__envelope__pb2
 from common import instrument_pb2 as common_dot_instrument__pb2
-from common import timestamps_pb2 as common_dot_timestamps__pb2
-from common import source_pb2 as common_dot_source__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"common/execution/order_event.proto\x12\x07oets.v1\x1a\x1c\x63ommon/execution_venue.proto\x1a\x14\x63ommon/account.proto\x1a\x1b\x63ommon/event_envelope.proto\x1a\x17\x63ommon/instrument.proto\x1a\x17\x63ommon/timestamps.proto\x1a\x13\x63ommon/source.proto\"\xb4\x04\n\nOrderEvent\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12$\n\x07\x61\x63\x63ount\x18\x02 \x01(\x0b\x32\x13.oets.v1.AccountRef\x12*\n\ninstrument\x18\x03 \x01(\x0b\x32\x16.oets.v1.InstrumentRef\x12&\n\x05venue\x18\x04 \x01(\x0b\x32\x17.oets.v1.ExecutionVenue\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x17\n\x0f\x63lient_order_id\x18\x06 \x01(\t\x12 \n\x04side\x18\x07 \x01(\x0e\x32\x12.oets.v1.OrderSide\x12&\n\norder_type\x18\x08 \x01(\x0e\x32\x12.oets.v1.OrderType\x12(\n\x0border_state\x18\t \x01(\x0e\x32\x13.oets.v1.OrderState\x12,\n\torder_tif\x18\n \x01(\x0e\x32\x19.oets.v1.OrderTimeInForce\x12\r\n\x05price\x18\x0b \x01(\x03\x12\x10\n\x08quantity\x18\x0c \x01(\x03\x12(\n\x06source\x18\r \x01(\x0b\x32\x18.oets.v1.SourceReference\x12+\n\ntimestamps\x18\x0e \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12\x39\n\x14order_intention_type\x18\x0f \x01(\x0e\x32\x1b.oets.v1.OrderIntentionType*\x1e\n\tOrderSide\x12\x07\n\x03\x42UY\x10\x00\x12\x08\n\x04SELL\x10\x01*\xd9\x01\n\tOrderType\x12\x16\n\x12UNKNOWN_ORDER_TYPE\x10\x00\x12\t\n\x05LIMIT\x10\x01\x12\n\n\x06MARKET\x10\x02\x12\x13\n\x0fLIMIT_POST_ONLY\x10\x03\x12\"\n\x1eORDER_TYPE_IMMEDIATE_OR_CANCEL\x10\x04\x12\x1b\n\x17ORDER_TYPE_FILL_OR_KILL\x10\x05\x12\x08\n\x04TWAP\x10\x06\x12\x0b\n\x07ICEBERG\x10\x07\x12\t\n\x05OTHER\x10\x08\x12\x08\n\x04STOP\x10\t\x12\x0e\n\nSTOP_LIMIT\x10\n\x12\x0b\n\x07\x42RACKET\x10\x0b*\xe4\x01\n\nOrderState\x12\x17\n\x13UNKNOWN_ORDER_STATE\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x08\n\x04SENT\x10\x02\x12\x0b\n\x07PENDING\x10\x03\x12\t\n\x05\x41\x43KED\x10\x04\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x05\x12\x0c\n\x08REJECTED\x10\x06\x12\x12\n\x0ePENDING_CANCEL\x10\x07\x12\x0b\n\x07\x45XPIRED\x10\x08\x12\x14\n\x10PARTIALLY_FILLED\x10\t\x12\n\n\x06\x46ILLED\x10\n\x12\r\n\tCANCELLED\x10\x0b\x12\n\n\x06\x46\x41ILED\x10\x0c\x12\x08\n\x04\x44ONE\x10\r\x12\n\n\x06\x43LOSED\x10\x0e*f\n\x10OrderTimeInForce\x12\x13\n\x0fGOOD_TIL_CANCEL\x10\x00\x12!\n\x1dORDER_TIF_IMMEDIATE_OR_CANCEL\x10\x01\x12\x1a\n\x16ORDER_TIF_FILL_OR_KILL\x10\x02*R\n\x12OrderIntentionType\x12\x0b\n\x07RESTING\x10\x00\x12\x0c\n\x08\x43ROSSING\x10\x01\x12\n\n\x06\x43\x41NCEL\x10\x02\x12\x15\n\x11ONE_CANCELS_OTHER\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"common/execution/order_event.proto\x12\x07oets.v1\x1a\x1c\x63ommon/execution_venue.proto\x1a\x14\x63ommon/account.proto\x1a\x1b\x63ommon/event_envelope.proto\x1a\x17\x63ommon/instrument.proto\"\xfd\x03\n\nOrderEvent\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12$\n\x07\x61\x63\x63ount\x18\x02 \x01(\x0b\x32\x13.oets.v1.AccountRef\x12*\n\ninstrument\x18\x03 \x01(\x0b\x32\x16.oets.v1.InstrumentRef\x12&\n\x05venue\x18\x04 \x01(\x0b\x32\x17.oets.v1.ExecutionVenue\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x17\n\x0f\x63lient_order_id\x18\x06 \x01(\t\x12 \n\x04side\x18\x07 \x01(\x0e\x32\x12.oets.v1.OrderSide\x12&\n\norder_type\x18\x08 \x01(\x0e\x32\x12.oets.v1.OrderType\x12(\n\x0border_state\x18\t \x01(\x0e\x32\x13.oets.v1.OrderState\x12,\n\torder_tif\x18\n \x01(\x0e\x32\x19.oets.v1.OrderTimeInForce\x12\r\n\x05price\x18\x0b \x01(\x03\x12\x10\n\x08quantity\x18\x0c \x01(\x03\x12\x39\n\x14order_intention_type\x18\x0f \x01(\x0e\x32\x1b.oets.v1.OrderIntentionTypeJ\x04\x08\r\x10\x0eJ\x04\x08\x0e\x10\x0fR\x06sourceR\ntimestamps*:\n\tOrderSide\x12\x1a\n\x16ORDER_SIDE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x42UY\x10\x01\x12\x08\n\x04SELL\x10\x02*\xdd\x01\n\tOrderType\x12\x1a\n\x16ORDER_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05LIMIT\x10\x01\x12\n\n\x06MARKET\x10\x02\x12\x13\n\x0fLIMIT_POST_ONLY\x10\x03\x12\"\n\x1eORDER_TYPE_IMMEDIATE_OR_CANCEL\x10\x04\x12\x1b\n\x17ORDER_TYPE_FILL_OR_KILL\x10\x05\x12\x08\n\x04TWAP\x10\x06\x12\x0b\n\x07ICEBERG\x10\x07\x12\t\n\x05OTHER\x10\x08\x12\x08\n\x04STOP\x10\t\x12\x0e\n\nSTOP_LIMIT\x10\n\x12\x0b\n\x07\x42RACKET\x10\x0b*\xe8\x01\n\nOrderState\x12\x1b\n\x17ORDER_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43REATED\x10\x01\x12\x08\n\x04SENT\x10\x02\x12\x0b\n\x07PENDING\x10\x03\x12\t\n\x05\x41\x43KED\x10\x04\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x05\x12\x0c\n\x08REJECTED\x10\x06\x12\x12\n\x0ePENDING_CANCEL\x10\x07\x12\x0b\n\x07\x45XPIRED\x10\x08\x12\x14\n\x10PARTIALLY_FILLED\x10\t\x12\n\n\x06\x46ILLED\x10\n\x12\r\n\tCANCELLED\x10\x0b\x12\n\n\x06\x46\x41ILED\x10\x0c\x12\x08\n\x04\x44ONE\x10\r\x12\n\n\x06\x43LOSED\x10\x0e*\x81\x01\n\x10OrderTimeInForce\x12\x19\n\x15ORDER_TIF_UNSPECIFIED\x10\x00\x12\x13\n\x0fGOOD_TIL_CANCEL\x10\x01\x12!\n\x1dORDER_TIF_IMMEDIATE_OR_CANCEL\x10\x02\x12\x1a\n\x16ORDER_TIF_FILL_OR_KILL\x10\x03*x\n\x12OrderIntentionType\x12$\n ORDER_INTENTION_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RESTING\x10\x01\x12\x0c\n\x08\x43ROSSING\x10\x02\x12\n\n\x06\x43\x41NCEL\x10\x03\x12\x15\n\x11ONE_CANCELS_OTHER\x10\x04\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.execution.order_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_ORDERSIDE']._serialized_start=766
-  _globals['_ORDERSIDE']._serialized_end=796
-  _globals['_ORDERTYPE']._serialized_start=799
-  _globals['_ORDERTYPE']._serialized_end=1016
-  _globals['_ORDERSTATE']._serialized_start=1019
-  _globals['_ORDERSTATE']._serialized_end=1247
-  _globals['_ORDERTIMEINFORCE']._serialized_start=1249
-  _globals['_ORDERTIMEINFORCE']._serialized_end=1351
-  _globals['_ORDERINTENTIONTYPE']._serialized_start=1353
-  _globals['_ORDERINTENTIONTYPE']._serialized_end=1435
-  _globals['_ORDEREVENT']._serialized_start=200
-  _globals['_ORDEREVENT']._serialized_end=764
+  _globals['_ORDERSIDE']._serialized_start=665
+  _globals['_ORDERSIDE']._serialized_end=723
+  _globals['_ORDERTYPE']._serialized_start=726
+  _globals['_ORDERTYPE']._serialized_end=947
+  _globals['_ORDERSTATE']._serialized_start=950
+  _globals['_ORDERSTATE']._serialized_end=1182
+  _globals['_ORDERTIMEINFORCE']._serialized_start=1185
+  _globals['_ORDERTIMEINFORCE']._serialized_end=1314
+  _globals['_ORDERINTENTIONTYPE']._serialized_start=1316
+  _globals['_ORDERINTENTIONTYPE']._serialized_end=1436
+  _globals['_ORDEREVENT']._serialized_start=154
+  _globals['_ORDEREVENT']._serialized_end=663
 # @@protoc_insertion_point(module_scope)

@@ -5,13 +5,14 @@ import "common/relationships.proto";
 
 package oets.v1;
 
-enum EventType{
-  UNKNOWN_EVENT_TYPE = 0;
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
   EVENT_TYPE_FILL = 1;
   EVENT_TYPE_ORDER = 2;
   EVENT_TYPE_POSITION = 3;
+  EVENT_TYPE_SETTLEMENT = 4;
   EVENT_TYPE_BALANCE = 5;
-  EVENT_TYPE_CASH_FLOW_EVENT = 6;
+  EVENT_TYPE_CASH_FLOW = 6;
 }
 
 message OetsEventEnvelope {

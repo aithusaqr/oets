@@ -3,7 +3,7 @@ syntax = "proto3";
 package oets.v1;
 
 enum InstrumentType{
-  UNKNOWN_INSTRUMENT_TYPE = 0;
+  INSTRUMENT_TYPE_UNSPECIFIED = 0;
   PERPETUAL = 1;
   SPOT =2;
   FUTURE = 3;
@@ -13,7 +13,7 @@ enum InstrumentType{
 }
 
 enum ContractType {
-  UNKNOWN_CONTRACT_TYPE = 0;
+  CONTRACT_TYPE_UNSPECIFIED = 0;
   LINEAR = 1;
   INVERSE = 2;
 }

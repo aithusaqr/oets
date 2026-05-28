@@ -3,7 +3,7 @@ syntax = "proto3";
 package oets.v1;
 
 enum AccountType{
-  UNKNOWN_ACCOUNT_TYPE = 0;
+  ACCOUNT_TYPE_UNSPECIFIED = 0;
   ACCOUNT_TYPE_WALLET = 1;
   ACCOUNT_TYPE_MAIN_ACCOUNT = 2;
   ACCOUNT_TYPE_SUBACCOUNT = 3;

@@ -22,13 +22,18 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from common import event_envelope_pb2 as common_dot_event__envelope__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto\x12\x07oets.v1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,common/reconciliation/settlement_event.proto\x12\x07oets.v1\x1a\x1b\x63ommon/event_envelope.proto\"\xb4\x02\n\x0fSettlementEvent\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x15\n\rinstrument_id\x18\x04 \x01(\t\x12\x30\n\x0fsettlement_type\x18\x05 \x01(\x0e\x32\x17.oets.v1.SettlementType\x12\x19\n\x11settlement_amount\x18\x06 \x01(\x03\x12\x18\n\x10settlement_asset\x18\x07 \x01(\t\x12\x12\n\nmark_price\x18\x08 \x01(\x03\x12\x1b\n\x13related_position_id\x18\t \x01(\t\x12\x1e\n\x16related_transaction_id\x18\n \x01(\t*\x86\x01\n\x0eSettlementType\x12\x1f\n\x1bSETTLEMENT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n\x14SETTLEMENT_TYPE_CASH\x10\x01\x12\x1c\n\x18SETTLEMENT_TYPE_PHYSICAL\x10\x02\x12\x1b\n\x17SETTLEMENT_TYPE_FUNDING\x10\x03\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.reconciliation.settlement_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
+  _globals['_SETTLEMENTTYPE']._serialized_start=398
+  _globals['_SETTLEMENTTYPE']._serialized_end=532
+  _globals['_SETTLEMENTEVENT']._serialized_start=87
+  _globals['_SETTLEMENTEVENT']._serialized_end=395
 # @@protoc_insertion_point(module_scope)

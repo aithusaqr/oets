@@ -3,7 +3,7 @@ syntax = "proto3";
 package oets.v1;
 
 enum SourceType {
-  UNKNOWN_SOURCE_TYPE = 0;
+  SOURCE_TYPE_UNSPECIFIED = 0;
   BOT = 1;
   SOURCE_WALLET = 2;
   PROTOCOL = 3;

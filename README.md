@@ -94,6 +94,26 @@ common/reconciliation/settlement_event.proto
 
 ---
 
+## v0.1 Breaking Changes
+
+The following wire-breaking changes were introduced in v0.1. Consumers of any pre-v0.1 generated bindings must migrate.
+
+| Area | Change |
+|---|---|
+| **Enum sentinels** | All `UNKNOWN_*` zero-values renamed to `*_UNSPECIFIED` (e.g. `UNKNOWN_ACCOUNT_TYPE = 0` → `ACCOUNT_TYPE_UNSPECIFIED = 0`). Affects `AccountType`, `VenueType`, `InstrumentType`, `ContractType`, `RelationshipType`, `SourceType`, `EventType`, `OrderType`, `OrderState`, `FeeType`. |
+| **`OrderSide`** | `BUY = 0` / `SELL = 1` shifted to `BUY = 1` / `SELL = 2`; new `ORDER_SIDE_UNSPECIFIED = 0` sentinel. |
+| **`OrderTimeInForce`** | `GOOD_TIL_CANCEL = 0`, `…_IOC = 1`, `…_FOK = 2` shifted by +1; new `ORDER_TIF_UNSPECIFIED = 0` sentinel. |
+| **`OrderIntentionType`** | `RESTING = 0` … `ONE_CANCELS_OTHER = 3` shifted by +1; new `ORDER_INTENTION_TYPE_UNSPECIFIED = 0` sentinel. |
+| **`EventType`** | `EVENT_TYPE_CASH_FLOW_EVENT` renamed to `EVENT_TYPE_CASH_FLOW`; `EVENT_TYPE_SETTLEMENT = 4` added (former gap). |
+| **`Fee.amount`** | Field type changed from `string` to `int64` (scaled integer per `docs/SCALING.md`). |
+| **`Fee.fee_type`** | Field type changed from `string` to `FeeType` enum. |
+| **`FillEvent`** | `int64 fee = 12` replaced by `Fee fee = 12` (structured sub-message, different wire type); fields `fee_asset` (13), `notional_fee` (14), `source` (15), `timestamps` (19) removed and reserved. |
+| **`OrderEvent`** | Fields `source` (13) and `timestamps` (14) removed and reserved. |
+| **`CashFlowEvent`** | `OetsEventEnvelope envelope = 1` added (was `string event_id = 1`); `fee_amount` (field 9) replaced by `Fee fee = 9`; routing fields (`timestamp`, `source`, `related_events`, `metadata`) reserved; `event_id` and `fee_amount` names reserved. |
+| **`SettlementEvent`** | Was an empty stub; now carries a full schema with `OetsEventEnvelope`, settlement type/amount/asset/mark price, and related-ID fields. |
+
+---
+
 ## Getting Started
 
 ```bash

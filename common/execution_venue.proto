@@ -4,7 +4,7 @@ syntax = "proto3";
 package oets.v1;
 
 enum VenueType {
-  UNKNOWN_VENUE_TYPE = 0;
+  VENUE_TYPE_UNSPECIFIED = 0;
   VENUE_TYPE_DEX = 1;
   VENUE_TYPE_CEX = 2;
   VENUE_TYPE_DEX_CLOB = 3;

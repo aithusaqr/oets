@@ -6,9 +6,8 @@ import "common/execution_venue.proto";
 import "common/account.proto";
 import "common/event_envelope.proto";
 import "common/instrument.proto";
-import "common/timestamps.proto";
-import "common/source.proto";
 import "common/execution/order_event.proto";
+import "common/reconciliation/fee_event.proto";
 import "common/reconciliation/position_event.proto";
 
 message FillEvent {
@@ -26,13 +25,19 @@ message FillEvent {
   int64 quantity = 9;
   int64 price = 10;
   int64 notional_value = 11;
-  int64 fee = 12;
-  string fee_asset = 13;
-  int64 notional_fee =14;
-  SourceReference source = 15;
-  int64 realized_pnl = 16;
-  string realized_pnl_asset =17;
-  PositionSide position_side = 18;
-  EventTimestamp timestamps = 19;
 
+  Fee fee = 12;
+
+  reserved 13, 14;
+  reserved "fee_asset", "notional_fee";
+
+  reserved 15;
+  reserved "source";
+
+  int64 realized_pnl = 16;
+  string realized_pnl_asset = 17;
+  PositionSide position_side = 18;
+
+  reserved 19;
+  reserved "timestamps";
 }

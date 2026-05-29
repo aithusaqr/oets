@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1a\x63ommon/relationships.proto\x12\x07oets.v1\"c\n\x11\x45ventRelationship\x12\x34\n\x11relationship_type\x18\x01 \x01(\x0e\x32\x19.oets.v1.RelationshipType\x12\x18\n\x10related_event_id\x18\x02 \x01(\t*\x81\x01\n\x10RelationshipType\x12\x1d\n\x19UNKNOWN_RELATIONSHIP_TYPE\x10\x00\x12\x0f\n\x0b\x46ILLS_ORDER\x10\x01\x12\x10\n\x0c\x46\x45\x45_FOR_FILL\x10\x02\x12\x11\n\rCANCELS_ORDER\x10\x03\x12\x18\n\x14OBSERVES_TRANSACTION\x10\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1a\x63ommon/relationships.proto\x12\x07oets.v1\"c\n\x11\x45ventRelationship\x12\x34\n\x11relationship_type\x18\x01 \x01(\x0e\x32\x19.oets.v1.RelationshipType\x12\x18\n\x10related_event_id\x18\x02 \x01(\t*\xcd\x01\n\x10RelationshipType\x12!\n\x1dRELATIONSHIP_TYPE_UNSPECIFIED\x10\x00\x12!\n\x1dRELATIONSHIP_TYPE_FILLS_ORDER\x10\x01\x12\"\n\x1eRELATIONSHIP_TYPE_FEE_FOR_FILL\x10\x02\x12#\n\x1fRELATIONSHIP_TYPE_CANCELS_ORDER\x10\x03\x12*\n&RELATIONSHIP_TYPE_OBSERVES_TRANSACTION\x10\x04\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,7 +32,7 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.relationships_pb2', 
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_RELATIONSHIPTYPE']._serialized_start=141
-  _globals['_RELATIONSHIPTYPE']._serialized_end=270
+  _globals['_RELATIONSHIPTYPE']._serialized_end=346
   _globals['_EVENTRELATIONSHIP']._serialized_start=39
   _globals['_EVENTRELATIONSHIP']._serialized_end=138
 # @@protoc_insertion_point(module_scope)

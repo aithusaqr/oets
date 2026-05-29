@@ -6,9 +6,11 @@ lint:
   use:
     - STANDARD
   except:
-    # Many enums currently use UNKNOWN_* as the zero-value name instead of the
-    # buf-canonical *_UNSPECIFIED form. Renaming is a deliberate Phase 2 item;
-    # leaving this rule active would fail every existing enum.
+    # All enums use *_UNSPECIFIED = 0 per the v0.1 sentinel convention, but
+    # enum value names are not yet prefixed with their enclosing enum name
+    # (e.g. BUY vs ORDER_SIDE_BUY), which buf's ENUM_ZERO_VALUE_SUFFIX rule
+    # also enforces. Removing this except requires the ENUM_VALUE_PREFIX
+    # rename below to land first.
     - ENUM_ZERO_VALUE_SUFFIX
     # Many enum values are not prefixed with the UPPER_SNAKE name of their
     # enclosing enum (e.g. OrderSide.BUY should be ORDER_SIDE_BUY). Paired

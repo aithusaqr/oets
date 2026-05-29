@@ -22,26 +22,21 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from common import timestamps_pb2 as common_dot_timestamps__pb2
-from common import relationships_pb2 as common_dot_relationships__pb2
-from common import source_pb2 as common_dot_source__pb2
+from common import event_envelope_pb2 as common_dot_event__envelope__pb2
+from common.reconciliation import fee_event_pb2 as common_dot_reconciliation_dot_fee__event__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n+common/reconciliation/cash_flow_event.proto\x12\x07oets.v1\x1a\x17\x63ommon/timestamps.proto\x1a\x1a\x63ommon/relationships.proto\x1a\x13\x63ommon/source.proto\"\xa9\x05\n\rCashFlowEvent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\t\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x04 \x01(\t\x12\x16\n\x0e\x65xchange_asset\x18\x05 \x01(\t\x12-\n\x0e\x63\x61sh_flow_type\x18\x06 \x01(\x0e\x32\x15.oets.v1.CashFlowType\x12-\n\tdirection\x18\x07 \x01(\x0e\x32\x1a.oets.v1.CashFlowDirection\x12\x0e\n\x06\x61mount\x18\x08 \x01(\x03\x12\x12\n\nfee_amount\x18\t \x01(\x03\x12\x14\n\x0c\x66\x65\x65_asset_id\x18\n \x01(\t\x12\x18\n\x10related_order_id\x18\x0b \x01(\t\x12\x17\n\x0frelated_fill_id\x18\x0c \x01(\t\x12\x1b\n\x13related_position_id\x18\r \x01(\t\x12 \n\x18related_balance_event_id\x18\x0e \x01(\t\x12\x1e\n\x16related_transaction_id\x18\x0f \x01(\t\x12\x19\n\x11related_signature\x18\x10 \x01(\t\x12*\n\ttimestamp\x18\x11 \x01(\x0b\x32\x17.oets.v1.EventTimestamp\x12(\n\x06source\x18\x12 \x01(\x0b\x32\x18.oets.v1.SourceReference\x12\x32\n\x0erelated_events\x18\x13 \x03(\x0b\x32\x1a.oets.v1.EventRelationship\x12\x36\n\x08metadata\x18\x14 \x03(\x0b\x32$.oets.v1.CashFlowEvent.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01*\x9d\x05\n\x0c\x43\x61shFlowType\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_UNSPECIFIED\x10\x00\x12!\n\x1d\x43\x41SH_FLOW_TYPE_TRADE_PROCEEDS\x10\x01\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_TRADING_FEE\x10\x02\x12\x19\n\x15\x43\x41SH_FLOW_TYPE_REBATE\x10\x03\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_FUNDING_FEE\x10\x04\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_BORROW_FEE\x10\x05\x12\"\n\x1e\x43\x41SH_FLOW_TYPE_LIQUIDATION_FEE\x10\x06\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_SETTLEMENT\x10\x07\x12\x1a\n\x16\x43\x41SH_FLOW_TYPE_DEPOSIT\x10\x08\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_WITHDRAWAL\x10\t\x12$\n CASH_FLOW_TYPE_INTERNAL_TRANSFER\x10\n\x12$\n CASH_FLOW_TYPE_EXTERNAL_TRANSFER\x10\x0b\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_NETWORK_FEE\x10\x0c\x12\x17\n\x13\x43\x41SH_FLOW_TYPE_RENT\x10\r\x12\x19\n\x15\x43\x41SH_FLOW_TYPE_REWARD\x10\x0e\x12\x1a\n\x16\x43\x41SH_FLOW_TYPE_AIRDROP\x10\x0f\x12!\n\x1d\x43\x41SH_FLOW_TYPE_STAKING_REWARD\x10\x10\x12\x1f\n\x1b\x43\x41SH_FLOW_TYPE_PROTOCOL_FEE\x10\x11\x12,\n(CASH_FLOW_TYPE_RECONCILIATION_ADJUSTMENT\x10\x12\x12$\n CASH_FLOW_TYPE_MANUAL_ADJUSTMENT\x10\x13*\x9a\x01\n\x11\x43\x61shFlowDirection\x12#\n\x1f\x43\x41SH_FLOW_DIRECTION_UNSPECIFIED\x10\x00\x12\x1e\n\x1a\x43\x41SH_FLOW_DIRECTION_INFLOW\x10\x01\x12\x1f\n\x1b\x43\x41SH_FLOW_DIRECTION_OUTFLOW\x10\x02\x12\x1f\n\x1b\x43\x41SH_FLOW_DIRECTION_NEUTRAL\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n+common/reconciliation/cash_flow_event.proto\x12\x07oets.v1\x1a\x1b\x63ommon/event_envelope.proto\x1a%common/reconciliation/fee_event.proto\"\xb2\x04\n\rCashFlowEvent\x12,\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x1a.oets.v1.OetsEventEnvelope\x12\x10\n\x08venue_id\x18\x02 \x01(\t\x12\x12\n\naccount_id\x18\x03 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x04 \x01(\t\x12\x16\n\x0e\x65xchange_asset\x18\x05 \x01(\t\x12-\n\x0e\x63\x61sh_flow_type\x18\x06 \x01(\x0e\x32\x15.oets.v1.CashFlowType\x12-\n\tdirection\x18\x07 \x01(\x0e\x32\x1a.oets.v1.CashFlowDirection\x12\x0e\n\x06\x61mount\x18\x08 \x01(\x03\x12\x19\n\x03\x66\x65\x65\x18\t \x01(\x0b\x32\x0c.oets.v1.Fee\x12\x18\n\x10related_order_id\x18\x0b \x01(\t\x12\x17\n\x0frelated_fill_id\x18\x0c \x01(\t\x12\x1b\n\x13related_position_id\x18\r \x01(\t\x12 \n\x18related_balance_event_id\x18\x0e \x01(\t\x12\x1e\n\x16related_transaction_id\x18\x0f \x01(\t\x12\x19\n\x11related_signature\x18\x10 \x01(\tJ\x04\x08\n\x10\x0bJ\x04\x08\x11\x10\x12J\x04\x08\x12\x10\x13J\x04\x08\x13\x10\x14J\x04\x08\x14\x10\x15R\x0c\x66\x65\x65_asset_idR\ttimestampR\x06sourceR\x0erelated_eventsR\x08metadataR\x08\x65vent_idR\nfee_amount*\x9d\x05\n\x0c\x43\x61shFlowType\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_UNSPECIFIED\x10\x00\x12!\n\x1d\x43\x41SH_FLOW_TYPE_TRADE_PROCEEDS\x10\x01\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_TRADING_FEE\x10\x02\x12\x19\n\x15\x43\x41SH_FLOW_TYPE_REBATE\x10\x03\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_FUNDING_FEE\x10\x04\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_BORROW_FEE\x10\x05\x12\"\n\x1e\x43\x41SH_FLOW_TYPE_LIQUIDATION_FEE\x10\x06\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_SETTLEMENT\x10\x07\x12\x1a\n\x16\x43\x41SH_FLOW_TYPE_DEPOSIT\x10\x08\x12\x1d\n\x19\x43\x41SH_FLOW_TYPE_WITHDRAWAL\x10\t\x12$\n CASH_FLOW_TYPE_INTERNAL_TRANSFER\x10\n\x12$\n CASH_FLOW_TYPE_EXTERNAL_TRANSFER\x10\x0b\x12\x1e\n\x1a\x43\x41SH_FLOW_TYPE_NETWORK_FEE\x10\x0c\x12\x17\n\x13\x43\x41SH_FLOW_TYPE_RENT\x10\r\x12\x19\n\x15\x43\x41SH_FLOW_TYPE_REWARD\x10\x0e\x12\x1a\n\x16\x43\x41SH_FLOW_TYPE_AIRDROP\x10\x0f\x12!\n\x1d\x43\x41SH_FLOW_TYPE_STAKING_REWARD\x10\x10\x12\x1f\n\x1b\x43\x41SH_FLOW_TYPE_PROTOCOL_FEE\x10\x11\x12,\n(CASH_FLOW_TYPE_RECONCILIATION_ADJUSTMENT\x10\x12\x12$\n CASH_FLOW_TYPE_MANUAL_ADJUSTMENT\x10\x13*\x9a\x01\n\x11\x43\x61shFlowDirection\x12#\n\x1f\x43\x41SH_FLOW_DIRECTION_UNSPECIFIED\x10\x00\x12\x1e\n\x1a\x43\x41SH_FLOW_DIRECTION_INFLOW\x10\x01\x12\x1f\n\x1b\x43\x41SH_FLOW_DIRECTION_OUTFLOW\x10\x02\x12\x1f\n\x1b\x43\x41SH_FLOW_DIRECTION_NEUTRAL\x10\x03\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.reconciliation.cash_flow_event_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_CASHFLOWEVENT_METADATAENTRY']._loaded_options = None
-  _globals['_CASHFLOWEVENT_METADATAENTRY']._serialized_options = b'8\001'
-  _globals['_CASHFLOWTYPE']._serialized_start=815
-  _globals['_CASHFLOWTYPE']._serialized_end=1484
-  _globals['_CASHFLOWDIRECTION']._serialized_start=1487
-  _globals['_CASHFLOWDIRECTION']._serialized_end=1641
-  _globals['_CASHFLOWEVENT']._serialized_start=131
-  _globals['_CASHFLOWEVENT']._serialized_end=812
-  _globals['_CASHFLOWEVENT_METADATAENTRY']._serialized_start=765
-  _globals['_CASHFLOWEVENT_METADATAENTRY']._serialized_end=812
+  _globals['_CASHFLOWTYPE']._serialized_start=690
+  _globals['_CASHFLOWTYPE']._serialized_end=1359
+  _globals['_CASHFLOWDIRECTION']._serialized_start=1362
+  _globals['_CASHFLOWDIRECTION']._serialized_end=1516
+  _globals['_CASHFLOWEVENT']._serialized_start=125
+  _globals['_CASHFLOWEVENT']._serialized_end=687
 # @@protoc_insertion_point(module_scope)

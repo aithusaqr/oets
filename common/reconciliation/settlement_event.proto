@@ -1,3 +1,29 @@
 syntax = "proto3";
 
 package oets.v1;
+
+import "common/event_envelope.proto";
+
+enum SettlementType {
+  SETTLEMENT_TYPE_UNSPECIFIED = 0;
+  SETTLEMENT_TYPE_CASH = 1;
+  SETTLEMENT_TYPE_PHYSICAL = 2;
+  SETTLEMENT_TYPE_FUNDING = 3;
+}
+
+// Finalized P&L crystallization or collateral transfer at contract expiry or funding.
+message SettlementEvent {
+  OetsEventEnvelope envelope = 1;
+
+  string venue_id = 2;
+  string account_id = 3;
+  string instrument_id = 4;
+
+  SettlementType settlement_type = 5;
+  int64 settlement_amount = 6;
+  string settlement_asset = 7;
+  int64 mark_price = 8;
+
+  string related_position_id = 9;
+  string related_transaction_id = 10;
+}

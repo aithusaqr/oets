@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x63ommon/account.proto\x12\x07oets.v1\"L\n\nAccountRef\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12*\n\x0c\x61\x63\x63ount_type\x18\x02 \x01(\x0e\x32\x14.oets.v1.AccountType*\xee\x01\n\x0b\x41\x63\x63ountType\x12\x18\n\x14UNKNOWN_ACCOUNT_TYPE\x10\x00\x12\x17\n\x13\x41\x43\x43OUNT_TYPE_WALLET\x10\x01\x12\x1d\n\x19\x41\x43\x43OUNT_TYPE_MAIN_ACCOUNT\x10\x02\x12\x1b\n\x17\x41\x43\x43OUNT_TYPE_SUBACCOUNT\x10\x03\x12!\n\x1d\x41\x43\x43OUNT_TYPE_STRATEGY_ACCOUNT\x10\x04\x12\x1e\n\x1a\x41\x43\x43OUNT_TYPE_VENUE_ACCOUNT\x10\x05\x12\x14\n\x10\x41\x43\x43OUNT_TYPE_SMA\x10\x06\x12\x17\n\x13\x41\x43\x43OUNT_TYPE_BROKER\x10\x07\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x63ommon/account.proto\x12\x07oets.v1\"L\n\nAccountRef\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12*\n\x0c\x61\x63\x63ount_type\x18\x02 \x01(\x0e\x32\x14.oets.v1.AccountType*\xf2\x01\n\x0b\x41\x63\x63ountType\x12\x1c\n\x18\x41\x43\x43OUNT_TYPE_UNSPECIFIED\x10\x00\x12\x17\n\x13\x41\x43\x43OUNT_TYPE_WALLET\x10\x01\x12\x1d\n\x19\x41\x43\x43OUNT_TYPE_MAIN_ACCOUNT\x10\x02\x12\x1b\n\x17\x41\x43\x43OUNT_TYPE_SUBACCOUNT\x10\x03\x12!\n\x1d\x41\x43\x43OUNT_TYPE_STRATEGY_ACCOUNT\x10\x04\x12\x1e\n\x1a\x41\x43\x43OUNT_TYPE_VENUE_ACCOUNT\x10\x05\x12\x14\n\x10\x41\x43\x43OUNT_TYPE_SMA\x10\x06\x12\x17\n\x13\x41\x43\x43OUNT_TYPE_BROKER\x10\x07\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,7 +32,7 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.account_pb2', _globa
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_ACCOUNTTYPE']._serialized_start=112
-  _globals['_ACCOUNTTYPE']._serialized_end=350
+  _globals['_ACCOUNTTYPE']._serialized_end=354
   _globals['_ACCOUNTREF']._serialized_start=33
   _globals['_ACCOUNTREF']._serialized_end=109
 # @@protoc_insertion_point(module_scope)

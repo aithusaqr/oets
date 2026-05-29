@@ -6,58 +6,59 @@ import "common/execution_venue.proto";
 import "common/account.proto";
 import "common/event_envelope.proto";
 import "common/instrument.proto";
-import "common/timestamps.proto";
-import "common/source.proto";
 
 enum OrderSide {
-  BUY = 0;
-  SELL = 1;
+  ORDER_SIDE_UNSPECIFIED = 0;
+  ORDER_SIDE_BUY = 1;
+  ORDER_SIDE_SELL = 2;
 }
 
-enum OrderType{
-   UNKNOWN_ORDER_TYPE = 0;
-    LIMIT = 1;
-    MARKET = 2;
-    LIMIT_POST_ONLY = 3;
-    ORDER_TYPE_IMMEDIATE_OR_CANCEL = 4;
-    ORDER_TYPE_FILL_OR_KILL = 5;
-    TWAP = 6;
-    ICEBERG = 7;
-    OTHER = 8;
-    STOP = 9;
-    STOP_LIMIT = 10;
-    BRACKET = 11;
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  ORDER_TYPE_LIMIT = 1;
+  ORDER_TYPE_MARKET = 2;
+  ORDER_TYPE_LIMIT_POST_ONLY = 3;
+  ORDER_TYPE_IMMEDIATE_OR_CANCEL = 4;
+  ORDER_TYPE_FILL_OR_KILL = 5;
+  ORDER_TYPE_TWAP = 6;
+  ORDER_TYPE_ICEBERG = 7;
+  ORDER_TYPE_OTHER = 8;
+  ORDER_TYPE_STOP = 9;
+  ORDER_TYPE_STOP_LIMIT = 10;
+  ORDER_TYPE_BRACKET = 11;
 }
 
 enum OrderState {
-  UNKNOWN_ORDER_STATE = 0;
-    CREATED = 1;
-    SENT = 2;
-    PENDING = 3;
-    ACKED = 4;
-    ACCEPTED = 5;
-    REJECTED = 6;
-    PENDING_CANCEL = 7;
-    EXPIRED = 8;
-    PARTIALLY_FILLED = 9;
-    FILLED = 10;
-    CANCELLED = 11;
-    FAILED = 12;
-    DONE = 13;
-    CLOSED = 14;
+  ORDER_STATE_UNSPECIFIED = 0;
+  ORDER_STATE_CREATED = 1;
+  ORDER_STATE_SENT = 2;
+  ORDER_STATE_PENDING = 3;
+  ORDER_STATE_ACKED = 4;
+  ORDER_STATE_ACCEPTED = 5;
+  ORDER_STATE_REJECTED = 6;
+  ORDER_STATE_PENDING_CANCEL = 7;
+  ORDER_STATE_EXPIRED = 8;
+  ORDER_STATE_PARTIALLY_FILLED = 9;
+  ORDER_STATE_FILLED = 10;
+  ORDER_STATE_CANCELLED = 11;
+  ORDER_STATE_FAILED = 12;
+  ORDER_STATE_DONE = 13;
+  ORDER_STATE_CLOSED = 14;
 }
 
-enum OrderTimeInForce{
-  GOOD_TIL_CANCEL = 0;
-  ORDER_TIF_IMMEDIATE_OR_CANCEL = 1;
-  ORDER_TIF_FILL_OR_KILL = 2;
+enum OrderTimeInForce {
+  ORDER_TIF_UNSPECIFIED = 0;
+  ORDER_TIF_GOOD_TIL_CANCEL = 1;
+  ORDER_TIF_IMMEDIATE_OR_CANCEL = 2;
+  ORDER_TIF_FILL_OR_KILL = 3;
 }
 
 enum OrderIntentionType {
-  RESTING = 0;
-  CROSSING = 1;
-  CANCEL = 2;
-  ONE_CANCELS_OTHER = 3;
+  ORDER_INTENTION_TYPE_UNSPECIFIED = 0;
+  ORDER_INTENTION_TYPE_RESTING = 1;
+  ORDER_INTENTION_TYPE_CROSSING = 2;
+  ORDER_INTENTION_TYPE_CANCEL = 3;
+  ORDER_INTENTION_TYPE_ONE_CANCELS_OTHER = 4;
 }
 
 message OrderEvent {
@@ -75,10 +76,11 @@ message OrderEvent {
   OrderState order_state = 9;
   OrderTimeInForce order_tif = 10;
 
-  int64 price =11;
+  int64 price = 11;
   int64 quantity = 12;
 
-  SourceReference source =13;
-  EventTimestamp timestamps = 14;
+  reserved 13, 14;
+  reserved "source", "timestamps";
+
   OrderIntentionType order_intention_type = 15;
 }

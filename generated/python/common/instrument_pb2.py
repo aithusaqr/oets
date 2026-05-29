@@ -24,17 +24,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x63ommon/instrument.proto\x12\x07oets.v1\"\xd9\x03\n\rInstrumentRef\x12\x15\n\rinstrument_id\x18\x01 \x01(\t\x12\x12\n\nbase_asset\x18\x02 \x01(\t\x12\x13\n\x0bquote_asset\x18\x03 \x01(\t\x12\x1b\n\x13venue_instrument_id\x18\x04 \x01(\t\x12\x17\n\x0fprice_precision\x18\x05 \x01(\x05\x12 \n\x18price_precision_rounding\x18\x06 \x01(\x05\x12\x16\n\x0esize_precision\x18\x07 \x01(\x05\x12\x1f\n\x17size_precision_rounding\x18\x08 \x01(\x05\x12\x14\n\x0cminimum_size\x18\t \x01(\x05\x12\x1d\n\x15minimum_notional_size\x18\n \x01(\x03\x12\x10\n\x08lot_size\x18\x0b \x01(\x05\x12\x19\n\x11notional_lot_size\x18\x0c \x01(\x03\x12,\n\rcontract_type\x18\r \x01(\x0e\x32\x15.oets.v1.ContractType\x12\r\n\x05\x61lias\x18\x0e \x01(\t\x12\x13\n\x0b\x65xpiry_date\x18\x0f \x01(\x05\x12\x16\n\x0e\x64\x61ys_to_expiry\x18\x10 \x01(\x05\x12\x10\n\x08\x63urrency\x18\x11 \x01(\t\x12\x19\n\x11position_currency\x18\x12 \x01(\t*p\n\x0eInstrumentType\x12\x1b\n\x17UNKNOWN_INSTRUMENT_TYPE\x10\x00\x12\r\n\tPERPETUAL\x10\x01\x12\x08\n\x04SPOT\x10\x02\x12\n\n\x06\x46UTURE\x10\x03\x12\n\n\x06OPTION\x10\x04\x12\x08\n\x04SWAP\x10\x05\x12\x06\n\x02\x46X\x10\x06*B\n\x0c\x43ontractType\x12\x19\n\x15UNKNOWN_CONTRACT_TYPE\x10\x00\x12\n\n\x06LINEAR\x10\x01\x12\x0b\n\x07INVERSE\x10\x02\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x63ommon/instrument.proto\x12\x07oets.v1\"\xd9\x03\n\rInstrumentRef\x12\x15\n\rinstrument_id\x18\x01 \x01(\t\x12\x12\n\nbase_asset\x18\x02 \x01(\t\x12\x13\n\x0bquote_asset\x18\x03 \x01(\t\x12\x1b\n\x13venue_instrument_id\x18\x04 \x01(\t\x12\x17\n\x0fprice_precision\x18\x05 \x01(\x05\x12 \n\x18price_precision_rounding\x18\x06 \x01(\x05\x12\x16\n\x0esize_precision\x18\x07 \x01(\x05\x12\x1f\n\x17size_precision_rounding\x18\x08 \x01(\x05\x12\x14\n\x0cminimum_size\x18\t \x01(\x05\x12\x1d\n\x15minimum_notional_size\x18\n \x01(\x03\x12\x10\n\x08lot_size\x18\x0b \x01(\x05\x12\x19\n\x11notional_lot_size\x18\x0c \x01(\x03\x12,\n\rcontract_type\x18\r \x01(\x0e\x32\x15.oets.v1.ContractType\x12\r\n\x05\x61lias\x18\x0e \x01(\t\x12\x13\n\x0b\x65xpiry_date\x18\x0f \x01(\x05\x12\x16\n\x0e\x64\x61ys_to_expiry\x18\x10 \x01(\x05\x12\x10\n\x08\x63urrency\x18\x11 \x01(\t\x12\x19\n\x11position_currency\x18\x12 \x01(\t*\xd4\x01\n\x0eInstrumentType\x12\x1f\n\x1bINSTRUMENT_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n\x19INSTRUMENT_TYPE_PERPETUAL\x10\x01\x12\x18\n\x14INSTRUMENT_TYPE_SPOT\x10\x02\x12\x1a\n\x16INSTRUMENT_TYPE_FUTURE\x10\x03\x12\x1a\n\x16INSTRUMENT_TYPE_OPTION\x10\x04\x12\x18\n\x14INSTRUMENT_TYPE_SWAP\x10\x05\x12\x16\n\x12INSTRUMENT_TYPE_FX\x10\x06*b\n\x0c\x43ontractType\x12\x1d\n\x19\x43ONTRACT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43ONTRACT_TYPE_LINEAR\x10\x01\x12\x19\n\x15\x43ONTRACT_TYPE_INVERSE\x10\x02\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.instrument_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_INSTRUMENTTYPE']._serialized_start=512
-  _globals['_INSTRUMENTTYPE']._serialized_end=624
-  _globals['_CONTRACTTYPE']._serialized_start=626
-  _globals['_CONTRACTTYPE']._serialized_end=692
+  _globals['_INSTRUMENTTYPE']._serialized_start=513
+  _globals['_INSTRUMENTTYPE']._serialized_end=725
+  _globals['_CONTRACTTYPE']._serialized_start=727
+  _globals['_CONTRACTTYPE']._serialized_end=825
   _globals['_INSTRUMENTREF']._serialized_start=37
   _globals['_INSTRUMENTREF']._serialized_end=510
 # @@protoc_insertion_point(module_scope)

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13\x63ommon/source.proto\x12\x07oets.v1\"c\n\x0fSourceReference\x12\x11\n\tsource_id\x18\x01 \x01(\t\x12(\n\x0bsource_type\x18\x02 \x01(\x0e\x32\x13.oets.v1.SourceType\x12\x13\n\x0bsource_name\x18\x03 \x01(\t*\xc1\x01\n\nSourceType\x12\x17\n\x13UNKNOWN_SOURCE_TYPE\x10\x00\x12\x07\n\x03\x42OT\x10\x01\x12\x11\n\rSOURCE_WALLET\x10\x02\x12\x0c\n\x08PROTOCOL\x10\x03\x12\x0b\n\x07INDEXER\x10\x04\x12\n\n\x06ROUTER\x10\x05\x12\t\n\x05VENUE\x10\x06\x12\x0f\n\x0bRISK_SYSTEM\x10\x07\x12\x0c\n\x08INTERNAL\x10\x08\x12\x0e\n\nVENUE_REST\x10\t\x12\x0c\n\x08VENUE_WS\x10\n\x12\x0f\n\x0bVENUE_OTHER\x10\x0b\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13\x63ommon/source.proto\x12\x07oets.v1\"c\n\x0fSourceReference\x12\x11\n\tsource_id\x18\x01 \x01(\t\x12(\n\x0bsource_type\x18\x02 \x01(\x0e\x32\x13.oets.v1.SourceType\x12\x13\n\x0bsource_name\x18\x03 \x01(\t*\xc2\x02\n\nSourceType\x12\x1b\n\x17SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x13\n\x0fSOURCE_TYPE_BOT\x10\x01\x12\x16\n\x12SOURCE_TYPE_WALLET\x10\x02\x12\x18\n\x14SOURCE_TYPE_PROTOCOL\x10\x03\x12\x17\n\x13SOURCE_TYPE_INDEXER\x10\x04\x12\x16\n\x12SOURCE_TYPE_ROUTER\x10\x05\x12\x15\n\x11SOURCE_TYPE_VENUE\x10\x06\x12\x1b\n\x17SOURCE_TYPE_RISK_SYSTEM\x10\x07\x12\x18\n\x14SOURCE_TYPE_INTERNAL\x10\x08\x12\x1a\n\x16SOURCE_TYPE_VENUE_REST\x10\t\x12\x18\n\x14SOURCE_TYPE_VENUE_WS\x10\n\x12\x1b\n\x17SOURCE_TYPE_VENUE_OTHER\x10\x0b\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,7 +32,7 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'common.source_pb2', _global
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_SOURCETYPE']._serialized_start=134
-  _globals['_SOURCETYPE']._serialized_end=327
+  _globals['_SOURCETYPE']._serialized_end=456
   _globals['_SOURCEREFERENCE']._serialized_start=32
   _globals['_SOURCEREFERENCE']._serialized_end=131
 # @@protoc_insertion_point(module_scope)

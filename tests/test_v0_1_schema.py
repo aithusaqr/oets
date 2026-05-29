@@ -172,29 +172,29 @@ def test_cash_flow_event_reserves_routing_field_names():
 # ---------------------------------------------------------------------------
 
 def test_order_side_values_are_shifted():
-    """OrderSide BUY=1 and SELL=2 after the v0.1 sentinel shift."""
+    """OrderSide ORDER_SIDE_BUY=1 and ORDER_SIDE_SELL=2 after the v0.1 sentinel shift."""
     text = _proto_text("common/execution/order_event.proto")
-    assert re.search(r'\bBUY\s*=\s*1\s*;', text), (
-        "OrderSide.BUY must be 1 after the v0.1 sentinel shift (was 0)."
+    assert re.search(r'\bORDER_SIDE_BUY\s*=\s*1\s*;', text), (
+        "OrderSide.ORDER_SIDE_BUY must be 1 after the v0.1 sentinel shift (was 0)."
     )
-    assert re.search(r'\bSELL\s*=\s*2\s*;', text), (
-        "OrderSide.SELL must be 2 after the v0.1 sentinel shift (was 1)."
+    assert re.search(r'\bORDER_SIDE_SELL\s*=\s*2\s*;', text), (
+        "OrderSide.ORDER_SIDE_SELL must be 2 after the v0.1 sentinel shift (was 1)."
     )
 
 
 def test_order_tif_values_are_shifted():
-    """OrderTimeInForce GOOD_TIL_CANCEL=1 after the v0.1 sentinel shift."""
+    """OrderTimeInForce ORDER_TIF_GOOD_TIL_CANCEL=1 after the v0.1 sentinel shift."""
     text = _proto_text("common/execution/order_event.proto")
-    assert re.search(r'\bGOOD_TIL_CANCEL\s*=\s*1\s*;', text), (
-        "OrderTimeInForce.GOOD_TIL_CANCEL must be 1 after the v0.1 sentinel shift (was 0)."
+    assert re.search(r'\bORDER_TIF_GOOD_TIL_CANCEL\s*=\s*1\s*;', text), (
+        "OrderTimeInForce.ORDER_TIF_GOOD_TIL_CANCEL must be 1 after the v0.1 sentinel shift (was 0)."
     )
 
 
 def test_order_intention_type_values_are_shifted():
-    """OrderIntentionType RESTING=1 after the v0.1 sentinel shift."""
+    """OrderIntentionType ORDER_INTENTION_TYPE_RESTING=1 after the v0.1 sentinel shift."""
     text = _proto_text("common/execution/order_event.proto")
-    assert re.search(r'\bRESTING\s*=\s*1\s*;', text), (
-        "OrderIntentionType.RESTING must be 1 after the v0.1 sentinel shift (was 0)."
+    assert re.search(r'\bORDER_INTENTION_TYPE_RESTING\s*=\s*1\s*;', text), (
+        "OrderIntentionType.ORDER_INTENTION_TYPE_RESTING must be 1 after the v0.1 sentinel shift (was 0)."
     )
 
 
